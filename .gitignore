@@ -1,0 +1,6 @@
+# Build tools
+node_modules/
+
+# LaTeX and BibTeX temporary files
+compiled/*
+!compiled/*.pdf
