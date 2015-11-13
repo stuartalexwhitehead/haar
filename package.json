@@ -1,0 +1,19 @@
+{
+  "name": "honours-project-report",
+  "version": "0.1.0",
+  "description": "The project report for my final year of Computer Science at Robert Gordon University  ",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stuartalexwhitehead/haar-report"
+  },
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 1"
+  },
+  "author": "Stuart Whitehead",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-shell": "^0.5.0"
+  }
+}
