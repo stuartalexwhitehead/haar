@@ -1,19 +1,32 @@
-\documentclass[twoside, a4paper, twoside]{book}
+\documentclass[twoside, a4paper, openany]{book}
 
-\usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc} % UTF8 Character Encoding for weird characters
+\usepackage{tocbibind} % Auto add Bibliography etc to Table of Contents
+\usepackage[round]{natbib} % Use BibTeX for bibliography management
 
 \begin{document}
+  \bibliographystyle{plainnat}
 
   \frontmatter
-    \input{frontmatter/titlepage}
-    \input{frontmatter/tableofcontents}
+    \input{frontmatter/title-page}
+    \input{frontmatter/abstract}
+    \input{frontmatter/acknowledgements}
+    \input{frontmatter/table-of-contents}
+    \input{frontmatter/list-of-figures}
+    \input{frontmatter/list-of-tables}
 
   \mainmatter
     \input{mainmatter/introduction}
-    \input{mainmatter/literature-survey}
-
+    \input{mainmatter/background}
+    \input{mainmatter/specification}
+    \input{mainmatter/design}
+    \input{mainmatter/implementation}
+    \input{mainmatter/results-and-evaluation}
+    \input{mainmatter/future-work}
+    \input{mainmatter/conclusions}
 
   \appendix
   \backmatter
+    \input{backmatter/bibliography}
 
 \end{document}
