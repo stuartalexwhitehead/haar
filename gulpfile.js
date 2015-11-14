@@ -9,8 +9,10 @@ gulp.task('bibtex', shell.task([
   'cd compiled && bibtex haar'
 ]));
 
+gulp.task('compile', ['latex', 'bibtex', 'latex']);
+
 gulp.task('watch', function(){
-  gulp.watch(['./**/*.tex', './**/*.bib'], ['latex', 'bibtex', 'latex']);
+  gulp.watch(['./**/*.tex', './**/*.bib'], ['compile']);
 });
 
-gulp.task('default', ['latex', 'watch']);
+gulp.task('default', ['compile', 'watch']);
