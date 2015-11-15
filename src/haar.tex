@@ -1,11 +1,17 @@
 \documentclass[twoside, a4paper, openany]{book}
 
-\usepackage[utf8]{inputenc} % UTF8 character encoding for weird characters
-\usepackage{tocbibind} % Auto add Bibliography etc to Table of Contents
-\usepackage[round]{natbib} % Use BibTeX for bibliography management
+\usepackage[utf8]{inputenc}   % UTF8 character encoding for weird characters
+\usepackage[british]{babel}   % Use British english for hyphenation etc
+\usepackage{tocbibind}        % Auto add Bibliography etc to Table of Contents
+\usepackage[round]{natbib}    % Use BibTeX for bibliography management
+\usepackage{hyperref}         % Create hyperlinks within text
+\usepackage{geometry}         % Manipulation of page components
+\usepackage{marginnote}       % Enable writing in page margins
 
 \begin{document}
-  \bibliographystyle{plainnat}
+
+  \input{miscellaneous/configuration}
+  \input{miscellaneous/extensions}
 
   \frontmatter
     \input{frontmatter/title-page}
