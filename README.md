@@ -21,14 +21,14 @@ Once you’ve cloned the repository, npm can be used to install any required pac
 npm install
 ```
 
-And that’s it.
+And that’s it (unless you need `sudo`, that is).
 
 ## Usage
-Gulp is used to provide compilation build steps and commands should be run from the root direction of the repository. The compiled PDF will be available from `./compiled/haar.pdf`
+Gulp is used to provide compilation build steps and commands should be run from the root direction of the repository. The compiled PDF will be available from `./compiled/haar.pdf`. Here’s what’s available:
 
 Command        | Description
 ---------------|------------
 `gulp latex`   | Run document through LaTeX _once_
 `gulp bibtex`  | Run document through BibTeX _once_
 `gulp compile` | Compile PDF with full bibliographic citations _once_
-`gulp watch`   | Watch all `.tex` and `.bib` files for changes and run `compile` build step
+`gulp watch`   | Watch all `.tex` and `.bib` files for changes and run the `compile` build step
