@@ -31,4 +31,4 @@ Command        | Description
 `gulp latex`   | Run document through LaTeX _once_
 `gulp bibtex`  | Run document through BibTeX _once_
 `gulp compile` | Compile PDF with full bibliographic citations _once_
-`gulp watch`   | Watch all `.tex` and `.bib` files for changes and run the `compile` build step
+`gulp watch`   | (Default) Watch all `.tex` and `.bib` files for changes and run the `compile` build step
