@@ -32,6 +32,6 @@ Command           | Description
 ------------------|------------
 `gulp latex`      | Run document through LaTeX _once_
 `gulp bibtex`     | Run document through BibTeX _once_
-`gulp spellcheck` | Run each *.tex file through Hunspell spellchecker
+`gulp spellcheck` | Run each `.tex` file through Hunspell spellchecker
 `gulp compile`    | Compile PDF with full bibliographic citations _once_
 `gulp watch`      | (Default) Watch all `.tex` and `.bib` files for changes and run the `compile` build step
