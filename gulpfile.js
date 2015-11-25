@@ -17,6 +17,11 @@ gulp.task('spellcheck', function(){
     ]))
 });
 
+gulp.task('count', shell.task([
+	'cd src && latexpand --output=../compiled/expanded.tex haar.tex',
+	'texcount compiled/expanded.tex'
+]));
+
 gulp.task('compile', ['latex', 'bibtex', 'latex']);
 
 gulp.task('watch', function(){

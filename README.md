@@ -14,7 +14,7 @@ If you’d like to compile the report yourself, there are a few system pre-requi
 
 PDFLaTeX and BibTeX come bundled for Mac with the [MacTeX](https://tug.org/mactex/) distribution. Similar bundles are available for [Windows](https://www.tug.org/protext/) and [Linux](https://www.tug.org/texlive/). You can of course check the availability of these applications with the `--version` flag.
 
-Optionally, [Hunspell](http://hunspell.sourceforge.net/) should be available for spellchecking.
+Optionally, [Hunspell](http://hunspell.sourceforge.net/) should be available for spellchecking along with [LaTeXpand](https://www.ctan.org/pkg/latexpand) and [TeXcount](http://app.uio.no/ifi/texcount/) for word counts.
 
 ## Installation
 Once you’ve cloned the repository, npm can be used to install any required packages.
@@ -33,5 +33,6 @@ Command           | Description
 `gulp latex`      | Run document through LaTeX _once_
 `gulp bibtex`     | Run document through BibTeX _once_
 `gulp spellcheck` | Run each `.tex` file through Hunspell spellchecker
+`gulp count`      | Perform a word count on the complete document
 `gulp compile`    | Compile PDF with full bibliographic citations _once_
 `gulp watch`      | (Default) Watch all `.tex` and `.bib` files for changes and run the `compile` build step
