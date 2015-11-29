@@ -89,6 +89,90 @@
         On a lower level, the main challenges present are fault tolerance, power supply and wireless communication. Given how variable IoT environments are (office spaces, homes, public spaces, remote and exposed areas) and how complex the supporting architectures could be, resilience to faults is important. IoT applications should therefore have redundancy across its various technical layers. One main cause of technical faults is the power supply driving any given IoT object. `Things' are typically mobile and therefore need a self-sufficient power source; the industry is therefore challenged to produce long-lasting batteries while maximising power efficiency in other areas. Existing wireless communication technologies are too bloated and consume too much power, such as GSM, Wi-FI and Bluetooth. To tie these challenges of fault tolerance, power consumption and wireless communication together, IoT applications need lightweight and robust wireless communication standards.
 
     \subsection{Use Cases}
+      Use-cases are a helpful mechanism for demonstrating the Internet of Things concept. It is a difficult concept to explain because there are many cooperating components and ideas and for this reason, research papers exemplify their arguments with practical examples. Although IoT applications could be developed for virtually any industry there are some areas where its application is more obvious. Some areas which are repeatedly brought up by researchers are smart cities, utilities and logistics. Assuming that the challenges (summarised in Table \ref{iot-overview}) are met, these areas are very achieveable.
+
+      `Smart Cities' is a vision which convincingly demonstrates many benefits of IoT. \citet{DfBIS:2013} describes the main issues facing local authorities, including: piecemeal urban infrastructure, climate change targets, the changing nature of the high street and elderly social care. The economic downturn has also reduced budgets assigned to local authorities by as much as 30\% between 2010 and 2013 making cost efficiences another issue. By developing or retrofitting urban infrastructure with IoT connectivity, local authorities can monitor services in much finer detail. For instance, Bigbelly Solar is a smart waste and recycling system. The Internet-connected waste bins allow local authorities to monitor their status and to schedule collections when they are full. \citet{fog:2012} also describe a system of smart, connected traffic lights which can control the traffic flow through a whole city, reducing congestion and improving safety.  
+
+      IoT in the utilities sector is one use-case which has started to become realised. The British Goverment is requiring energy companies to install smart meters for their customers and expect most to have a smart meter installed by 2020 \citep{DoECC:2013}. Smart meters monitor domestic energy usage on a per-site or per-socket basis and can give real-time information how much electricity is being used, expressed in pounds and pence. For individual households this has the benefit of enabling homeowners to save money and to reduce emissions. At a national level, smart meters are a step towards reducing energy consumption and meeting climate change goals. Smart theromostats like Nest also allow households to minimise their gas consumption and to reduce heating bills.
+
+      Logistics is one area which demonstrates the efficiency savings that an IoT application can make. \citet{ECFreight:2007} states that ``Freight Transport Logistics focuses on the planning, organisation, management, control and execution of freight transport operations in the supply chain'' and notes that it is one of the drivers of European competitiveness. To remain competitive, this industry must continue to improve and streamline infrastructure, fleet management and goods tracking. The Internet of Things could be used to automate good identification and location with inexpensive RFID tags and GPS chips as well as optimise transport routes. This would reduce time spent by workers manually recording goods and it will reduce errors at interchange points. The Commission has coined this the `Internet for cargo'.
+
+      \begin{table}
+        \scriptsize
+        \begin{tabular}{| p{2cm} | p{2cm}  | p{2cm}  | p{2cm}  | p{2cm}  | p{2cm}  |}
+          \hline
+          \multirow{3}{2cm}{\textbf{Overlapping Research}}
+            & \multicolumn{2}{|c|}{\textbf{Opportunities}}
+            & \multicolumn{2}{|c|}{\textbf{Challenges}}
+            & \multirow{3}{2cm}{\textbf{Example \newline Use Cases}} \\ \cline{2-5}
+            & \textbf{Economic \newline \& Societal}
+            & \textbf{Technical} & \textbf{Economic \newline \& Societal}
+            & \textbf{Technical}
+            &
+          \\ \hline
+            Cloud Computing
+            & Citizen Well-Being
+            & Communication \& Cooperation
+            & Governance
+            & `Arrive and Operate'
+            & Smart Cities
+          \\ \hline
+          Big Data
+            & Economic Prosperity
+            & Addressability
+            & Standardisation
+            & Interoperability
+            & Waste Management
+          \\ \hline
+            Ubiquitous Computing
+            & Ageing Society
+            & Identification
+            & Security & Discovery
+            & Smart Traffic Lights
+          \\ \hline
+            Wireless Sensor Networks
+            & New Markets
+            & Sensing
+            & Data Privacy
+            & Software Complexity
+            & Utilities
+          \\ \hline
+            Wearables
+            & Business Optimisation
+            & Actuation
+            & Trust
+            & Scalability
+            & Smart Meters
+          \\ \hline
+            Edge Computing
+            &
+            & Localisation
+            &
+            & Data Management
+            & Logistics
+          \\ \hline
+            &
+            & Embedded Information Processing
+            &
+            & Fault Tolerance
+            &
+          \\ \hline
+            &
+            & User Interfaces
+            &
+            & Power Supply
+            &
+          \\ \hline
+            &
+            &
+            &
+            & Wireless Communication
+            &
+          \\ \hline
+        \end{tabular}
+
+        \caption{A summary of the current state of the Internet of Things}\label{iot-overview}
+      \end{table}
   \section{Existing Platforms}
   \section{Sensor Hardware}
   \section{Platform Functions}
