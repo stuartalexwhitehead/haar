@@ -27,4 +27,4 @@ gulp.task('watch', function(){
   gulp.watch(['./**/*.tex', './**/*.bib'], ['compile', 'count']);
 });
 
-gulp.task('default', ['compile', 'watch']);
+gulp.task('default', ['compile', 'count', 'watch']);
