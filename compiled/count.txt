@@ -1,0 +1,32 @@
+File: compiled/expanded.tex
+Encoding: utf8
+Words in text: 2874
+Words in headers: 47
+Words outside text (captions, etc.): 10
+Number of headers: 24
+Number of floats/tables/figures: 1
+Number of math inlines: 0
+Number of math displayed: 0
+Subcounts:
+  text+headers+captions (#headers/#floats/#inlines/#displayed)
+  0+7+0 (1/0/0/0) _top_
+  0+1+0 (1/0/0/0) Chapter: Abstract}     \chapter{Acknowledgements
+  0+1+0 (1/0/0/0) Chapter: Acknowledgements
+  0+1+0 (1/0/0/0) Chapter: Introduction}     \chapter{Background
+  0+1+0 (1/0/0/0) Chapter: Background
+  0+2+0 (1/0/0/0) Section: Previous Work
+  636+5+10 (1/1/0/0) Subsection: Defining the Internet of Things
+  1081+5+0 (3/0/0/0) Subsection: Opportunities
+  1157+5+0 (3/0/0/0) Subsection: Challenges
+  0+2+0 (1/0/0/0) Subsection: Use Cases
+  0+2+0 (1/0/0/0) Section: Existing Platforms
+  0+2+0 (1/0/0/0) Section: Sensor Hardware
+  0+2+0 (1/0/0/0) Section: Platform Functions
+  0+2+0 (1/0/0/0) Section: Case Studies}     \chapter{Specification}     \chapter{Design}     \chapter{Implementation}     \chapter{Results and Evaluation}     \chapter{Future Work}     \chapter{Conclusions
+  0+1+0 (1/0/0/0) Chapter: Specification}     \chapter{Design}     \chapter{Implementation}     \chapter{Results and Evaluation}     \chapter{Future Work}     \chapter{Conclusions
+  0+1+0 (1/0/0/0) Chapter: Design}     \chapter{Implementation}     \chapter{Results and Evaluation}     \chapter{Future Work}     \chapter{Conclusions
+  0+1+0 (1/0/0/0) Chapter: Implementation}     \chapter{Results and Evaluation}     \chapter{Future Work}     \chapter{Conclusions
+  0+3+0 (1/0/0/0) Chapter: Results and Evaluation}     \chapter{Future Work}     \chapter{Conclusions
+  0+2+0 (1/0/0/0) Chapter: Future Work}     \chapter{Conclusions
+  0+1+0 (1/0/0/0) Chapter: Conclusions
+

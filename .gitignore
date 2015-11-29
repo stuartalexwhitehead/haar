@@ -4,3 +4,4 @@ node_modules/
 # LaTeX and BibTeX temporary files
 compiled/*
 !compiled/*.pdf
+!compiled/count.txt
