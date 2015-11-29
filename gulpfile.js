@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var shell = require('gulp-shell');
 
 gulp.task('latex', shell.task([
-  'cd src && pdflatex -output-directory=../compiled/ haar'
+  'cd src && pdflatex -output-directory=../compiled haar'
 ]));
 
 gulp.task('bibtex', shell.task([
@@ -18,14 +18,14 @@ gulp.task('spellcheck', function(){
 });
 
 gulp.task('count', shell.task([
-	'cd src && latexpand --output=../compiled/expanded.tex haar.tex',
-	'texcount compiled/expanded.tex'
+  'cd src && latexpand --output=../compiled/expanded.tex haar.tex',
+  'texcount compiled/expanded.tex > compiled/count.txt'
 ]));
 
 gulp.task('compile', ['latex', 'bibtex', 'latex']);
 
 gulp.task('watch', function(){
-  gulp.watch(['./**/*.tex', './**/*.bib'], ['compile']);
+  gulp.watch(['./**/*.tex', './**/*.bib'], ['compile', 'count']);
 });
 
 gulp.task('default', ['compile', 'watch']);
