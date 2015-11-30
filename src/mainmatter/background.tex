@@ -52,7 +52,7 @@
 
         Although there are strong opportunities for individuals and political territories, the best economic opportunites are available to businesses. The Internet of Things has the potential to provide many new income streams to businesses as well as finding other money through efficiency savings. First of all IoT opens up new markets which were previously not feasible nor even considered. These markets may include consumer products such as the previously mentioned Fitbit or novel service solutions such as home security and monitoring. For organisations with complex supply chains or processes, the Internet of Things could help to maximise resources and stock control. This is especially evident in areas such as logistics or public transport where connected devices could help to reduce costs by optimising transportation routes automatically.
 
-      \subsubsection{Technical}
+      \subsubsection{Technical} \label{TechnicalOpportunities}
         Technical opportunities and advancements are self-perpetuating and really are the driving force behind the Internet of Things. As previously noted, IoT would not be realistically possible without improvements in the underlying technology. As more powerful, efficient and cheaper hardware boards are delivered and as they become supported by software layers, the possible use-cases of them diversifies too.
 
         \citet{fromIoC} note that the Internet of Things is not the result of a single novel technology but rather several complementary technical developments. These technical developments provide a range of capabilities, or in the eyes of an application stakeholder, technical \emph{opportunities}. The main opportunities presented are: communication and cooperation; addressability; identification; sensing; actuation; localisation; embedded information processing and user interfaces. The authors also note that most applications will need only a subset of these capabilities, but it is better to have the option there.
@@ -173,7 +173,119 @@
 
         \caption{A summary of the current state of the Internet of Things}\label{iot-overview}
       \end{table}
-  \section{Existing Platforms}
+    
+  \section{Investigation of Existing Platforms}
+    \subsection{Overview}
+      Now that a baseline has been established for Internet of Things research, it is possible to investigate specific technologies and architectural decisions. There are already numerous IoT platforms both in service and under active development; in fact, Amazon announced their own platform (Amazon IoT) when writing this very comparison and not long after, Digi refreshed their own platform product, showing just how dynamic this area currently is.
+
+      The aim of an IoT platform and the tools which it provides does differ from vendor to vendor but after comparing some headline features, there are various characteristics common amongst them. The platforms were chosen by sifting through marketing websites online and paper lists, like that by \citet{contemporaryIOT:2015}, before selecting a representitive sample of organisations. The platform offerings were analysed and compared against five common characteristics: hosting model, source availability model, connectivity, bidirectional communication support and trigger support.
+
+    \subsection{Hosting}
+      The hosting model offered by an organisation defines which stakeholder is responsible for maintaining the IoT application and its supporting infrastructure---the platform provider or the customer. This is notable differentiator between platforms and can be indicative of the platform vendor's business objectives (which also relates to the Source Availability Model, coming up next). There are generally two variations in hosting models: Platform as as Service (PaaS) or self-hosting.
+
+      \subsubsection{Platform as a Service}
+        A Platform as a Service (PaaS) is a Cloud Computing concept. It is an abstraction of the complete application technology stack including both hardware and software. An organisation providing a PaaS would be resonsible for the management and maintenance of the hardware such as servers, RAID backing storage and networking appliances like routers or switches. Depending on the software on offer, the vendor would also be responsible for managing and maintaining the server operating system as well as any supporting software packages and applications. Customers are typically provided access to this abstraction through a control panel or an Application Program Interface (API).
+
+        In the context of the Internet of Things, a PaaS would provide various benefits to a customer. Primarily the customer do not need to allocate resources for infrastructure maintenance since the vendor manages this, with the result being more time for the customer to focus on business needs. There is also less investment required on behalf of the customer---PaaS resources can be provisioned when and if they are needed, rather than purchasing hardware upfront. Another benefit is the extra layer of support---system scalability, stability and fault tolerance are the responsibility of the PaaS vendor. One example of a PaaS is \href{https://www.carriots.com/}{Carriots}.
+
+      \subsubsection{Self-hosted}
+        An alternative to a Platform as a Service is the self-hosted option. As the name implies, this option makes customers responsible for the maintenance and management the application infrastructure (although software updates may still be provided by the platform vendor). There are technical and legal arguments to support such a business decision.
+
+        The main technical aspect is that of control. With the self-hosted option, the system architecture can be optimised for specific use-cases, such as the global location of servers to reduce application latencies (the time taken for network transmissions between devices and server). This also gives customers direct access to the core software and makes it easier to modify it for their own purposes (if the licence or software allows for that).
+
+        Self-hosting may also be necessary for legal compliance, especially in the realm of data protection. Depending on the country of operation, it may be necessary to retain data within country boundaries and this may not be enforcable with a PaaS. For example, in October 2015 the Court of Justice of the European Union ruled that the Safe Harbour agreement between the EU and United States is invalid \citep{C362/14}. This means that any organisation sharing data under this agreement is now acting unlawfully---a problem which could be avoided if data is managed from within the European Union. One example of a self-hosted platform is \href{http://nitrogen.io/}{Nitrogen.io}.
+
+    \subsection{Source Availability Model}
+      The Source Availability Model chosen by a platform developer defines the level of accessability for their source code. This model comes in two forms---open or closed source---and can be further refined by a software license framework.
+
+      The source code of Open Source Software (OSS) is made publically available. This could be served as a standard file download or, as is becoming common practice, on a code sharing service such as Github or Bitbucket. OSS will typically be provided under the conditions defined in a license, such as the GPL, MIT or Apache license frameworks. These vary on various points like distribution, modification and notification of copyright \citep{license:2015}.
+
+      Closed Source Software is proprietary source code not made publically available, although it may be necessary to distribute compiled binaries. This just means that the organisation does not wish to make source code available for modification or knowledge sharing. 
+
+      In conjunction with the hosting model, the source availability is indicative of business objectives. Organisations wishing to commercialise their platform as a product offering will use a Closed Source model to protect their intellectual property. Conversely those organisations where knowledge sharing is an aim, or where the platform is a mechanism to sell other products or services (such as \href{https://data.sparkfun.com/}{SparkFun} and its electronic hardware) may use an Open Source model.
+
+    \subsection{Connectivity}
+      The Internet of Things concept \emph{is} interconnectivity and communication, making device and application connectivity a very important topic. The platforms investigated support a range of connectivity protocols and concepts. These range from widely-accepted HTTP-based APIs to more niche protocols like CoAP and MQTT.
+
+      \subsubsection{HTTP}
+        The Hypertext Transfer Protocol (HTTP) underpins the internet. It benefits from widespread support and most notably, is used by web browsers to interface with web servers. RFC 2616 \citep{rfc2616} defines the specification for HTTP version 1.1 and notes:
+
+          \begin{quote}It is a generic, stateless, protocol which can be used for many tasks beyond its use for hypertext, such as name servers and distributed object management systems, through the extension of its request methods, error codes and headers.\end{quote}
+
+        As hinted at by this RFC 2616 quote, three important features of HTTP are request methods, error codes and headers. To generalise the HTTP lifecycle, a user agent will send a request to an origin server, the server will process the request and will return a response. The request will use an HTTP \emph{verb} to define the action to take, such as \code{GET} or \code{POST}, and will include headers to specify other parameters. The response has an associated status code, such as \code{200 OK} or \code{404 Not Found}.
+
+        Most of the platforms investigated support HTTP requests through a Representational State Transfer (REST) API. \citet{rest:2000} states that the REST architectural style emphasises scalability, independence of components, minimises latency and maximises security. These characteristics are achieved by applying constraints to the application, such as stateless communication, a uniform component interface and a layered approach to infrastructure technologies. REST methods are based on the HTTP verbs, such as \code{GET}, \code{POST}, \code{PUT} and \code{DELETE}. For IoT application developers, a REST API provides a scalable, uniform and robust interface between devices and the Internet.
+
+        Software engineers working on specifications for the Internet have foreseen the Internet of Things, even if it was taken in jest. RFC 2324 \citep{rfc2324} is an April Fool's joke and defines the Hyper Text Coffee Pot Control Protocol version 1.0 (HTCPCP/1.0). It specifies methods by which an Internet-connected coffee pot can be controlled, and even adds a new error code: ``Any attempt to brew coffee with a teapot should result in the error code `\code{418 I'm a teapot}'. The resulting entity body MAY be short and stout.''
+
+      \subsubsection{WebSockets}
+        The WebSocket Protocol is an independent TCP-based protocol that enables two-way communication. It uses an HTTP request as part of the handshaking process, which is treated as a connection upgrade request. RFC 6455 \citep{rfc6455} states ``The goal of this technology is to provide a mechanism for browser-based applications that need two-way communication with servers that does not rely on opening multiple HTTP connections (e.g., using \code{XMLHttpRequest} or \code{\textless iframe\textgreater}s and long polling).'' This technology plays a vital role in enabling bidirectional communication between web browsers and servers, as will be covered in section \ref{bidirectioncomms}.
+
+        WebSockets use standard HTTP ports for communication by default (port 80 and 443 for unencrypted and encrypted connections respectively). This has the added benefit of being compatible with common network and firewall configurations.
+
+      \subsubsection{MQTT}
+        MQ Telemetry Transport (MQTT) is a simple and lightweight messaging protocol. It is based on a publish/subscribe model and is specifically designed for constrained devices and low-bandwidth, high-latency or unreliable networks. In general, MQTT is used in conjunction with a message broker. Clients subscribe to topics on this broker which will then forward any relevent messages. Clients are then free to do whatever they please with these messages \citep{mqtt:2015}.
+
+        MQTT uses TCP/IP to transmit messages and operates on ports 1883 and 8883 for unsecured and secured uses respectively. Since these ports and not common, firewalls will typically block access. For this reason, MQTT can be tunnelled using Websockets (and means this can be used in the browser, too).
+
+      \subsubsection{CoAP}
+        Constrained Application Protocol (CoAP) is another protocol designed with the Internet of Things in mind. \citet{rfc7252} describe CoAP as ``a specialised web transfer protocol for use with constrained nodes and constrained networks.'' Some headline features align with principles used with HTTP, such as utilisation of the REST model. RFC 7252 defines the proposed specification for CoAP. It specifically notes some main features:
+
+        \begin{itemize}
+          \item Web protocol fulfilling M2M requirements in constrained environments
+          \item UDP [RFC0768] binding with optional reliability supporting unicast and multicast requests
+          \item Asynchronous message exchanges
+          \item Low header overhead and parsing complexity
+          \item URI and Content-type support
+          \item Simple proxy and caching capabilities
+        \end{itemize}
+
+        CoAP is likened to HTTP throughout the specification however there are some notable differences. HTTP uses the TCP/IP transport protocol whereas CoAP uses UDP, a protocol with significantly less overhead. UDP is not a request/response protocol so to provide a reqeust/response interaction model, CoAP must deal with this through a logic layer.
+
+      \subsubsection{UDP}
+        One of the researched platforms also offers the User Datagram Protocol (UDP) as a connectivity option. RFC 768 \citep{rfc768} notes ``this protocol provides a procedure for application programs to send messages to other programs with a minimum of protocol mechanism.'' To achieve `a minimum of protocol mechanism', UDP does not establish a connection with the receiving device, so unlike TCP/IP it is connectionless. The protocol also specifies no mechanism for error correction so if a packet is lost in transit, it is lost forever.
+
+        Since data can be lost, this protocol should only be used in applications which can tolerate data loss. To give a real-world example, a battery-powered hygrometer sensor may be collecting data about the enviromental humidity. If UDP was used as the connectivity protocol, it would allow this sensor to wake up, transmit its reading and then fall back to sleep without being concerned about the packet's progress. If a packet was lost, it would not have business or safety impacts.
+
+    \subsection{Bidirectional Communication} \label{bidirectioncomms}
+      One main opportunity of IoT, as described in Section \ref{TechnicalOpportunities}, is to drive actuators in response to data. There are three aspects which define whether unidirectional or bidirectional communication is possible: the connectivity protocol, the software application and the network environment. To illustrate the following points, a hypothetical scenario will be used, where one server and one actuator are connected together through the internet. In this case, unidirection communication means that only the actuator can initiate network requests whereas bidirectional communication allows either the server or actuator to initiate.
+
+      If the actuator is publically addressable with a dedicated IP address, bidirectional communication is trivial to implement. Supposing that the HTTP protocol is being used for communication, both the actuator and server can initiate requests to each other by using the appropriate IP address. The server may send an HTTP request instructing the actuator to do something, and it obey. In real-world scenerios, there are three factors which make bidirectional communication like this difficult: firewalls, Network Address Translation and IPv6 uptake.
+
+      Firewalls are common-place both in businesses and at home. They are a network security tool and can be either a dedicated hardware unit or software built into other devices, such as a domestic router. Their purpose is to screen both in and outbound connections which may have a malicious or compromising effect on the network integrity. The side effect which this has on IoT systems is that non-common protocols may be blocked, such as MQTT (since it uses ports 1883 and 8883). While devices behind a firewall may be publically addressable, they may not be reachable, depending on the IoT application.
+
+      While obtaining a public IP address for each IoT device is a worthy aim, it is not achievable in many situations due to Network Address Translation. Network Address Translation (NAT) is a tool used to delay the depletion of IPv4 addresses and is very common with domestic internet connections. RFC 2663 \citep{rfc2663} states ``NAT devices are used to connect an isolated address realm with private unregistered addresses to an external realm with globally unique registered addresses.'' In essence, this allows a number of privately addressed devices to communicate through one public address. In terms of IoT, this means than any devices connected behind NAT will not be publically addressable---the server could not directly send a request to the actuator.
+
+      Internet Protocol version 6 (IPv6) will solve the issue of IP address depletion. It will offer over 340 undecillion possible addresses, compared to just under 4 billion available from IPv4, and will allow every connected device to have its own IP address for the foreseeable future \citep{ipv6:2008}. With regards to the Internet of Things, this is still not achievable. IPv6 is still not supported by many internet service providers (ISPs) and networks, including that of Robert Gordon University. For the Interent of Things, this means that universally supported IPv6 is still a while off.
+
+      There are some useable techniques to overcome these three issues and to enable (or mimic) bidirectional communication. The first of these solutions is HTTP polling. With standard polling, the actuator would periodically ask the server for updates. If this period was 1 second, the communication may feel like it was real-time and bidirectional. This is however wasteful because not every request will result in an update. A more efficient form of polling is called long polling. The actuator will send a request to the server, but if there are no updates yet, the server will not respond. When the server does have a message to send to the actuator, it will respond and then end the request. This is better, but implementations suffer from the added complexity of managing connections, and it is using the HTTP specification in a way it was not designed.
+
+      A final and more effective solution is to implement communication using WebSockets. As previously described, the WebSocket protocol allows for bidirectional, full duplex communication and it can solve every challenge already addressed. WebSockets use the same communication ports as HTTP (port 80 and 443) by default, meaning that firewalls will allow them. Networks that support web browsing will support WebSockets. Also, the WebSocket connection can be initiated by the client and still allow bidirectional communication. In this case, the actuator can open a WebSocket connection to the server and overcome any Network Address Translation in place because it does not require a public IP address.
+
+    \subsection{Application Triggers}
+      One application-level feature common across investigated platforms is some form of event trigger. Where supported, platforms can trigger actions based on the data received from sensors and third-party APIs. Combining examples already mentioned, a hygrometer may send data to an IoT application. An application trigger could be configured to turn on a dehumidifier actuator if the humidity passes a certain threshold. If bidirectional communication is supported, this trigger would react in real-time. Triggers could also be configured to interact with other third-party software APIs.
+
+      \begin{table}
+        \scriptsize
+        \begin{tabular}{| p{2cm} | p{1.5cm}  | p{1cm}  | p{2cm}  | p{1.8cm}  | p{1.25cm}  |}
+          \hline
+          \textbf{Service} & \textbf{Hosting} & \textbf{Source} & \textbf{Connectivity} & \textbf{Bidirectional} & \textbf{Triggers} \\ \hline
+          Amazon IoT & PaaS & Closed & MQTT, HTTP & Yes & Yes \\ \hline
+          Bug Labs Dweet & PaaS & Closed & HTTP & Yes (app) & No \\ \hline
+          Carriots & PaaS & Closed & HTTP, MQTT & No & Yes \\ \hline
+          Sparkfun & PaaS or self-hosted & Open & HTTP & No & No \\ \hline
+          Exosite & PaaS & Closed & CoAP, HTTP, UDP & No & Yes \\ \hline
+          Google Brillo & PaaS & Closed & Unknown & Unknown & Unknown \\ \hline
+          Digi & PaaS & Closed & HTTP & Yes & Yes \\ \hline
+          IFTTT & PaaS & Closed & HTTP & No & Yes \\ \hline
+          Newaer & PaaS & Closed & HTTP & No & Yes \\ \hline
+          Nimbits & Self-hosted & Open & HTTP & No & Yes \\ \hline
+          nitrogen.io & Self-hosted & Open & MQTT, HTTP & Yes & Yes \\ \hline
+          ThingSpeak & PaaS or self-hosted & Open & HTTP & No & Yes \\ \hline
+        \end{tabular}
+
+        \caption{Characteristics of existing IoT platforms}\label{platform-characteristics}
+      \end{table}
   \section{Sensor Hardware}
   \section{Platform Functions}
   \section{Case Studies}
