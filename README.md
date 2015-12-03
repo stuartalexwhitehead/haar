@@ -26,7 +26,7 @@ npm install
 And that’s it (unless you need `sudo`, that is).
 
 ## Usage
-Gulp is used to provide compilation build steps and commands should be run from the root direction of the repository. The compiled PDF will be available from `./compiled/haar.pdf`. Here’s what’s available:
+Gulp is used to define compilation tasks and the commands should be run from the root direction of the repository. The compiled PDF will be available from `./compiled/haar.pdf`. Here’s what’s available:
 
 Command           | Description
 ------------------|------------
@@ -35,4 +35,4 @@ Command           | Description
 `gulp spellcheck` | Run each `.tex` file through Hunspell spellchecker
 `gulp count`      | Perform a word count on the complete document
 `gulp compile`    | Compile PDF with full bibliographic citations _once_
-`gulp watch`      | (Default) Watch all `.tex` and `.bib` files for changes and run the `compile` build step
+`gulp watch`      | (Default) Watch all `.tex` and `.bib` files for changes and run the `compile` and `count` build steps
