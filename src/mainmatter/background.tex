@@ -99,7 +99,7 @@
 
       \begin{table}
         \scriptsize
-        \begin{tabular}{| p{2cm} | p{2cm}  | p{2cm}  | p{2cm}  | p{2cm}  | p{2cm}  |}
+        \begin{tabularx}{\textwidth}{|X|X|X|X|X|X|}
           \hline
           \multirow{3}{2cm}{\textbf{Overlapping Research}}
             & \multicolumn{2}{|c|}{\textbf{Opportunities}}
@@ -169,12 +169,12 @@
             & Wireless Communication
             &
           \\ \hline
-        \end{tabular}
+        \end{tabularx}
 
         \caption{A summary of the current state of the Internet of Things}\label{iot-overview}
       \end{table}
     
-  \section{Investigation of Existing Platforms}
+  \section{Existing Platforms}\label{existing-platforms}
     \subsection{Overview}
       Now that a baseline has been established for Internet of Things research, it is possible to investigate specific technologies and architectural decisions. There are already numerous IoT platforms both in service and under active development; in fact, Amazon announced their own platform (Amazon IoT) when writing this very comparison and not long after, Digi refreshed their own platform product, showing just how dynamic this area currently is.
 
@@ -263,11 +263,11 @@
       A final and more effective solution is to implement communication using WebSockets. As previously described, the WebSocket protocol allows for bidirectional, full duplex communication and it can solve every challenge already addressed. WebSockets use the same communication ports as HTTP (port 80 and 443) by default, meaning that firewalls will allow them. Networks that support web browsing will support WebSockets. Also, the WebSocket connection can be initiated by the client and still allow bidirectional communication. In this case, the actuator can open a WebSocket connection to the server and overcome any Network Address Translation in place because it does not require a public IP address.
 
     \subsection{Application Triggers}
-      One application-level feature common across investigated platforms is some form of event trigger. Where supported, platforms can trigger actions based on the data received from sensors and third-party APIs. Combining examples already mentioned, a hygrometer may send data to an IoT application. An application trigger could be configured to turn on a dehumidifier actuator if the humidity passes a certain threshold. If bidirectional communication is supported, this trigger would react in real-time. Triggers could also be configured to interact with other third-party software APIs.
+      One application-level feature common across investigated platforms is some form of event trigger. Where supported, platforms can trigger actions based on the data received from sensors and third-party APIs. Combining examples already mentioned, a hygrometer may send data to an IoT application. An application trigger could be configured to turn on a dehumidifier actuator if the humidity passes a certain threshold. If bidirectional communication is supported, this trigger would react in real-time. Triggers could also be configured to interact with other third-party software APIs. \citet{IPisDead:2008} \citet{buildingWSN:2010}
 
       \begin{table}
         \scriptsize
-        \begin{tabular}{| p{2cm} | p{1.5cm}  | p{1cm}  | p{2cm}  | p{1.8cm}  | p{1.25cm}  |}
+        \begin{tabularx}{\textwidth}{|X|X|X|X|X|X|}
           \hline
           \textbf{Service} & \textbf{Hosting} & \textbf{Source} & \textbf{Connectivity} & \textbf{Bidirectional} & \textbf{Triggers} \\ \hline
           Amazon IoT & PaaS & Closed & MQTT, HTTP & Yes & Yes \\ \hline
@@ -282,10 +282,202 @@
           Nimbits & Self-hosted & Open & HTTP & No & Yes \\ \hline
           nitrogen.io & Self-hosted & Open & MQTT, HTTP & Yes & Yes \\ \hline
           ThingSpeak & PaaS or self-hosted & Open & HTTP & No & Yes \\ \hline
-        \end{tabular}
+        \end{tabularx}
 
         \caption{Characteristics of existing IoT platforms}\label{platform-characteristics}
       \end{table}
   \section{Sensor Hardware}
+    \subsection{Overview}
+      The Internet of Things is a multidisciplinary area of research and is just as dependant on advancements in electrical and electronics engineering as it is computer science. Since the hardware driving IoT sensor nodes is intertwined with the upper layers of software, it would be appropriate to investigate the current state of this area too. Rather than research the intricacies of how these pieces of hardware work, this paper will investigate existing end device hardware with regards to their implementation in IoT applications, particularly technical capability and energy efficiency.
+
+      With a similar method to Section \ref{existing-platforms}, various makes and models of hardware boards were analysed to find comparable characteristics. The manufacturers chosen---Arduino, Raspberry Pi, Intel and Samsung---represent a cross-section of the field. These manufacturers aim their products at different markets, from the DIY `maker' market of the Arduino to the professional, consumer electronics market of Samsung. This section will compare and contrast hardware models produced by these manufacturers across a range of key areas: processor architecture, memory, input/output options and wireless connectivity. Table \ref{hardware-boards} summarises each model and their specifications.
+
+    \subsection{Processor Architecture}
+      Just like any other computer system, the processor is the heart of the hardware board. It is responsible for running the operating system, orchestrating the various system components and for running the user application. The type and specification of the processor defines what can be processed and how quickly, which is ultimately reflected in the responsiveness and capability of the IoT device. Processor throughput is not the only consideration when scoping an IoT device however---energy consumption is also an important factor. The specification of the processor can be catergorised into smaller areas: processor type, instruction set, number of bits, clock speed and the number of cores.
+
+      There are two broad types of processor systems, namely microcontrollers and microprocessors. A microcontroller (also known as an embedded controller) is a complete computer in one chip. A single microcontroller chip will typically combine a central processing unit (CPU), small amounts of program memory and Random Access Memory (RAM) and input/output lines \citep{microcontrollers:2011}. In comparison, a microprocessor requires other system components to function, such as external memory, input/output lines and a clock circuit. In this regard, microprocessor hardware cannot be upgraded because it is integrated whereas a microprocessor system can, but they are cheaper to manufacture.
+
+      Processor architecture can also vary between makes and models. \citeauthor{microcontrollers:2011} notes that processors can be classified by the number of bits they process, with 8 bits being the most popular for microcontrollers. Processors with a greater number of bits are more powerful but are also more expensive. The instruction set used also effects the performance of the processor; Reduced Instruction Set Computer (RISC) instructions take only one CPU cycle to complete whereas Complex Instruction Set Computer (CISC) instructions can take multiple cycles.
+
+      Clock speed and the number of cores are two final factors of a processor's performance. The clock speed describes how many cycles the CPU executes in one second and is regulated by a crystal timer or internal digital clock oscillator (DCO) A greater clock frequency means more instructions which can be processed in a time period, and the more powerful the processor. Microcontrollers typically have clock speeds in the tens of Megahertz whereas microprocessors might run at hundreds of Megahertz or a number of Gigahertz. However due to physical limitations of hardware components, there is a practical limit in possible clock speed. In this case more cores are added to the processor allowing it to evaluate multiple instructions concurrently. With regard to power consumption, \citet{wsnpower:2010} state that clock speed is one factor affecting the lifetime of a battery powered device so the CPU should be carefully considered for its application.
+
+    \subsection{Memory}
+      In any computer system, different types of memory are used to store program instructions and the temporary data associated with them. While these types of memory can be split into more discrete categories, there are generally two types of memory: non-volatile and volatile. Non-volatile memory, such as Read-Only Memory (ROM) or Programmable Read-Only Memory (PROM), is used to store program instructions and fixed user data. Non-volatile memory is used to store this kind of data because it is not lost when power is disconnected. In comparison, volatile memory loses its contents when power is removed and so it is used for temporary or intermediate data.
+
+      Memory characteristics also contribute to the capabilites and performance of the hardware system. Primarily, the available memory size defines how much data can be stored. The Arduino boards researched have 32KB of program memory available compared to the Gigabytes available on some Samsung Artik boards. This constrains the number of program instructions which can be stored and means the software running on the Samsung Artiks could be much more complex. Memory word length also has implications. The word length is the number of bits which a single unit in memory can store, and is commonly found to be 8, 16, 32 or 64 bits. Larger word lengths can store larger pieces of instructions or data, such as larger numbers. 
+
+    \subsection{Input/Output}
+      The Input/Output (I/O) lines of a hardware board are the interface between sensors or actuators and the processor (or beyond). Without this physical connectivity, developers would not be able to capture information about the physical world, stopping the IoT concept in its tracks. This aspect of hardware boards is therefore important to the flexibility and future potential of IoT applications. To ensure compatability between hardware platforms and external hardware like sensors, various industry standards have been developed.
+
+      Before any I/O standards are discussed though, it is first important to establish the importance of the operating voltage for an individual electronics circuit. The hardware boards analysed operate at various logic voltages; for instance most Arduino boards run at 5V whereas the native voltage of the Intel Edison is 1.8V. The standard logic voltage also effects I/O operation. Digital sensors may have their own, incompatible standard logic voltage---a microcontroller running at 5V would damage a sensor running at 3.3V. If directly interfacing between processors and sensors, a logic level shifter might have to be implemented so careful planning is required. Logic voltage is another aspect which affects the lifetime of a battery-powered node \citep{wsnpower:2010}.
+
+      General Purpose Input Output (GPIO) pins are a blank canvas for engineers and developers. They are digital I/O pins with no default use and as their name suggests, can be configured as input or output. Since they are digital, GPIO pins can only read or write with 2 discrete values, logic high (1) or logic low (0), and these values usually respect the standard system voltage. Depending on the device, a number of GPIO pins might support Pulse Width Modulation (PWM). PWM is a technique for emulating analog levels by pulsing the digital value at differing frequencies. Using a lightbulb as an example, PWM could emulate the effect of dimming the light, like what could be achieved with an analogue potentiometer.
+
+      While GPIO pins allow for basic I/O operations, there is a need for communicating with more complex data. There are various available standards for interfacing between low-level electronics components. The datasheets for the selected model note some common standards, namely: Serial Peripheral Interface (SPI), Universal Asynchronous Receiver/Transmitter (UART), Inter-Integrated Circuit (I\textsuperscript{2}C) and Integrated Interchip Sound (I\textsuperscript{2}S). There are a variety of uses for these standards so this paper will go no further than noting that they exist.
+
+    \subsection{Connectivity}
+      Interconnectivity is yet one more important aspect to hardware designed for the Internet of Things. Since IoT devices are becoming increasing mobile and wire-free, connectivity is being discussed almost exlusively in regards to wireless communication protocols and standards. As was discussed in Section \ref{TechnicalOpportunities}, some IoT-specific wireless standards have already been established. Many of these technologies are supported by the various hardware platforms investigated, validating their purpose. The standards supported by these hardware platforms are IEEE 802.11 (Wi-Fi), Bluetooth and IEEE 802.15.4 (Low-Rate Wireless Personal Area Network). 
+
+      Wi-Fi is a technology which has become synonymous with wireless connectivity and the Internet. The IEEE 802.11 standard states that the purpose of Wi-Fi is ``to provide wireless connectivity for fixed, portable, and moving stations within a local area'' where a local area could refer to a home, classroom or office space. Wi-Fi benefits from wide utilisation in all areas and industries so wireless coverage is likely to be in place already. \citet{wifiah:2012} state that the radio frequencies used by Wi-Fi (2.4GHz and 5GHz bands) are becoming crowded and are increasingly resulting in radio interference. This is being addressed in a new standard, IEEE 802.11.ah, which makes use of the 900MHz frequency band. The two main potential advantages of this standard are greater range and less power consumption, which is beneficial to IoT devices. Even with this standard, however, end devices are impeded by the large overhead of upper layer protocols used in conjunction with Wi-Fi.
+
+      The Bluetooth standard has been repurposed as an effective wireless communication protocol for IoT devices. Prior to the introduction of Bluetooth 4.0 in 2010, it was primarily used in multimedia applications such as streaming stereo audio \citep{bluetooth:2014}. With the introduction of Bluetooth 4.0 came new features, namely Bluetooth Low Energy (BLE), which consumes such a small amount of power that a sensor can run from a coin battery for months or years. For an average usage scenario, BLE could be expected to achieve a practical maximum range of 77 meters \citep{linklabs:2015} which makes it ideal for use-cases such as body sensors and intelligent transport systems.
+
+      One final wireless connectivity standard supported by the investigated hardware is IEEE 802.15.4 Low-Rate Wireless Personal Area Networks (WPAN). The standard states that it `` provides for ultra low complexity, ultra low cost, ultra low power consumption, and low data rate wireless connectivity among inexpensive devices'' and covers the physical layer (PHY) and Medium Access Control (MAC) sublayer specifications. This IEEE standard has manifested into various competing technologies, in particular ZigBee and 6LoWPAN. ZigBee is a set of layers built on top of 802.15.4 and adds three important features: routing, ad-hoc network creation and self-healing mesh \citep{buildingWSN:2010}. In comparison, 6LoWPAN is an adaptive layer defined in RFC 4944 and allows IPv6 packets to be transmitted using the short addresses in 802.15.4. The average range for ZigBee and 6LoWPAN is 291 and 191 meters respectively.
+
+      \begin{sidewaystable}
+        \centering
+        \scriptsize
+        {\setlength{\extrarowheight}{5pt}%
+        \begin{tabular}{|l|l|c|c|c|c|c|c|c|c|c|l|}
+          \hline
+            \multicolumn{2}{|c|}{\textbf{Board}}
+            & \multicolumn{3}{|c|}{\textbf{Processor}}
+            & \multicolumn{2}{|c|}{\textbf{Memory}}
+            & \multicolumn{3}{|c|}{\textbf{Input/Output}}
+            & \multirow{2}{*}{\textbf{Voltage}}
+            & \multirow{2}{*}{\textbf{Connectivity}}
+          \\[5pt] \cline{1-10}
+            \textbf{Make}
+            & \textbf{Model}
+            & \textbf{Bits}
+            & \textbf{Cores}
+            & \textbf{Speed}
+            & \textbf{App}
+            & \textbf{RAM}
+            & \textbf{Analog}
+            & \textbf{Digital}
+            & \textbf{PWM}
+            &
+            &
+          \\[5pt] \hline
+            \multirow{3}{*}{Arduino}
+            & Uno
+            & 8
+            & 1
+            & 16MHz
+            & 32KB
+            & 2KB
+            & 6
+            & 14
+            & 6
+            & 5V
+            & -
+          \\[5pt] \cline{2-12}
+            & Yún
+            & 8
+            & 1
+            & 16MHz
+            & 32KB
+            & 2.5KB
+            & 12
+            & 20
+            & 7
+            & 5V
+            & \parbox[t][0.7cm][t]{2cm}{Ethernet \newline Wi-Fi}
+          \\[5pt] \cline{2-12}
+            & Pro Mini
+            & 8
+            & 1
+            & 8MHz/16MHz
+            & 32KB
+            & 2KB
+            & 6
+            & 14
+            & 6
+            & 3.3V/5V
+            & -
+          \\[5pt] \hline
+            \multirow{3}{*}{\parbox[t]{1.3cm}{Raspberry \newline Pi}}
+            & 2
+            & 32
+            & 4
+            & 900MHz
+            & SD Card
+            & 1GB
+            & 0
+            & 40
+            & 0
+            & 5V
+            & Ethernet
+          \\[5pt] \cline{2-12}
+            & A+
+            & 32
+            & 1
+            & 700MHz
+            & SD Card
+            & 256MB
+            & 0
+            & 40
+            & 0
+            & 5V
+            & -
+          \\[5pt] \cline{2-12}
+            & Zero
+            & 32
+            & 1
+            & 1GHz
+            & SD Card
+            & 512MB
+            & 0
+            & 40
+            & 0
+            & 5V
+            & -
+          \\[5pt] \hline
+            Intel
+            & Edison
+            & 64
+            & 2
+            & 500MHz
+            & 4GB
+            & 1GB
+            & 6
+            & 20
+            & 4
+            & 1.8V/3.3V
+            & \parbox[t][0.7cm][t]{2cm}{Wi-Fi a/b/g/n \newline Bluetooth 4.0}
+          \\[5pt] \hline
+            \multirow{3}{*}{Samsung}
+            & Artik 1
+            & 32
+            & 1
+            & 240MHz
+            & 4MB
+            & 1MB
+            & 2
+            & 0
+            & 0
+            & Unknown
+            & Bluetooth 4.0
+          \\[5pt] \cline{2-12}
+            & Artik 5
+            & 32
+            & 2
+            & 1GHz
+            & 4GB
+            & 512MB
+            & 2
+            & 47
+            & 2
+            & 1.8V/2.4V
+            & \parbox[t][1cm][t]{2cm}{Wi-Fi a/b/g/n \newline Bluetooth 4.0 \newline Zigbee/802.15.4}
+          \\[5pt] \cline{2-12}
+            & Artik 10
+            & 32
+            & 4+4
+            & 1.3GHz/1GHz
+            & 16GB
+            & 2GB
+            & 6
+            & 51
+            & 2
+            & 1.8V/2.4V
+            & \parbox[t][1cm][t]{2cm}{Wi-Fi a/b/g/n \newline Bluetooth 4.0 \newline Zigbee/802.15.4}
+          \\[5pt] \hline
+        \end{tabular}}
+
+        \caption{Summary of hardware boards}\label{hardware-boards}
+      \end{sidewaystable}
+
   \section{Platform Functions}
   \section{Case Studies}
