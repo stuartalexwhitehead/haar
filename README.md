@@ -35,4 +35,4 @@ Command           | Description
 `gulp spellcheck` | Run each `.tex` file through Hunspell spellchecker
 `gulp count`      | Perform a word count on the complete document
 `gulp compile`    | Compile PDF with full bibliographic citations _once_
-`gulp watch`      | (Default) Watch all `.tex` and `.bib` files for changes and run the `compile` and `count` build steps
+`gulp watch`      | (Default) Watch all `.tex` and `.bib` files for changes and run the `compile` and `count` tasks
