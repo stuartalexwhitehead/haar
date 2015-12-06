@@ -1,9 +1,9 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 7674
-Words in headers: 74
+Words in text: 9140
+Words in headers: 79
 Words outside text (captions, etc.): 30
-Number of headers: 42
+Number of headers: 45
 Number of floats/tables/figures: 3
 Number of math inlines: 0
 Number of math displayed: 0
@@ -18,7 +18,7 @@ Subcounts:
   636+5+10 (1/1/0/0) Subsection: Defining the Internet of Things
   1081+5+0 (3/0/0/0) Subsection: Opportunities
   1158+5+0 (3/0/0/0) Subsection: Challenges
-  460+2+11 (1/1/0/0) Subsection: Use Cases
+  460+2+11 (1/1/0/0) Subsection: Use Cases}\label{use-cases
   0+2+0 (1/0/0/0) Section: Existing Platforms}\label{existing-platforms
   144+1+0 (1/0/0/0) Subsection: Overview
   501+6+0 (3/0/0/0) Subsection: Hosting
@@ -26,14 +26,17 @@ Subcounts:
   945+6+0 (6/0/0/0) Subsection: Connectivity
   731+2+0 (1/0/0/0) Subsection: Bidirectional Communication} \label{bidirectioncomms
   84+2+5 (1/1/0/0) Subsection: Application Triggers
-  0+2+0 (1/0/0/0) Section: Sensor Hardware
+  0+2+0 (1/0/0/0) Section: Sensor Hardware}\label{sensor-hardware
   181+1+0 (1/0/0/0) Subsection: Overview
   434+2+0 (1/0/0/0) Subsection: Processor Architecture
   224+1+0 (1/0/0/0) Subsection: Memory
   402+2+0 (1/0/0/0) Subsection: Input/Output
   476+1+4 (1/0/0/0) Subsection: Connectivity
-  0+2+0 (1/0/0/0) Section: Platform Functions
-  0+2+0 (1/0/0/0) Section: Case Studies
+  0+5+0 (1/0/0/0) Section: Case Study: UK Smart Meters
+  458+1+0 (1/0/0/0) Subsection: Overview
+  405+1+0 (1/0/0/0) Subsection: Governance
+  603+1+0 (1/0/0/0) Subsection: Implementation
+  0+1+0 (1/0/0/0) Section: Summary
   0+1+0 (1/0/0/0) Chapter: Specification
   0+1+0 (1/0/0/0) Chapter: Design
   0+1+0 (1/0/0/0) Chapter: Implementation
