@@ -1,6 +1,6 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 9029
+Words in text: 8827
 Words in headers: 72
 Words outside text (captions, etc.): 29
 Number of headers: 43
@@ -14,9 +14,9 @@ Subcounts:
   0+1+0 (1/0/0/0) Chapter: Acknowledgements
   0+1+0 (1/0/0/0) Chapter: Introduction
   525+1+9 (1/1/0/0) Chapter: Background
-  180+1+0 (1/0/0/0) Section: Opportunities
-  412+3+0 (1/0/0/0) Subsection: Economic and Societal
-  489+1+0 (1/0/0/0) Subsection: Technical} \label{TechnicalOpportunities
+  140+1+0 (1/0/0/0) Section: Opportunities
+  354+3+0 (1/0/0/0) Subsection: Economic and Societal
+  385+1+0 (1/0/0/0) Subsection: Technical} \label{TechnicalOpportunities
   64+1+0 (1/0/0/0) Section: Challenges
   527+3+0 (1/0/0/0) Subsection: Economic and Societal}\label{economic-societal-challenges
   567+1+0 (1/0/0/0) Subsection: Technical
