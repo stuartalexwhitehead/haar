@@ -1,6 +1,6 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 8280
+Words in text: 8307
 Words in headers: 64
 Words outside text (captions, etc.): 29
 Number of headers: 39
@@ -16,7 +16,7 @@ Subcounts:
   525+1+9 (1/1/0/0) Chapter: Background
   603+1+0 (1/0/0/0) Section: Opportunities
   887+1+0 (1/0/0/0) Section: Challenges
-  460+2+11 (1/1/0/0) Section: Use Cases}\label{use-cases
+  487+2+11 (1/1/0/0) Section: Use Cases}\label{use-cases
   0+2+0 (1/0/0/0) Section: Existing Platforms}\label{existing-platforms
   144+1+0 (1/0/0/0) Subsection: Overview
   501+6+0 (3/0/0/0) Subsection: Hosting
@@ -30,7 +30,7 @@ Subcounts:
   224+1+0 (1/0/0/0) Subsection: Memory
   402+2+0 (1/0/0/0) Subsection: Input/Output
   476+1+4 (1/0/0/0) Subsection: Connectivity
-  0+5+0 (1/0/0/0) Section: Case Study: UK Smart Meters
+  0+5+0 (1/0/0/0) Section: Case Study: UK Smart Meters}\label{case-study
   458+1+0 (1/0/0/0) Subsection: Overview
   405+1+0 (1/0/0/0) Subsection: Governance
   603+1+0 (1/0/0/0) Subsection: Implementation
