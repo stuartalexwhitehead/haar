@@ -1,4 +1,5 @@
 \chapter{Background}
+\label{Chapter:Background}
   The term `Internet of Things' captures the essence of the vision well; the vision of a world where everyday, physical objects are gateways to web-based services. These so-called `smart objects' comprise of sensors to perceive their environment or context, as well as a notion of interconnectivity with other objects or services. Connected objects or services may react to collected data to trigger actions, and these actions may be digital or physical. The Internet of Things could be summarised as data collection, aggregation and reaction in the physical domain.
 
   The boundaries between IoT and other trends help to define its place in computing. For instance the research area of Wireless Sensor Networks (WSN) carries similarities in hardware requirements and challenges. In particular, WSN also comprise of connected sensors and actuators \citep{Mottola:2011}. WSNs differ from IoT because of the scope of connectivity---they are limited to specific applications and area coverage, such as a production line or a single building. In comparison, IoT applications have a global scope which encourages co-operation between devices, networks and services. Wireless Sensor Networks can, however, form one aspect of an IoT application.
@@ -50,6 +51,7 @@
     The Commission's action plan also describes economic opportunties. IoT has the potential to provide many new income streams to businesses as well as finding other money through efficiency savings. First of all IoT opens up new markets which were previously not feasible nor even considered. These markets may include consumer products or novel service solutions in areas such as home security and monitoring. For organisations with complex supply chains or processes, IoT could help to maximise resources and stock control through large-scale automation and efficient information exchange.
 
   \section{Challenges}
+  \label{challenges}
     It is apparent that IoT is still an evolving area of research with numerous challenges to be addressed. In order for IoT to become a mainstream paradigm, the technologies and ecosystem surrounding them must converge and become more mature. \citet{fromIoC} state that IoT is not the result of a single novel technology but rather several complementary technical developments, so invariably, the challenges span many technical disciplines. 
 
     A good user experience must be offered by these technologies to encourage adoption. \citet{fromIoC} state that devices ``need to establish connections spontaneously, and organize and configure themselves to suit their particular environment'' which they coin `Arrive and Operate'. The process of connecting a laptop to a home Wi-Fi router is representative of the current experience a user might have. They will turn on the Wireless Network Interface Card via a mouse and a Graphical User Interface and select their wireless network before inputing a password with a keyboard. This experience is far from ideal for constrained devices with a simplistic user interface, or no interface at all. The challenge here is to develop technology which allows consumers to use smart objects with little or no configuration.
@@ -68,7 +70,8 @@
 
     The greatest challenges to social acceptance are security and data privacy, particularly in the EU where the protection of privacy and personal data are two fundamental rights. The challenge with this, in respect to IoT, is that new methods of collecting and using data will be invented. Does current legislation and safeguards protect the interest of EU citizens adequately? Who will own the data---the user whom it is about or the organisation that captured it? The Commission suggests that in response to this challenge, IoT components should be designed from their inception with a privacy- and security-by-design mindset.
 
-  \section{Use Cases}\label{use-cases}
+  \section{Use Cases}
+  \label{use-cases}
     Use-cases are a helpful mechanism for demonstrating the IoT concept. It is a difficult concept to explain because there are many cooperating components and ideas and for this reason, research papers exemplify their arguments with practical examples. Although IoT applications could be developed for virtually any industry there are domains where its application is more obvious. Table \ref{iot-overview} presents six such domains for IoT, together with opportunities, challenges and related areas of research.
 
     `Smart Cities' is a vision which convincingly demonstrates many benefits of IoT. \citet{DfBIS:2013} describes the main issues facing local authorities which includes: piecemeal urban infrastructure, climate change targets, the changing nature of the high street and elderly social care. The economic downturn has also reduced budgets assigned to local authorities by as much as 30\% between 2010 and 2013 making cost efficiencies another issue. By developing or retrofitting urban infrastructure with IoT connectivity, local authorities can monitor services in much finer detail. For instance, Bigbelly Solar is a smart waste and recycling system. The Internet-connected waste bins allow local authorities to monitor their status and to schedule collections when they are full. \citet{fog:2012} also describe a system of smart, connected traffic lights which can control the traffic flow through a whole city, reducing congestion and improving safety.  
@@ -154,7 +157,8 @@
       \caption{A summary of the current state of the Internet of Things}\label{iot-overview}
     \end{table}
     
-  \section{Existing Platforms}\label{existing-platforms}
+  \section{Existing Platforms}
+  \label{existing-platforms}
     There are a number of IoT platforms both in service and under active development; in fact, Amazon announced their own platform, Amazon IoT, when writing this very comparison \citep{AmazonIoT}. The aim of an IoT platform and the tools which it provides does differ from vendor to vendor, however common characteristics are beginning to emerge. We propose to compare platform offerings across five dimensions: hosting model, source availability model, connectivity, bidirectional communication support and trigger support.
 
     \subsection{Hosting}
@@ -226,7 +230,8 @@
 
         Since data can be lost, this protocol should only be used in applications which can tolerate data loss. To give a real-world example, a battery-powered hygrometer sensor may be collecting data about the enviromental humidity. If UDP was used as the connectivity protocol, it would allow this sensor to wake up, transmit its reading and then fall back to sleep without being concerned about the packet's progress. If a packet was lost, it would not have business or safety impacts.
 
-    \subsection{Bidirectional Communication} \label{bidirectioncomms}
+    \subsection{Bidirectional Communication}
+    \label{bidirectioncomms}
       One main opportunity of IoT, as described in Section \ref{TechnicalOpportunities}, is to drive actuators in response to data. There are three aspects which define whether unidirectional or bidirectional communication is possible: the connectivity protocol, the software application and the network environment. To illustrate the following points, a hypothetical scenario will be used, where one server and one actuator are connected together through the internet. In this case, unidirection communication means that only the actuator can initiate network requests whereas bidirectional communication allows either the server or actuator to initiate.
 
       If the actuator is publicly addressable with a dedicated IP address, bidirectional communication is trivial to implement. Supposing that the HTTP protocol is being used for communication, both the actuator and server can initiate requests to each other by using the appropriate IP address. The server may send an HTTP request instructing the actuator to do something. In real-world scenarios, there are three factors which make bidirectional communication like this difficult: firewalls, Network Address Translation and IPv6 uptake.
@@ -265,7 +270,8 @@
 
         \caption{Characteristics of existing IoT platforms}\label{platform-characteristics}
       \end{table}
-  \section{Sensor Hardware}\label{sensor-hardware}
+  \section{Sensor Hardware}
+  \label{sensor-hardware}
     The Internet of Things is a multidisciplinary area of research and is just as dependant on advancements in electrical and electronics engineering as it is computer science. Since the hardware driving IoT sensor nodes is intertwined with the upper layers of software, it would be appropriate to investigate the current state of this area too. Rather than research the intricacies of how these pieces of hardware work, this paper will investigate existing end device hardware with regards to their implementation in IoT applications, particularly technical capability and energy efficiency.
 
     With a similar method to Section \ref{existing-platforms}, various makes and models of hardware boards were analysed to find comparable characteristics. The manufacturers chosen---Arduino, Raspberry Pi, Intel and Samsung---represent a cross-section of the field. These manufacturers aim their products at different markets, from the DIY `maker' market of the Arduino to the professional, consumer electronics market of Samsung. This section will compare and contrast hardware models produced by these manufacturers across a range of key areas: processor architecture, memory, input/output options and wireless connectivity. Table \ref{hardware-boards} summarises each model and their specifications.
@@ -457,7 +463,8 @@
         \caption{Summary of hardware boards}\label{hardware-boards}
       \end{sidewaystable}
 
-  \section{Case Study: UK Smart Meters}\label{case-study}
+  \section{Case Study: UK Smart Meters}
+  \label{case-study}
     \subsection{Overview}
       The smart meter project by the British government serves as an ideal case study to exemplify an Internet of Things application. In Section \ref{use-cases}, this paper described some stand-out use cases, which were collated from various sources. Upon researching the smart meter concept further, this massive governmental project---currently being developed for the United Kingdom utilities sector---was discovered. As more research on this project was carried out, it became clear that it represents a significant commentary in regard to the IoT concept.
 
