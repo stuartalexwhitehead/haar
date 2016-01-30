@@ -1,10 +1,10 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 10219
-Words in headers: 112
-Words outside text (captions, etc.): 29
-Number of headers: 64
-Number of floats/tables/figures: 3
+Words in text: 12680
+Words in headers: 152
+Words outside text (captions, etc.): 59
+Number of headers: 84
+Number of floats/tables/figures: 7
 Number of math inlines: 0
 Number of math displayed: 0
 Subcounts:
@@ -13,6 +13,9 @@ Subcounts:
   0+1+0 (1/0/0/0) Chapter: Abstract
   0+1+0 (1/0/0/0) Chapter: Acknowledgements
   0+1+0 (1/0/0/0) Chapter: Introduction
+  0+2+0 (1/0/0/0) Section: Project Motiviation
+  0+3+0 (1/0/0/0) Section: Aims and Objectives
+  0+2+0 (1/0/0/0) Section: Report Structure
   525+1+9 (1/1/0/0) Chapter: Background
   603+1+0 (1/0/0/0) Section: Opportunities
   887+1+0 (1/0/0/0) Section: Challenges
@@ -42,7 +45,16 @@ Subcounts:
   34+2+0 (1/0/0/0) Subsection: Performance Requirements
   74+2+0 (1/0/0/0) Subsection: Security Requirements
   213+9+0 (7/0/0/0) Subsection: Software Quality Attributes
-  0+1+0 (1/0/0/0) Chapter: Design
+  199+1+7 (1/1/0/0) Chapter: Design
+  359+2+10 (1/1/0/0) Section: Haar Engine
+  695+8+7 (5/1/0/0) Subsection: Data Modelling
+  184+2+0 (1/0/0/0) Subsection: Database Connector
+  210+3+0 (1/0/0/0) Subsection: Data Access API
+  362+7+0 (3/0/0/0) Subsection: Real-Time Event API
+  71+1+0 (1/0/0/0) Section: Haar
+  56+2+0 (1/0/0/0) Subsection: Back-End Application
+  271+2+6 (1/1/0/0) Subsection: Front-End Application
+  54+6+0 (3/0/0/0) Subsection: Wireless Sensor Networks
   0+1+0 (1/0/0/0) Chapter: Implementation
   0+3+0 (1/0/0/0) Chapter: Results and Evaluation
   0+2+0 (1/0/0/0) Chapter: Future Work
