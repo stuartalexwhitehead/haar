@@ -1,6 +1,6 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 12680
+Words in text: 12683
 Words in headers: 152
 Words outside text (captions, etc.): 59
 Number of headers: 84
@@ -13,17 +13,17 @@ Subcounts:
   0+1+0 (1/0/0/0) Chapter: Abstract
   0+1+0 (1/0/0/0) Chapter: Acknowledgements
   0+1+0 (1/0/0/0) Chapter: Introduction
-  0+2+0 (1/0/0/0) Section: Project Motiviation
+  0+2+0 (1/0/0/0) Section: Project Motivation
   0+3+0 (1/0/0/0) Section: Aims and Objectives
   0+2+0 (1/0/0/0) Section: Report Structure
-  525+1+9 (1/1/0/0) Chapter: Background
+  526+1+9 (1/1/0/0) Chapter: Background
   603+1+0 (1/0/0/0) Section: Opportunities
   887+1+0 (1/0/0/0) Section: Challenges
   487+2+11 (1/1/0/0) Section: Use Cases
   74+2+0 (1/0/0/0) Section: Existing Platforms
   497+6+0 (3/0/0/0) Subsection: Hosting
   216+3+0 (1/0/0/0) Subsection: Source Availability Model
-  942+6+0 (6/0/0/0) Subsection: Connectivity
+  943+6+0 (6/0/0/0) Subsection: Connectivity
   714+2+0 (1/0/0/0) Subsection: Bidirectional Communication
   83+2+5 (1/1/0/0) Subsection: Application Triggers
   181+2+0 (1/0/0/0) Section: Sensor Hardware
@@ -46,7 +46,7 @@ Subcounts:
   74+2+0 (1/0/0/0) Subsection: Security Requirements
   213+9+0 (7/0/0/0) Subsection: Software Quality Attributes
   199+1+7 (1/1/0/0) Chapter: Design
-  359+2+10 (1/1/0/0) Section: Haar Engine
+  360+2+10 (1/1/0/0) Section: Haar Engine
   695+8+7 (5/1/0/0) Subsection: Data Modelling
   184+2+0 (1/0/0/0) Subsection: Database Connector
   210+3+0 (1/0/0/0) Subsection: Data Access API
