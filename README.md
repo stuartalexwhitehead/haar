@@ -1,9 +1,23 @@
-# Honours Project
-Academic year 2015–16 is the honours year of my Computer Science degree. A main component of this grade comes from a software development project, comprising of a report and a software implementation.
+# Haar
+Academic year 2015–16 is the honours year of my Computer Science degree (I know, I’m surprised I made it too!). The most important aspect of it is _the_ honours project. [RGU’s School of Computing](http://www.comp.rgu.ac.uk/about-us/) describes two aims:
 
-This repository contains the report for my project, named [Haar](https://en.wikipedia.org/wiki/Haar_(fog)). The aim of Haar is to investigate, contrast and aggregate the technologies which make the Internet of Things a possibility. Deliverables will include an application framework for building IoT applications and a full-stack demonstration application.
+- To enable the student to undertake a substantial professional software engineering project in order to acquire a comprehensive understanding of the problem and its domain
+- To enable the student to develop a solution from specification through to implementation and report on the results within a fixed time frame
 
-The report is being written in [LaTeX](https://www.latex-project.org/) and lends itself well to version control. What’s better than treating my report as a piece of software, too?
+With that in mind, I wanted to investigate something which would keep me motivated. The Internet of Things touches on computing, design _and_ physics so it felt like the natural choice. The aim of my project is to research existing IoT technologies across the full development stack. It will culminate in the development of an IoT framework and a demonstration application.
+
+I couldn’t develop something without a name, now. One paradigm I came across during research was _Fog Computing_, where processing tasks are distributed at the fringe of networks. Also, I’m from Aberdeen in Scotland and our east coast is known for its cold sea fog, known locally as [haar](https://en.wikipedia.org/wiki/Haar_(fog)). So there we go, the name of this project: Haar.
+
+The research and development for Haar is quite broad so the workload has been divided across a number of repositories:
+- [Haar](https://github.com/stuartalexwhitehead/haar) - Project overview and WiP report
+- [Haar Engine](https://github.com/stuartalexwhitehead/haar-engine) - IoT application framework
+- [Haar API](https://github.com/stuartalexwhitehead/haar-api) - Implementation of Haar Engine
+- [Haar Dashboard](https://github.com/stuartalexwhitehead/haar-dashboard) - Front-end UI for Haar API
+- [Haar Bridge](https://github.com/stuartalexwhitehead/haar-bridge) - Translation between ZigBee WSN and the Internet
+- [Haar Nodes](https://github.com/stuartalexwhitehead/haar-nodes) - Arduino sketches and companion libraries
+
+# Haar Report
+This repository contains the report for my project. The report is being written in [LaTeX](https://www.latex-project.org/) and lends itself well to version control. What’s better than treating my report as a piece of software, too?
 
 ## Requirements
 If you’d like to compile the report yourself, there are a few system pre-requisites:
