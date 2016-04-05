@@ -1,9 +1,9 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 12683
-Words in headers: 152
+Words in text: 14365
+Words in headers: 172
 Words outside text (captions, etc.): 59
-Number of headers: 84
+Number of headers: 94
 Number of floats/tables/figures: 7
 Number of math inlines: 0
 Number of math displayed: 0
@@ -56,7 +56,16 @@ Subcounts:
   271+2+6 (1/1/0/0) Subsection: Front-End Application
   54+6+0 (3/0/0/0) Subsection: Wireless Sensor Networks
   0+1+0 (1/0/0/0) Chapter: Implementation
+  148+2+0 (1/0/0/0) Section: Development Process
+  563+5+0 (2/0/0/0) Subsection: Version Control System
+  677+1+0 (1/0/0/0) Subsection: Docker
+  294+2+0 (1/0/0/0) Subsection: Continuous Integration
+  0+2+0 (1/0/0/0) Section: Haar Engine
+  0+2+0 (1/0/0/0) Section: Haar API
+  0+2+0 (1/0/0/0) Section: Haar Dashboard
+  0+2+0 (1/0/0/0) Section: Haar Nodes
+  0+2+0 (1/0/0/0) Section: Haar Bridge
   0+3+0 (1/0/0/0) Chapter: Results and Evaluation
-  0+2+0 (1/0/0/0) Chapter: Future Work
   0+1+0 (1/0/0/0) Chapter: Conclusions
+  0+2+0 (1/0/0/0) Chapter: Future Work
 
