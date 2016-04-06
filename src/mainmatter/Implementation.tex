@@ -93,7 +93,49 @@
 
     One final point worthy of discussion is the evaluation and execution of device rules. As a reminder, rules operate on sensor data and trigger an actuator. To provide as much flexibility as possible, each rule is a complete JavaScript script with access to variables and system functions. This, however, presents its own challenges. Accepting user input - especially code- is dangerous and could compromise the integrity of the host application, and this scenerio is no different. To protect from this risk, rules are executed in a sandbox environment with access to only their required variables. This prevents user-submitted scripts from tampering or otherwise affecting normal execution of the framework. An additional benefit to using this sandbox technique is the ability to catch syntax errors. When storing a new rule, it can be evaluated with example data and any resulting syntax errors can be returned to the user as validation.
 
-  \section{Haar API}
-  \section{Haar Dashboard}
-  \section{Haar Nodes}
-  \section{Haar Bridge}
+  \section{Haar: API}
+    The second software component produced for this project is Haar, a demonstration implementation of Haar Engine. The main purpose of this demonstration application is to validate the design decisions and to show, by example, that the theory behind this IoT framework works. The implementation of Haar has been split further into four sub-components: API, Dashboard, Bridge and Nodes.
+
+    Haar API is the actual implementation of Haar Engine. Since the aim of Haar Engine is to provide a starting point for an IoT application, the sole purpose of Haar API is to bootstrap the framework and show that it can be included as a project dependency. Quite simply, Haar API includes Haar Engine as a dependency from Github.
+
+  \section{Haar: Dashboard}
+    Haar Dashboard is a web-based user interface built on top of the suite of Haar Engine APIs. It utilises both the Data Access API to configure system settings and the Real-Time API to subscribe to live data events. Whilst not necessary for the operation of the underlying IoT framework, the Haar Dashboard UI makes configuring devices simple and illustrates how a viable consumer solution might work.
+
+    Section \ref{section:front-end-application} (Front-End Application) briefly discussed the challenges facing this user interface. In particular, certain components of the user interface must react to real-time events. To address this challenge, the UI has been developed as a so-called `single-page JavaScript web app'. JavaScript web apps come with their own challenges. Web pages using this technique are typically not built on the application server but are rather 100\% client-side code. Due to this, single-page web apps can experience a long initial delay as the client-side script is executed. Another issues is that search engine optimisation and accessibility are affected because no HTML body is returned by the server - there is nothing for search engine crawlers or accessibility tools to parse.
+
+    A clever JavaScript framework called React solves these issues. React is a project developed by software engineers at Facebook. It is based on the concept of a tree composable components, where a single component encapsulates all of the logic which it requires to execute. What is most clever about React is its use of a virtual Document Object Model (DOM). React will first build up the tree of components using this virtual DOM before `diffing' it against the actual DOM. If anything has changed, React will only update the affected components. Using this technique, React can be used on a web application server. It can build up a webpage and send it as the body of an HTML response. Once the client-side code has loaded, React will then bootstrap the application based on the existing body. This concept is known as Isomorphic or Universal JavaScript.
+
+    As was discussed for the implementation of Haar Engine, the latest features of JavaScript are defined in the ECMAScript 2015 standard. Some web browsers can be slow to implement new features whilst other, older browsers may not implement them at all. This is a headache for developers; new features and syntax might solve problems in a more effective way, but they may not be supported by every target browser. This is where so-called front-end tooling is used. A variety of tools exist to convert new, uncompatible syntax into older, widely supported syntax. In particular a package called Babel has been used in this project to compile ES2015 syntax into ECMAScript 5 compatible code, meaning it can be run in all modern browsers. Additionally, a tool called Webpack has been used to package server-side JavaScript modules for use within the browser.
+
+    The features which React provide solve half of the front-end engineering problem. React defines how data is manipulated and displayed, but it does not specify how the data itself is managed. For that reason, Facebook have also invented a development pattern called Flux. Flux provides a strict method by which data is added or updated then introduced to the React component tree. The fundamental rule of Flux is that the data flow is unidirectional; that is, data cannot be mutated directly but rather through a pre-defined process. Figure x.x illustrates this process. Redux has become the \textit{de facto} standard of this pattern and will be used in this project.
+
+    \begin{figure}
+    \centering
+      \begin{tikzpicture}
+        \draw (0,0) rectangle (2.5, 1.25);
+        \node[align=center] at (1.25,0.625) {Action};
+        \draw[->, >=stealth] (2.5,0.625) -- (3.5,0.625);
+
+        \draw[<-, >=stealth] (4.75,1.25) -- (4.75,2.875) -- (7,2.875);
+        \draw (7,2.25) rectangle (9.5, 3.5);
+        \node[align=center] at (8.25,2.875) {Action};
+        \draw[<-, >=stealth] (9.5,2.875) -- (11.75,2.875) -- (11.75,1.25);
+
+        \draw (3.5,0) rectangle (6, 1.25);
+        \node[align=center] at (4.75,0.625) {Dispatcher};
+        \draw[->, >=stealth] (6,0.625) -- (7,0.625);
+
+        \draw (7,0) rectangle (9.5, 1.25);
+        \node[align=center] at (8.25,0.625) {Store};
+        \draw[->, >=stealth] (9.5,0.625) -- (10.5,0.625);
+
+        \draw (10.5,0) rectangle (13, 1.25);
+        \node[align=center] at (11.75,0.625) {View};
+      \end{tikzpicture}
+    \caption{Data flow in a Flux React application}\label{figure:flux-flow}
+  \end{figure}
+
+  The Flux development pattern is also very effective at managing real-time data events. The Primus package used in Haar Engine also has a client-side library builder and this has been used in Haar Dashboard to manage the WebSocket connection. Haar Dashboard will subscribe to data streams managed by Haar API and when data is received, a Redux action will be dispatched and handled appropriately.
+
+  \section{Haar: Nodes}
+  \section{Haar: Bridge}
