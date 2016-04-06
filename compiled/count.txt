@@ -1,10 +1,10 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 15569
+Words in text: 16391
 Words in headers: 172
-Words outside text (captions, etc.): 59
+Words outside text (captions, etc.): 66
 Number of headers: 94
-Number of floats/tables/figures: 7
+Number of floats/tables/figures: 8
 Number of math inlines: 0
 Number of math displayed: 0
 Subcounts:
@@ -61,10 +61,10 @@ Subcounts:
   677+1+0 (1/0/0/0) Subsection: Docker
   294+2+0 (1/0/0/0) Subsection: Continuous Integration
   1206+2+0 (1/0/0/0) Section: Haar Engine
-  0+2+0 (1/0/0/0) Section: Haar API
-  0+2+0 (1/0/0/0) Section: Haar Dashboard
-  0+2+0 (1/0/0/0) Section: Haar Nodes
-  0+2+0 (1/0/0/0) Section: Haar Bridge
+  117+2+0 (1/0/0/0) Section: Haar: API
+  641+2+7 (1/1/0/0) Section: Haar: Dashboard
+  27+2+0 (1/0/0/0) Section: Haar: Nodes
+  37+2+0 (1/0/0/0) Section: Haar: Bridge
   0+3+0 (1/0/0/0) Chapter: Results and Evaluation
   0+1+0 (1/0/0/0) Chapter: Conclusions
   0+2+0 (1/0/0/0) Chapter: Future Work
