@@ -197,6 +197,7 @@
       The back-end application is simply an instance of the Haar Engine. It is expected that the data models will be extended for one or two application-specific fields (such as a profile picture and biography for users) however it will generally be left as designed. The back-end application will be self-contained and separate from the front-end application. 
 
     \subsection{Front-End Application}
+    \label{section:front-end-application}
       The front-end application is, in essence, simply a user interface for the back-end APIs. It will make use of the Data Access API and Real-Time Event API to manage users, devices, rules and the authentication for all of them. The main challenge presented by the dashboard is handling very dynamic, real-time data in a structured and efficient way for a variety web browsers. The implementation details of this will be discussed in detail as part of the next chapter.
 
       What can be discussed at this stage is the design, layout and behaviour of the user interface. Figure \ref{figure:desktop-layout} illustrates the general layout which will be used. On desktop-sized web browsers, the window will be split into two panes---one used for navigation, and one for displaying the current page content. On mobile-sized web browsers, only one pane will be displayed at a time. By default, this will be the content pane and when the navigation button is clicked, the navigation pane will be shown.
