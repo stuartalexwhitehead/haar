@@ -1,15 +1,15 @@
 \chapter{Specification}
 \label{Chapter:Specification}
-  To obtain a complete and practical understanding of IoT, the software implementation accompanying this paper will comprise of two distinct components: a generic IoT application framework and a demonstration application. \citet{interoperability:2015} suggest that developers would benefit from a generic architecture which provides a common set of tools, and that is the aim of the framework component. The second component has two main purposes. First of all, it will build on top of this framework with the aim of validating design decisions. The second purpose is to demonstrate the opportunities present in IoT. This chapter will define the requirements for both of these components.
+  To obtain a complete and practical understanding of the IoT paradigm, the software implementation accompanying this paper will comprise of two distinct components: a generic IoT application framework and a demonstration application. \citet{interoperability:2015} state that developers of IoT applications would benefit from a generic, standardised architecture, and that is the aim of the framework component. The second component has two main purposes. First of all, it will implemented the framework component with the aim of validating design decisions. The second purpose is to demonstrate the opportunities present in IoT. This chapter will define the requirements for both of these components.
 
-  To help reference these two software components throughout the remained of this paper, they have been given product names. Haar is a cold sea fog which forms on the east coast of Scotland and is a fitting metaphor for IoT being all around us. It is also a nod towards the Fog Computing paradigm, and towards Robert Gordon University's location in Aberdeen. The generic framework will be called the Haar Engine and the demonstration application will be named Haar.
+  To help reference these two software components throughout the remainder of this paper, they have been given product names. Haar is a cold sea fog which forms on the east coast of Scotland and is a fitting metaphor for IoT being all around us. It is also a nod towards the Fog Computing paradigm, and towards Robert Gordon University's location in Aberdeen. The generic framework will be called the Haar Engine and the demonstration application will be named Haar.
 
   \section{Functional Requirements}
     \subsection{Framework}
-      The target users of the Haar Engine are designers and developers of IoT services and applications. The general aim of a framework is to encapsulate design decisions into a logical and elegant toolkit. The Haar Engine aims to perform the same task by encapsulating the knowledge which has been collated in Chapter \ref{Chapter:Background}. The following subsection specifies the main requirements.
+      The target users of the Haar Engine are designers and developers of IoT services and applications. The general aim of a framework is to encapsulate design decisions into a logical and elegant toolkit. The Haar Engine aims to perform the same task by encapsulating the knowledge which has been collated in Chapter \ref{Chapter:Background}. The following subsection specifies its main requirements.
 
       \subsubsection{User and Device Management}
-        Users and devices are two overlapping components of an IoT framework. Nitrogen.io is an existing IoT platform and refers to users and devices as \emph{principals} of the system. The documentation states that principals are a unit of authentication and authorisation. Since users and devices of the Haar Engine share a number of overlapping requirements, this project will adopt the same terminology. The following requirements have been derived from analysis of existing platforms and the requirements of use cases.
+        The following requirements have been derived from the analysis of existing platforms and the requirements of use cases.
 
         \begin{enumerate}
           \item The framework shall model users
@@ -37,7 +37,7 @@
         \end{enumerate}
 
       \subsubsection{Device Connectivity}
-        A main aspect of the IoT concept is the interconnection of devices. The Haar Engine is responsible for managing the connectivity between devices and itself. The issue surrounding bidirectional communication was described in Section \ref{bidirectioncomms}, which should be addressed by this framework.
+        A main aspect of the IoT concept is the interconnection of devices. The Haar Engine is responsible for managing the connectivity between devices and itself. The issues surrounding bidirectional communication was described in Section \ref{bidirectioncomms}, and these should be addressed by this framework.
 
         \begin{enumerate}
           \item The framework shall establish a connection with end devices
@@ -49,7 +49,7 @@
           \item The connection shall be bidirectional
           \begin{enumerate}
             \item Input devices shall be able to transmit data packets to the framework
-            \item The framework shall be able to transmit data packages to output devices
+            \item The framework shall be able to transmit data packets to output devices
             \item The connection shall be tolerant of network obstacles such as firewalls and Network Address Translation
           \end{enumerate}
         \end{enumerate}
@@ -95,10 +95,11 @@
         \end{enumerate}
 
     \subsection{Demonstration Application}
+    \label{section:demonstration-application-spec}
       Haar is the second software component for this project. The aim of Haar is to validate the Haar Engine in practice, as well as to demonstrate the opportunities present in the IoT concept. This will be achieved through the implementation of an arbitrary web-based application which sufficiently covers key features.
 
       \subsubsection{Devices}
-        The IoT concept enables the interconnection of devices so this is a logic requirement to begin with. Haar should comprise of at least two separate local device networks to demonstrate global interactivity. These local networks should themselves comprise of a number of devices with enough variety to validate Haar Engine use cases.
+        The IoT concept enables the interconnection of devices so this is a logical requirement to begin with. Haar should comprise of at least two separate local device networks to demonstrate global interactivity. These local networks should themselves comprise of a number of devices with enough variety to validate Haar Engine use cases.
 
         \begin{enumerate}
           \item The application shall comprise of two local area device networks
@@ -129,7 +130,7 @@
             \item The user shall be able to transfer ownership of the device
             \item The user shall be able to grant access permissions to other users
           \end{enumerate}
-          \item The dashboard shall enable users manage application rules
+          \item The dashboard shall enable users to manage application rules
           \begin{enumerate}
             \item The dashboard shall list existing rules
             \item The user shall be able to create new rules
@@ -175,7 +176,7 @@
         The potential operating environments in which IoT devices could be implemented vary from domestic household appliances to heavy industrial applications. These networks will all have different configurations, capabilities and customisability. In order to reduce deployment issues, the software components must operate in a common network scenario. A typical home network will be used as a baseline, where only common firewall ports will be allowed.
 
       \subsubsection{Public IP Address}
-        IPv6 is the successor to IPv4 and will allow every connected device to have a unique, globally addressable IP address. While this is the direction the industry is heading in, many businesses and Internet Service Providers are not prepared its adoption. Network Address Translation (NAT) is still commonly deployed and prevents devices on these networks from being publicly addressable. It should therefore be assumed that end devices will not have a public IP address.
+        IPv6 is the successor to IPv4 and will allow every connected device to have a unique, globally addressable IP address. While this is the direction the industry is heading in, many businesses and Internet Service Providers are not prepared for its adoption. Network Address Translation (NAT) is still commonly deployed and prevents devices on these networks from being publicly addressable. It should therefore be assumed that end devices will not have a public IP address.
 
       \subsubsection{Initial Setup}
         In a domestic situation, consumers would be expected to connect products to their internet connection by themselves. This is an important user experience to get right. While this project acknowledges the importance of this, it will not be considered a requirement for Haar so more effort can be afforded to developing a robust application.
