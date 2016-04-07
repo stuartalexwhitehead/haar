@@ -1,6 +1,6 @@
 \chapter{Design}
 \label{chapter:design}
-   The purpose of this chapter is to document design decisions for Haar and the underlying Haar Engine. It is an important stage in the development of these system components because it combines the requirements specified in Chapter \ref{Chapter:Specification} and the knowledge gained in Chapter \ref{Chapter:Background}. The process has been highly iterative and has led to the upcoming system architecture. 
+   The purpose of this chapter is to document architectural design decisions for Haar and the underlying Haar Engine. It is an important stage in the development of these system components because it combines the requirements specified in Chapter \ref{Chapter:Specification} and the knowledge gained in Chapter \ref{Chapter:Background}. The process has been highly iterative and has led to the upcoming system architecture. 
 
    One fact which has become clear throughout the design process is that the design and implementation are not mutually exclusive. Some ideas presented in Chapter \ref{Chapter:Background} are dependant on specific technologies, such as the ability to facilitate bidirectional communication (Section \ref{bidirectioncomms}). For this project, the available tools and technologies have therefore informed the design, and this has been integrated to the design process.
 
@@ -26,13 +26,13 @@
   \end{figure}
 
   \section{Haar Engine}
-    The first component to get design attention is the Haar Engine. The purpose of this framework is to provide the tools which enable developers to implement an IoT application. Since this will support the main system functions required for an IoT system applications, its design is heavily informed by the technologies available.
+    The first component to get design attention is the Haar Engine. Since this will support the main system functions required for IoT applications, its design is heavily informed by the available technologies.
 
-    One major design decision is the programming environment used to implement the Haar Engine. First of all, the chosen programming language and ecosystem must be able to support the requirements outlined in the previous chapter. Beyond that, the language and framework must provide suitable constructs so application developers can easily extend and modify for their own needs. Various languages and architectures were investigated (such as PHP, Ruby, Python and Go), however one stood out as being most suitable for this project, given the constraints: server-side JavaScript in the form of Node.js.
+    One major design decision is the programming environment used to implement the Haar Engine. It is important because it informs how the code can be structured. First of all, the chosen programming language and ecosystem must be able to support the requirements outlined in the previous chapter. Beyond that, the language and framework must provide suitable constructs so application developers can easily extend and modify for their own needs. Various languages and architectures were investigated (such as PHP, Ruby, Python and Go), however one stood out as being most suitable for this project: Node.js.
 
-    JavaScript and the Node.js ecosystem will be discussed in greater detail in the implementation chapter, however there are some language features which are pertinent to the design of the framework. First of all, JavaScript is a weakly-typed, dynamic programming language. It does not support interfaces or abstract classes like Java, and variables are not defined with strict values. Care should therefore be taken when modelling system components as objects. JavaScript itself operates using the so-called event loop and all operations are considered asynchronous. Care should therefore be given to function executions, callbacks and the required call order.
+    Node.js is a server-side implementation of JavaScript. More specifically it implements Google's V8 JavaScript engine and it is ideal for this project due to its event-driven nature. In general, it is based on the event loop concurrency model - a single-threaded process which loops continuously over a message queue \citep{event-loop}. Haar Engine is expected to be focussed on input and output (IO) operations. IO operations using more traditional techologies such as PHP, Python and Ruby are synchronous in nature and block futher execution of the process. In comparison, JavaScript (and therefore Node.js) can continue processing other instructions while waiting for an IO operation to complete.
 
-    Node.js is a server-side implementation of the Google V8 JavaScript engine and it provides a programming API. There are various web application frameworks developed on top of Node.js, with the de facto standard being Express. The Express framework is based on the concept of middleware, where middleware functions anonymously pass objects to the next one until a web request has been finished. This concept could therefore be used to an advantage for system aspects like authentication.
+    There are various web application frameworks developed on top of Node.js, with the \textit{de facto} standard being Express. The Express framework is based on the concept of middleware, where middleware functions anonymously pass objects to the next one until a web request has been completed. This concept could therefore be used to an advantage for system aspects like authentication.
 
     Bearing these language features in mind, a final design for the framework has been defined. A logical view of the main system components can be seen in Figure \ref{figure:framework-architecture}. The design decisions for each of these framework components have been described in the following subsections.
 
@@ -68,7 +68,7 @@
       The three principal objects set foundations for the complete data model as well as other framework components, so it is important that they are modelled correctly. This subsection will first describe the traits of each principle before expanding their relationships into an entity-relationship model. Figure \ref{figure:principal-models} illustrates the relationship between the principals.
 
       \subsubsection{Users}
-        The user principal is fundamentally responsible for authorisation within the Haar Engine. This will model an end-user account such as an individual person or a company, who will access their account using a unique username and a password. The user is responsible for managing their own devices and rules. The Haar Engine will identify user principals with a unique identifier. This would allow users to change their username while maintain relationships with other principals.
+        The user principal is fundamentally responsible for authorisation within the Haar Engine. This will model an end-user account such as an individual person or a company, who will access their account using a unique username and a password. The user is responsible for managing their own devices and rules. The Haar Engine will identify user principals with a unique identifier. This would allow users to change their username while maintaining relationships with other principals.
 
         User principals will be the gatekeeper to devices associated with their account. First of all, they will be able to attach new devices to their account. Users will also have the ability to share access to sensor devices with specific users, or make that data publicly available. Finally, user principals will have the ability to transfer ownership of the device to another Haar Engine user account and relinquish administration control over it.
 
@@ -214,12 +214,89 @@
       \end{figure}
 
     \subsection{Wireless Sensor Networks}
-      The third and final component for the Haar application is the wireless sensor network. The wireless sensor network comprises of the physical sensors and actuators which create an interface between the physical and digital worlds. To fully demonstrate the capability of the Haar Engine, there is a requirement for a variety of sensor types.
+      The third and final component for the Haar application is the Wireless Sensor Network. The WSN comprises of the physical sensors and actuators which create an interface between the physical and digital worlds. To fully demonstrate the capability of the Haar Engine, there is a requirement for a variety of sensor types.
 
-      \subsubsection{Bridge}
-        % Maintain communication channel
-        % Map messages to and from nodes
+      Before designing individual devices it is first important to plan the data flow between them. It has already been decided that the Haar Engine will support bidirectional communication through the use of the WebSocket protocol, meaning that end devices must also support it. However, to maintain a persistent WebSocket connection any given end device must be awake 100\% of the time. IoT devices should be as power efficient as possible and maintaining a WebSocket connection would prevent them from being able to sleep. Similarly, the WebSocket protocol requires extra software overhead to manage connections; simpler, more efficient protocols already exist for IoT device communication.
+
+      As described in Section \ref{section:connectivity}, ZigBee is a lightweight wireless communication protocol ideal for use in IoT solutions. ZigBee, however, is not compatible with the TCP/IP protocol used for Internet communications. To compromise on this issue, a bridge solution will be used. A bridge device will maintain the WebSocket connection with the Real-Time Event API; when a WebSocket packet is received, the bridge will translate it into a ZigBee packet and vice-versa. This system architecture is shown in Figure \ref{figure:wsn-architecture}.
+
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}
+
+          \draw (0,1.125) rectangle (2.5, 2.375) node[midway] {Haar API};
+          \draw[<->, >=stealth] (2.5,1.75) -- (3.75,1.75);
+
+          \node[cloud, cloud puffs=11, cloud ignores aspect, minimum width=2.5cm, minimum height=1.5cm, align=center, draw] (cloud) at (5,1.75) {Internet};
+          \draw[<->, >=stealth] (6.25,1.75) -- (7.5,1.75);
+
+          \node at (7.5, 4.3) {WSN};
+          \draw [dashed] (7,-0.5) rectangle (14, 4);
+
+          \draw (7.5,1.125) rectangle (10, 2.375) node[midway] {Bridge};
+
+          \draw (11,2.25) rectangle (13.5, 3.5) node[midway] {Sensor};
+          \draw[<-, >=stealth] (10,2.0625) -- (10.5,2.0625) -- (10.5,2.875) -- (11,2.875);
+
+          \draw (11,0) rectangle (13.5, 1.25) node[midway] {Actuator};
+          \draw[->, >=stealth] (10,1.4375) -- (10.5,1.4375) -- (10.5,0.625) -- (11,0.625);
+        \end{tikzpicture}
+      \caption{System architecture for Haar devices}\label{figure:wsn-architecture}
+    \end{figure}
 
       \subsubsection{End Devices}
-        % Low-power nodes
-        % Constrained processing power
+        To successfully demonstrate the IoT framework, a number of devices are required. Ideally, these devices should be a true representation of an IoT device and not just mocked using software emulation. For the purpose of this project, a true IoT device is considered as: constrained resources, low power and inexpensive.
+
+        Out of the hardware platforms investigated in Section \ref{sensor-hardware}, the Arduino development platform is the most suited. The Arduino hardware boards and software tools are open source giving complete transparancy to their implementation. The Arduino IDE also comes packaged with all the software required to develop and install the c/c++-based programs. There are a variety of hardware board and accessories and they are all inexpensive and widely available.
+
+        Most Arduino boards have limited connectivity and very rarely have a wireless option built in. As a result, an additional Radio Frequency (RF) hardware component is required. After researching available hardware, the XBee radio chip is the only feasible solution which supports the ZigBee protocol. The XBee chip is a very flexibile device and actually contains its own microcontroller. This characteristic will allow Haar devices to delegate communication duties to the XBee device whilst only needing to manage the intepretation of sensor data itself. Another benefit of using XBee is that configuration and debugging software is available for computers.
+
+        As described in Section \ref{section:demonstration-application-spec}, devices with enough diversity are required to fully demonstrate the IoT concept. Thought was first given to the output device; this was required to be flexible enough to reflect a variety of sensor data. An existing IoT product called the Good Night Lamp product provided inspiration for this device. The Good Night Lamp is a cellular-connected bedside lamp in a master-slave configuration. When the slave lamp is turned off, the master lamp will also turn off, no matter where in the world they may be. The developers behind this product suggest that this creates an emotive connection with a loved one, such as that between a child and their travelling parent.
+
+        To build on the concept of the Good Night Lamp, the output device for Haar will be an RGB colour lamp. Firstly, an RGB actuator like this has three data channels - red, green and blue. This characteristic can be used to demonstrate a vector of sensor data being transformed and used to trigger an output. Additionally, colours can add additional meaning to a context. For example, if used to reflect a temperature, a blue colour suggests coldness whereas a red colour suggests warmth. This subjectiveness adds a nice human aspect to the device.
+
+        Three different input devices will also be built. In order to demonstrate the temperature example just discussed, a sensor which measures the ambient temperature will be developed. The temperature sensor only measures one datapoint, so further devices which measure a vector of data will also be required. Since the output devices is an RGB lamp, it would be nice to demonstrate an RGB colour sensor, too. Each channel of the RGB sensor could be mapped to the respective channel on the output so it simply relays the sensor colour. Finally, a 3-axis gyroscope sensor will be built. Since the gyroscope has 3 axis (x, y and z), they can each be mapped to a channel of the output device. Depending on its sensitivity, a gyroscope could produce a high volume of data, so it will be useful when testing the limitations of the system.
+
+        The next stage in planning the devices is to design their schematics. Section \ref{section:io} discussed how the operating voltage is an important consideration and that it affects battery life and compatibility with sensor chips. Most Arduino boards operate at 5V however a number of models operate at 3.3v, such as the Arduino Pro Mini as noted in Table \ref{hardware-boards}. The XBee radio chip also operates at 3.3v, so this would be a suitable system voltage to use.
+
+        In terms of the sensors components, there are two varieties to choose from: analogue or digital. Analogue components are very cheap, widely available and very robust but often require extra calibration steps to glean accurate results. In comparison, digital components are more expensive but often come packaged with helper libraries, use well-supported digital protocols and take accurate readings `out of the box.' Since this project is up against tough time constraints, the extra support provided by digital components makes them more suitable for this project.
+
+        The following diagrams illustrate prototype circuits for all device types. There are a number of common characteristics between them which should be explained first. The XBee Explorer is an expander board for XBee radio chips and exposes a prototype-friendly pinout. The basic pins (power, ground, data in and data out) are connected to the Arduino board, along with two more pins: CTS and DTR. These are represented by the yellow and orange wires respectively. The CTS pin can be used to determine when the XBee chip is ready to receive data, and the DTR pin can be used to send the XBee chip to sleep. Additionally, the grey and brown wires are used to connect digital sensor chips to the Arduino.
+
+        \begin{figure}
+          \centering
+            \begin{tikzpicture}
+              \node[inner sep=0pt] at (0,0)
+                {\includegraphics[width=\textwidth]{assets/led.png}};
+            \end{tikzpicture}
+          \caption{Breadboard layout for RGB LED actuator}\label{figure:led}
+        \end{figure}
+
+        \begin{figure}
+          \centering
+            \begin{tikzpicture}
+              \node[inner sep=0pt] at (0,0)
+                {\includegraphics[width=\textwidth]{assets/temp.png}};
+            \end{tikzpicture}
+          \caption{Breadboard layout for temperature sensor}\label{figure:temperature-sensor}
+        \end{figure}
+
+        \begin{figure}
+          \centering
+            \begin{tikzpicture}
+              \node[inner sep=0pt] at (0,0)
+                {\includegraphics[width=\textwidth]{assets/colour.png}};
+            \end{tikzpicture}
+          \caption{Breadboard layout for colour sensor}\label{figure:colour-sensor}
+        \end{figure}
+
+        \begin{figure}
+          \centering
+            \begin{tikzpicture}
+              \node[inner sep=0pt] at (0,0)
+                {\includegraphics[width=\textwidth]{assets/gyro.png}};
+            \end{tikzpicture}
+          \caption{Breadboard layout for gyroscope sensor}\label{figure:gyroscope-sensor}
+        \end{figure}
+
+      \subsubsection{Bridge}
