@@ -261,7 +261,7 @@
 
         In terms of the sensors components, there are two varieties to choose from: analogue or digital. Analogue components are very cheap, widely available and very robust but often require extra calibration steps to glean accurate results. In comparison, digital components are more expensive but often come packaged with helper libraries, use well-supported digital protocols and take accurate readings `out of the box.' Since this project is up against tough time constraints, the extra support provided by digital components makes them more suitable for this project.
 
-        The following diagrams illustrate prototype circuits for all device types. There are a number of common characteristics between them which should be explained first. The XBee Explorer is an expander board for XBee radio chips and exposes a prototype-friendly pinout. The basic pins (power, ground, data in and data out) are connected to the Arduino board, along with two more pins: CTS and DTR. These are represented by the yellow and orange wires respectively. The CTS pin can be used to determine when the XBee chip is ready to receive data, and the DTR pin can be used to send the XBee chip to sleep. Additionally, the grey and brown wires are used to connect digital sensor chips to the Arduino.
+        The following diagrams illustrate prototype circuits for all device types. There are a number of common characteristics between them which should be explained first. The XBee Explorer is an expander board for XBee radio chips and exposes a prototype-friendly pinout. The basic pins (power, ground, serial in and serial out) are connected to the Arduino board, along with two more pins: CTS and DTR. These are represented by the yellow and orange wires respectively. The CTS pin can be used to determine when the XBee chip is ready to receive data, and the DTR pin can be used to send the XBee chip to sleep. Additionally, the grey and brown wires are used to connect digital sensor chips to the Arduino.
 
         \begin{figure}
           \centering
@@ -300,3 +300,19 @@
         \end{figure}
 
       \subsubsection{Bridge}
+        Since the purpose of the bridge device is to translate packets between TCP- and ZigBee-based protocols, it requires a different design approach to the end devices. This device must be able to support multiple modes of connectivity. Its software stack must be able to open and maintain a WebSocket connection as well as to parse and transmit ZigBee packets. The additional overhead of supporting multiple communication protocols means that this device will require more system resources than a simple microcontroller. At the same time, this prototype device should remain inexpensive and developer-friendly.
+
+        Out of the hardware platforms summarised in Table \ref{hardware-boards}, the Raspberry Pi  model 2 (RPi2) bests fits this criteria. The RPi2 has a native ethernet port which would allow it to interface with the Internet. Additionally, it provides a number of GPIO pins which could be used to interface with its own XBee radio chip. A combination of these two features means it can satisfy the connectivity requirements. The RPi2 is also a fully-fledged computer with a 32-bit, quad-core CPU running at 900MHz and 1GB of RAM. These specifications are more than sufficient to service resource demands.
+
+        The Raspberry Pi community manage a Linux distribution for use on the platform. Since this will be used as the operating system, any program which runs on Linux could be used to implement the bridge software. For the same reasons Node.js is being used to develop the Haar Engine (non-blocking I/O operations, real-time libraries) it will be used to implement the Haar Bridge. The Socket.io client library can be run within server or web browser environments, meaning that it can be used for handling the WebSocket connection on the RPi2. The RPi2 will interface with the XBee chip using the serial GPIO pins.
+
+        The following diagram illustrates the bridge device prototype. Since this device is expected to handle many more IO operations than an end device, both of the hardware flow control pins (CTS and RTS) from the XBee have been connected to the RPi2. These are illustrated by the yellow and orange wires.
+
+        \begin{figure}
+          \centering
+            \begin{tikzpicture}
+              \node[inner sep=0pt] at (0,0)
+                {\includegraphics[width=\textwidth]{assets/bridge.png}};
+            \end{tikzpicture}
+          \caption{Breadboard layout for bridge device}\label{figure:bridge}
+        \end{figure}
