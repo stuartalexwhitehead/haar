@@ -134,4 +134,137 @@
   The Flux development pattern is also very effective at managing real-time data events. The Primus package used in Haar Engine also has a client-side library builder and this has been used in Haar Dashboard to manage the WebSocket connection. Haar Dashboard will subscribe to data streams managed by Haar API and when data is received, a Redux action will be dispatched and handled appropriately.
 
   \section{Haar: Nodes}
+    The end devices built to demonstrate the IoT concept have been dubbed Haar Nodes. The first step in their implementation was to physically build the hardware circuits. The Arduino Pro Mini development boards are very minimal and do not have pin headers---if required, these must be soldered on manually. Since these boards were to be used in breadboards, the headers were soldered on. The same went for the sensor components; these arrived without pin headers so these were soldered too.
+
+    The XBee Explorer also had to be wired up to the Arduino. As it turns out, the FTDI (data communication interface) of the Arduino has the same footprint as the FTDI interface of the XBee Explorer board. This meant that these two components could be connected through the use of additional headers rather than wires. 
+
+    Once the hardware was in place it was then time to develop the device software using the Arduino IDE. There are three main components to this software: sleep mechanism, sensor interfacing and XBee communication. All of the sensor devices are battery powered so power conservation was an important consideration. Arduino's deepest sleep mode was employed to save as much power as possible, but this presented its own challenges. When in this deep sleep, nothing except an interrupt will wake the Arduino.
+
+    Two different interrupt methods were used to wake the device. The temperature and RGB colour sensors were developed as cyclic devices---that is, they will take a reading then sleep for a pre-determined length of time. The Watchdog Timer feature of the Arduino boads is used to raise the interrupt in order to wake these devices. In comparison, the gyroscope had to use a different approach. This is because it works best when reacting to movement rather than sampling data at a predetermined interval. The gyroscope component has the ability to raise its own hardware interrupt when movement is detected, so this mechanism was used to wake the host Arduino device.
+
+    When the Arduino wakes up, it then has to take a sensor reading. This aspect was simplified thanks to the I2C protocol libraries which were available for each sensor component. When each sensor device is awoken, it will retrieve the datapoint value by using the appropriate library. The final stage in taking a sensor reading is to send it to the connected XBee device and this was achieved through the use of the xbee-arduino library.
+
+    The Arduino board communicates with the XBee chip using a serial communication channel and there are a number of implementation details to discuss. First of all, the XBee can operate in two modes: transparent or API. With transparent mode, the XBee chip simply emulates a wired serial link whereas the API mode allows more advanced features to be used. API mode was chosen for this project due to the extra features it provides.
+
+    Since the XBee chip contains its own microcontroller, this project attempted to implement sleep mode for it too. The XBee can be configured to use pin hibernation; when the DTR pin is logic high the XBee will sleep and when the pin is logic low, it will be awoken. The operation of this was sporadically unsuccessful and the root cause of the problem could not be identified. As a result, this feature was left out with the acknowledgement that more battery power will be consumed.
+
+    The ultimate purpose of the Haar Nodes is to interface with the Haar demonstration application. In order to do that, the sensed data must be transmitted to Haar API via the WebSocket connection. A common data-interchange format is required so that both the devices and the API are compatible. Arguably, the choice of format should belong in the design chapter, however it is dependent on the implementation of the Haar Engine APIs and models. Four different formats were considered: comma-separated value (CSV), JSON DB Schema, Compressed JSON DB Schema and Compressed JSON Map.
+
+    Each of the formats have been described and explained below and there were a number of aims to satisfy. Firstly, size of data transmitted has an effect on power usage. More data means that the XBee chip has to transmit for longer periods, consuming battery power. The maximum packet size of an XBee transmission is 72 bytes \citep{xbee-packet-size}. In order to limit transmission to one packet, data size should aim to be less that this limit. Additionally, the format chosen should be robust and make it simple to distinguish the datapoints collected.\\
+
+    \noindent
+    \begin{minipage}[t]{0.45\textwidth}
+      \textbf{Comma-separated value}\\
+      The first data format explored was a simple comma-separated string. This created the smallest payload size (11 bytes for the given example).\\
+
+      This format is not flexible, however. It requires the datapoints to maintain strict order, and requires all devices to know what this order is. The CSV string does not describe its contents at all - a developer would have no indication what the data refers to.\\
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+      \begin{lstlisting}[frame=single]
+123,123,123
+      \end{lstlisting}
+    \end{minipage}
+
+    \noindent
+    \begin{minipage}[t]{0.45\textwidth}
+      \textbf{JSON DB Schema}\\
+      The second format explored replicates the format of the Data Mongoose model used in the Haar Engine. Haar Engine explicitly defines `name' and `value' properties for use in validation. The size of the given example is 76 bytes, more than the 72 byte limit.\\
+
+      This is the most descriptive format and requires no extra transformation before being sent to the Haar API. However, it is unsuitable because of its payload size.
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+      \begin{lstlisting}[frame=single]
+[
+  {
+    "name": "x",
+    "value": 123
+  },
+  {
+    "name": "y",
+    "value": 123
+  },
+  {
+    "name": "z",
+    "value": 123
+  }
+]
+      \end{lstlisting}
+    \end{minipage}
+
+    \noindent
+    \begin{minipage}[t]{0.45\textwidth}
+      \textbf{Compressed JSON DB Schema}\\
+      Whilst investigating the previous format, it became apparent that it was unnecessarily expanding on the syntax of a JSON object. By their very nature, they are a key-value store. This means that the format can be condensed into the shown example (36 bytes).\\
+
+      This format is both machine and human readable. Additionally, it does not require much additional trasformation in order to be submitted to the Haar API.\\
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+      \begin{lstlisting}[frame=single]
+[
+  {
+    "x": 123
+  },
+  {
+    "y": 123
+  },
+  {
+    "z": 123
+  }
+]
+      \end{lstlisting}
+    \end{minipage}
+
+    \noindent
+    \begin{minipage}[t]{0.45\textwidth}
+      \textbf{Compressed JSON Object}\\
+      Looking at the previous example, it is clear that there is a redundant structure in place. This format compresses the datapoints into a single JSON object, rather than an array with multiple nested objects. This yields an example payload size of 25 bytes.\\
+
+      No information is lost between this format and the full JSON DB Schema option, meaning that it can be expanded to be successfully submitted to the Haar API and pass validation rules. This is the most effective format and has been chosen for use in the Haar Nodes. 
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+      \begin{lstlisting}[frame=single]
+{
+  "x": 123,
+  "y": 123,
+  "z": 123
+}
+      \end{lstlisting}
+    \end{minipage}
+
+    Figures \ref{figure:temp-device} and \ref{figure:led-device} show the finished prototype hardware for the temperature sensor and RGB LED actuator. The RGB colour and gyroscope sensors are similar to the temperature sensor. 
+
+    \begin{figure}
+      \centering
+        \begin{tikzpicture}
+          \node[inner sep=0pt] at (0,0)
+            {\includegraphics[width=0.6\textwidth]{assets/temp-prototype.png}};
+        \end{tikzpicture}
+      \caption{Prototype temperature device}\label{figure:temp-device}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+        \begin{tikzpicture}
+          \node[inner sep=0pt] at (0,0)
+            {\includegraphics[width=0.8\textwidth]{assets/led-prototype.png}};
+        \end{tikzpicture}
+      \caption{Prototype RGB LED output device}\label{figure:led-device}
+    \end{figure}
+
   \section{Haar: Bridge}
+    The final piece for the complete implementation is the bridge device. Like the end devices, the hardware for this had to first be built. When sourcing the Raspberry Pi devices for this component an additional component, the RPi HAT prototype board was found. Rather than connecting the RPi to the XBee chip with simple wires, this prototype board was used to build a more professional prototype. The RPi HAT required additional soldering, namely the headers to connect it to the RPi, all circuit wires and the XBee Explorer pins. It should also be noted that the Raspberry Pi model B+ (RPiB+)  was procured rather than the model 2 and this was down to its cheaper cost. The RPiB+ is less powerful with a single-core 700MHz processor and 512MB RAM, but is still expected to be sufficiently powerful. The completed hardware can be seen in Figure \ref{figure:bridge-device}.
+
+    As planned, the RPi-maintained distribution of Linux was installed on the RPiB+. A small Node.js application was developed. It made use of the same JavaScript packages which have been implemented in the Haar Engine and Dashboard. One additional role which the application played was to expand on the Compressed JSON Object data format described in the previous section so it could be submitted to Haar API.
+
+    \begin{figure}
+      \centering
+        \begin{tikzpicture}
+          \node[inner sep=0pt] at (0,0)
+            {\includegraphics[width=0.6\textwidth]{assets/bridge-prototype.png}};
+        \end{tikzpicture}
+      \caption{Prototype bridge device}\label{figure:bridge-device}
+    \end{figure}
