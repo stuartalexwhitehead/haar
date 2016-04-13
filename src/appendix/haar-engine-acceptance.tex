@@ -1,0 +1,154 @@
+\chapter{Haar Engine Acceptance Tests}
+  \begin{longtabu} to \textwidth {|X|c|X|}
+    \hline
+      \textbf{Requirement}
+      & \textbf{Status}
+      & \textbf{Notes}
+    \endhead \hline
+      The framework shall model users
+      & Implemented
+      &
+    \\ \hline
+      A user shall be identified by a unique username
+      & Implemented
+      &
+    \\ \hline
+      A user shall have an associated profile including: full name, email address
+      & Implemented
+      &
+    \\ \hline
+      Users shall be assigned a privilege level: standard or administrator
+      & Implemented
+      & Haar Engine understands privileges as `user' or `admin'
+    \\ \hline
+      The framework shall authenticate genuine users only
+      & Implemented
+      & Implemented with a combination of user credentials, Bcrypt password hashing and signed JSON Web Tokens
+    \\ \hline
+      The framework shall model connected IoT devices
+      & Implemented
+      &
+    \\ \hline
+      A device shall be identified by a unique identification number
+      & Implemented
+      & Devices are assigned a random, unique ID for use in data modelling. Haar Engine also stores their globally unique MAC address.
+    \\ \hline
+      A device shall be designated as either an input (sensor) or output (actuator)
+      & Implemented
+      &
+    \\ \hline
+      The framework shall authenticate genuine devices only
+      & Implemented
+      &
+    \\ \hline
+      The framework shall authorise and facilitate the management of devices
+      & Implemented
+      &
+    \\ \hline
+      A device will have one owner
+      & Implemented
+      &
+    \\ \hline
+      Access to device data and configuration options shall be restricted to the device owner by default
+      & Implemented
+      & This feature is restricted solely to the device owner and cannot be delegated.
+    \\ \hline
+      The device owner shall be able to make device data public
+      & Implemented
+      &
+    \\ \hline
+      A device owner shall be able to grant access permission to specified users
+      & Not Implemented
+      &
+    \\ \hline
+      The framework shall establish a connection with end devices
+      & Implemented
+      &
+    \\ \hline
+      Devices shall be addressable and identifiable whilst the connection is open
+      & Implemented
+      & Through the use of a publish/subscribe architecture
+    \\ \hline
+      The connection shall remain open under normal operating conditions
+      & Implemented
+      &
+    \\ \hline
+      Under error conditions, the connection shall be re-established
+      & Implemented
+      & Facilitated through the Primus real-time library
+    \\ \hline
+      The connection shall be bidirectional
+      & Implemented
+      & Implemented with WebSockets, supported by the Primus real-time library
+    \\ \hline
+      Input devices shall be able to transmit data packets to the framework
+      & Implemented
+      &
+    \\ \hline
+      The framework shall be able to transmit data packets to output devices
+      & Implemented
+      &
+    \\ \hline
+      The connection shall be tolerant of network obstacles such as firewalls and Network Address Translation
+      & Implemented
+      &
+    \\ \hline
+      The framework shall store data received by devices
+      & Implemented
+      &
+    \\ \hline
+      The framework shall provide an interface for using different database types
+      & Not Implemented
+      & Only one database type is supported: MongoDB. Its implementation is however extensible and allows developers to modify schemas.
+    \\ \hline
+      The framework shall provide a default ‘out of the box’ database connector
+      & Implemented
+      & There is only one.
+    \\ \hline
+      Application developers shall be able to create their own database connectors
+      & Not Implemented
+      &
+    \\ \hline
+      The framework shall provide structured access to stored data
+      & Implemented
+      &
+    \\ \hline
+      Access shall be granted to authenticated and authorised users only
+      & Implemented
+      &
+    \\ \hline
+      Application developers shall be able to modify data access
+      & Implemented
+      & Developers have the opportunity to implement new controllers or override existing
+    \\ \hline
+      Application developers shall be able to add custom data searches
+      & Implemented
+      & Developers have the opportunity to implement new controllers or override existing
+    \\ \hline
+      Application developers shall be able to add custom data filters
+      & Implemented
+      & Developers have the opportunity to implement new controllers or override existing
+    \\ \hline
+      The framework shall provide a real-time event API
+      & Implemented
+      & Based on MQTT's publish/subscribe model
+    \\ \hline
+      Client applications shall be able to listen for device events
+      & Implemented
+      &
+    \\ \hline
+      The real-time API shall leverage bidirectional connectivity with devices
+      & Implemented
+      &
+    \\ \hline
+      The API shall provide real-time access to data received from devices
+      & Implemented
+      &
+    \\ \hline
+      The real-time API shall enable developers to create application rules and triggers
+      & Implemented
+      &
+    \\ \hline
+
+    \caption{User Acceptance Testing for Haar Engine}\label{haar-engine-acceptance}
+  \end{longtabu}
