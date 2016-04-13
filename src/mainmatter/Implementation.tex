@@ -1,74 +1,5 @@
 \chapter{Implementation}
-
-  \section{Development Process}
-    A software implementation can be set up for success or failure before any code has been written, especially whilst working within a team. This is down to the development process and policies in place. Of course, one process may work for one team or project and not another.
-
-    A well implemented process can provide many benefits. First and foremost, everyone in a development team clearly understands their roles and responsibilities. The process can also enforce a hierarchy of decision making, or encourage peer collaboration. Beyond these people-based benefits, a development process can aid in the development of a robust, maintainable codebase. A developer who can understand a codebase and make confident updates is an efficient one.
-
-    Although the output of this project is the work of one person, arguments supporting a process-first implementation still apply. The following section will detail the main tools used in supporting this project. 
-
-    \subsection{Version Control System}
-      The use of a Version Control System (VCS) is highly recommended in any project. As the name suggests, a VCS manages iterative updates of project files. To generalise its functionality, a VCS maintains a timeline of file states. Different states of the same file can be compared to investigate which changes were made and by whom, and if needed a file can be reverted to a previous state. This means that the complete history of a codebase is recorded. Without using a VCS, code updates would simply overwrite the existing file and old states would be lost forever.
-
-      There are a number of Version Control Systems available to developers, such as Mercurial and Subversion. Git is another VCS and was created by Linus Torvalds, creator and maintainer of the Linux kernel. Git is arguably the most popular VCS amongst the open source community, thanks to its use in the development of the Linux kernel. Its command-line interface is highly portable and many community-oriented services support it extensively, such as Github and Bitbucket.
-
-      Git along with the web-based service GitHub have been chosen for use in this project thanks to their universal support. But simply selecting a tool is not enough when implementing a development process - guidelines on how to use it should also be decided. There are a number of well-defined development workflows using Git. This project has chosen to implement the `Git Flow' workflow. Git Flow utilises various features of Git and GitHub, including branching, merging and pull requests. 
-
-      Describing the Git and the Git Flow workflow could fill an article on its own, so this description will be very brief. In Git, a branch is an instance of the complete codebase. Multiple branches with different versions of the same codebase can be developed in parallel. The merge command copies the changes of one branch into another. A Pull Request is a request to merge one branch into another, which can be inspected and commented on before the merge is completed.
-
-      The Git Flow workflow adds structure to these features. The master branch is the production codebase. The develop branch is the in-progress codebase. Feature branches (such as feature/menu or feature/users-controller) are used to develop a specific feature of the project. Once the feature has been built, a pull request is raised to merge it into the develop branch. Once all features have been merged and tested, a pull request is raised to merge the develop branch into master which is then deployed. This workflow has been employed for this project.
-
-      \subsubsection{Pre-commit Hook}
-        The Git VCS also supports lifecycle hooks. These hooks allow developers to run bespoke scripts to enforce custom policies, such as limiting access to specific branches. One helpful trick has also been employed for this project through the use of the pre-commit hook.
-
-        No matter how descriptive or strict development policies are, developers are only human. Humans can make mistakes and they can be lazy, meaning that poor quality code can be committed to the codebase. The pre-commit hook can be used to enfoce a specific coding standard. It works by testing the committed code against a set of rules. If the tests pass, the code is committed to the codebase but if they fail, a warning message is displayed. By using this technique, the code for this project is guaranteed to be of a certain standard.
-
-    \subsection{Docker}
-      Developers face a number of challenges when developing and deploying modern web-based applications. Primarily, the environment in which code is executed can differ wildly. For any given project, one developer might use a Windows machine whilst their colleague could use an Apple Mac. The staging environment could use one version of Linux whereas the production enviroment could use another. All of these environments could potentially run differing versions of the same software meaning that bugs in the project might not be traceable or reproducable. Development teams have attempted to normalise these enviroments through the use of package managers, however these still leave room for misconfiguration.
-
-      A relatively new tool called Docker has been taking the development world by storm since its release in 2013. Docker builds on a technology called Linux Containers. Traditional virtual machines run a complete operating system (kernel, program binaries and any other files) on top of a host machine. In comparison, Docker (and Linux Containers) allow images to use the same kernel of the host operating system. This means that each container is very lightweight but can still benefit from the complete isolation of program processes.
-
-      Docker containers are instances of a Docker image. Docker images are compiled according to a Dockerfile which comprise of commands such as COPY (to copy source files to the image) and RUN (to run Unix commands within the Linux Container). This is where the advantages of Docker become clear - explicit, reproducable environments can be built as if working directly on a server. Since Docker is a portable tool, every developer working on a project can run exactly the same environment as each other. When the application is ready to be deployed, the same Docker image can be executed on a production server.
-
-      Docker also has powerful composition tools. Anything beyond a simple script or application is typically the sum of many smaller, more specific applications. A simple example of this would be a dynamic web application backed by a database. In Docker terms, this application would be composed of two images - one image for the dynamic web application, and another for the database. Docker can configure automatic links between instances of these images and this is aided with the helped command-line interface `docker compose'.
-
-      Docker Compose makes use of another configuration file, `docker-compose.yml'. In this file it is possible to specify which Docker images make up a complete application (which can be custom builds using a Dockerfile, or pre-built images from the global Docker repository). Using this file Docker Compose will intelligently start Docker images in order of their dependencies. Using the dynamic web application and database example, the database would be started first and then the application. Docker will also set up lots of other clever tools, such as a long list of environment variables referring to specific links. These environment variables can then be used within applications to configure things like database connections.
-
-      Once applications have been wrapped up into Docker images and compositions, it is then necessary to deploy them to servers. This can of course be achieved manually using the docker CLI, however the Docker ecosystem also includes Docker Cloud, a first-party container deployment service. Docker Cloud uses four more important terms to describe an application:
-
-      \begin{description}
-        \item[Node] a server which can host Docker containers
-        \item[Node Cluster] a grouping of multiple servers which can host Docker containers
-        \item[Service] one or more running container instances of a Docker image
-        \item[Stack] an application composed of multiple services
-      \end{description}
-
-      Docker Cloud is very simple but hugely powerful. Scaling is an important aspect of any web application and is handled with grace. Docker Cloud will intelligently distribute container instances across all available nodes based on their loads. It will then lay a private network between all services of a stack (irrespective of its host node) so all containers can transparently communicate. This makes load balancing truly simple.
-
-      Docker has been chosen as a critical piece of infrastructure for this project. Flexibility, robustness and maintainability are three important aspects when developing any application and Docker aids these areas very effectively.
-
-    \subsection{Continuous Integration}
-      The development process has so far defined how the codebase will be developed and how it will be hosted, but there is still an important step missing. How does newly developed code get deployed in a way which ensures no downtime and without bugs? This is where a technique called Continuous Integration (CI) is used.
-
-      Continuous Integration is the glue between the processes at each end of the development cycle. The main ethos behind it is to deploy little and often. This allows developers to catch issues early and to pin-point its cause quickly. \citet{continuous-integration} describe CI with a number of key points, including: automated, self-testing builds and automated deployments. As it turns out, the Git Flow workflow, Docker and Continuous Integration all work incredibly well together.
-
-      As has already been discussed, Docker images provide explicit, reproducable environments and this is great for testing purposes. Since all Docker environments will be built equal, it means tests run on a local machine will behave the same on a production server. And because Docker Compose can specify which images needs to be used, any service with access to this information can build the correct application dependencies.
-
-      Travis CI is one such continuous integration service which supports the Docker ecosystem. It has been employed in this project to enforce a CI workflow and it follows these steps:
-
-      \begin{enumerate}
-        \item Code is developed using the Git Flow workflow
-        \item All commits to branches and pull requests trigger tests on Travis CI
-        \item Each test builds the Docker environment to ensure consistency
-        \item If tests pass, the Docker image is published to the Docker repository
-        \item The Docker repository will deploy new images through Docker Cloud
-      \end{enumerate}
-
-      This workflow contributes to a solid development process which can be scaled to a large codebase and team of developers.
-
   \section{Haar Engine}
-    Chapter \ref{Chapter:Specification} (Specification) states that this project will create two main software components: Haar Engine and Haar. This section will discuss the implementation of the former - the generic IoT application framework.
-
     To recap, the programming environment chosen for Haar Engine is server-side JavaScript in the form of Node.js. JavaScript itself is an implementation of the ECMAScript standard. ECMAScript has seen a number of updates and is currently on a version dubbed ECMAScript 2015 \citep{es2015}. This latest version adds a long list of new syntax and tools to the langauge. Client-side JavaScript has historically suffered from poor universal compatibility due to differences in browser implementations, however since Node.js is a server-side tool and under a developer's control, this project was implemented using native ES2015 syntax.
 
     Another important point of discussion is the database support offered by this framework. Originally, section \ref{section:database-connector} (Database Connector) specified that the framework should offer a Database Conector concept where a developer can implement a database of their own choosing. Whilst investigating possible database types, it was decided that this options was simply too broad giving the time constraints for this project. Rather, Haar Engine will support one, highly extensible database solution. The NoSQL databse MongoDB was selected for this purpose.
@@ -79,7 +10,7 @@
 
     Chapter \ref{chapter:design} (Design) also discussed that the RESTful Data Acess API will be responsible for managing authentication and authorisation. JSON Web Tokens (JWT) are a widely-used protocol for stateless applicaton security and were employed for the Haar Engine. Once a user successfully authenticates using their username and password, the Data Access API will generate, sign and return a JWT. A JWT includes so-called `claims' - a small JSON payload with information about the entity. The JWT must be attached to all subsequent requests to the Data Access API to be granted access. The Data Access API can then verify the JWT and access its claims for use within the application.
 
-    Once the fundamental software components were in place, it was then time to build the \textit{raison d'etre} of this project - real-time, bidirectional communication. The specific implementation of this feature had to be revised from the initial plan in Chapter \ref{chapter:design} (Design). In that chapter, the JavaScript package Socket.io was identified as a suitable tool. However during development of the Real-Time API, limitations in Socket.io meant that not all features of the publish-subscribe concept could be effectively implemented.
+    Once the software components were in place, it was then time to build the \textit{raison d'etre} of this project - real-time, bidirectional communication. The specific implementation of this feature had to be revised from the initial plan in Chapter \ref{chapter:design} (Design). In that chapter, the JavaScript package Socket.io was identified as a suitable tool. However during development of the Real-Time API, limitations in Socket.io meant that not all features of the publish-subscribe concept could be effectively implemented.
 
     An alternative JavaScript package called Primus was used as the basis for the real-time feature instead. Using Primus, Haar Engine successfully allows clients to publish device data and to subscribe to data events. In a similar way to Socket.io, the middleware feature of Primus allows custom functions to be executed in order to authenticate connections. This allowed Haar Engine to reuse existing the existing JWT authentication mechanism.
 
@@ -89,182 +20,183 @@
 
     To protect from the application from malicious or buggy user-generated rules, they are executed in a sandbox environment with access to only their required variables. This prevents user-submitted scripts from tampering or otherwise affecting normal execution of the framework. This is achieved through the use of the Node.js VM module. An additional benefit to using this sandbox technique is the ability to catch syntax errors. When storing a new rule, it can be evaluated with example data and any resulting syntax errors can be returned to the user as validation.
 
-  \section{Haar: API}
+  \section{Haar}
     The second software component produced for this project is Haar, a demonstration implementation of Haar Engine. The main purpose of this demonstration application is to validate the design decisions and to show, by example, that the theory behind this IoT framework works. The implementation of Haar has been split further into four sub-components: API, Dashboard, Bridge and Nodes.
 
-    Haar API is the actual implementation of Haar Engine. Since the aim of Haar Engine is to provide a starting point for an IoT application, the sole purpose of Haar API is to bootstrap the framework and show that it can be included as a project dependency. Quite simply, Haar API includes Haar Engine as a dependency from Github.
+    \subsection{API}
+      Haar API is the actual implementation of Haar Engine. Since the aim of Haar Engine is to provide a starting point for an IoT application, the sole purpose of Haar API is to bootstrap the framework and show that it can be included as a project dependency. Quite simply, Haar API includes Haar Engine as a dependency from Github.
 
-  \section{Haar: Dashboard}
-    Haar Dashboard is a web-based user interface built on top of the suite of Haar Engine APIs. It utilises both the Data Access API to configure system settings and the Real-Time API to subscribe to live data events. Whilst not necessary for the operation of the underlying IoT framework, the Haar Dashboard UI makes configuring devices simple and illustrates how a viable consumer solution might work.
+    \subsection{Dashboard}
+      Haar Dashboard is a web-based user interface built on top of the suite of Haar Engine APIs. It utilises both the Data Access API to configure system settings and the Real-Time API to subscribe to live data events. Whilst not necessary for the operation of the underlying IoT framework, the Haar Dashboard UI makes configuring devices simple and illustrates how a viable consumer solution might work.
 
-    Section \ref{section:front-end-application} (Front-End Application) briefly discussed the challenges facing this user interface. In particular, certain components of the user interface must react to real-time events. To address this challenge, the UI has been developed as a so-called `single-page JavaScript web app'. JavaScript web apps come with their own challenges. Web pages using this technique are typically not built on the application server but are rather 100\% client-side code. Due to this, single-page web apps can experience a long initial delay as the client-side script is executed. Another issues is that search engine optimisation and accessibility are affected because no HTML body is returned by the server - there is nothing for search engine crawlers or accessibility tools to parse.
+      Section \ref{section:front-end-application} (Front-End Application) briefly discussed the challenges facing this user interface. In particular, certain components of the user interface must react to real-time events. To address this challenge, the UI has been developed as a so-called `single-page JavaScript web app'. JavaScript web apps come with their own challenges. Web pages using this technique are typically not built on the application server but are rather 100\% client-side code. Due to this, single-page web apps can experience a long initial delay as the client-side script is executed. Another issues is that search engine optimisation and accessibility are affected because no HTML body is returned by the server - there is nothing for search engine crawlers or accessibility tools to parse.
 
-    A clever JavaScript framework called React solves these issues. React is a project developed by software engineers at Facebook. It is based on the concept of a tree composable components, where a single component encapsulates all of the logic which it requires to execute. What is most clever about React is its use of a virtual Document Object Model (DOM). React will first build up the tree of components using this virtual DOM before `diffing' it against the actual DOM. If anything has changed, React will only update the affected components. Using this technique, React can be used on a web application server. It can build up a webpage and send it as the body of an HTML response. Once the client-side code has loaded, React will then bootstrap the application based on the existing body. This concept is known as Isomorphic or Universal JavaScript.
+      A clever JavaScript framework called React solves these issues. React is a project developed by software engineers at Facebook. It is based on the concept of a tree composable components, where a single component encapsulates all of the logic which it requires to execute. What is most clever about React is its use of a virtual Document Object Model (DOM). React will first build up the tree of components using this virtual DOM before `diffing' it against the actual DOM. If anything has changed, React will only update the affected components. Using this technique, React can be used on a web application server. It can build up a webpage and send it as the body of an HTML response. Once the client-side code has loaded, React will then bootstrap the application based on the existing body. This concept is known as Isomorphic or Universal JavaScript.
 
-    As was discussed for the implementation of Haar Engine, the latest features of JavaScript are defined in the ECMAScript 2015 standard. Some web browsers can be slow to implement new features whilst other, older browsers may not implement them at all. This is a headache for developers; new features and syntax might solve problems in a more effective way, but they may not be supported by every target browser. This is where so-called front-end tooling is used. A variety of tools exist to convert new, uncompatible syntax into older, widely supported syntax. In particular a package called Babel has been used in this project to compile ES2015 syntax into ECMAScript 5 compatible code, meaning it can be run in all modern browsers. Additionally, a tool called Webpack has been used to package server-side JavaScript modules for use within the browser.
+      As was discussed for the implementation of Haar Engine, the latest features of JavaScript are defined in the ECMAScript 2015 standard. Some web browsers can be slow to implement new features whilst other, older browsers may not implement them at all. This is a headache for developers; new features and syntax might solve problems in a more effective way, but they may not be supported by every target browser. This is where so-called front-end tooling is used. A variety of tools exist to convert new, uncompatible syntax into older, widely supported syntax. In particular a package called Babel has been used in this project to compile ES2015 syntax into ECMAScript 5 compatible code, meaning it can be run in all modern browsers. Additionally, a tool called Webpack has been used to package server-side JavaScript modules for use within the browser.
 
-    The features which React provide solve half of the front-end engineering problem. React defines how data is manipulated and displayed, but it does not specify how the data itself is managed. For that reason, Facebook have also invented a development pattern called Flux. Flux provides a strict method by which data is added or updated then introduced to the React component tree. The fundamental rule of Flux is that the data flow is unidirectional; that is, data cannot be mutated directly but rather through a pre-defined process. Figure \ref{figure:flux-flow} illustrates this process. Redux has become the \textit{de facto} standard of this pattern and will be used in this project.
+      The features which React provide solve half of the front-end engineering problem. React defines how data is manipulated and displayed, but it does not specify how the data itself is managed. For that reason, Facebook have also invented a development pattern called Flux. Flux provides a strict method by which data is added or updated then introduced to the React component tree. The fundamental rule of Flux is that the data flow is unidirectional; that is, data cannot be mutated directly but rather through a pre-defined process. Figure \ref{figure:flux-flow} illustrates this process. Redux has become the \textit{de facto} standard of this pattern and will be used in this project.
 
-    \begin{figure}
-      \centering
-      \begin{tikzpicture}
-        \draw (0,0) rectangle (2.5, 1.25);
-        \node[align=center] at (1.25,0.625) {Action};
-        \draw[->, >=stealth] (2.5,0.625) -- (3.5,0.625);
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}
+          \draw (0,0) rectangle (2.5, 1.25);
+          \node[align=center] at (1.25,0.625) {Action};
+          \draw[->, >=stealth] (2.5,0.625) -- (3.5,0.625);
 
-        \draw[<-, >=stealth] (4.75,1.25) -- (4.75,2.875) -- (7,2.875);
-        \draw (7,2.25) rectangle (9.5, 3.5);
-        \node[align=center] at (8.25,2.875) {Action};
-        \draw[<-, >=stealth] (9.5,2.875) -- (11.75,2.875) -- (11.75,1.25);
+          \draw[<-, >=stealth] (4.75,1.25) -- (4.75,2.875) -- (7,2.875);
+          \draw (7,2.25) rectangle (9.5, 3.5);
+          \node[align=center] at (8.25,2.875) {Action};
+          \draw[<-, >=stealth] (9.5,2.875) -- (11.75,2.875) -- (11.75,1.25);
 
-        \draw (3.5,0) rectangle (6, 1.25);
-        \node[align=center] at (4.75,0.625) {Dispatcher};
-        \draw[->, >=stealth] (6,0.625) -- (7,0.625);
+          \draw (3.5,0) rectangle (6, 1.25);
+          \node[align=center] at (4.75,0.625) {Dispatcher};
+          \draw[->, >=stealth] (6,0.625) -- (7,0.625);
 
-        \draw (7,0) rectangle (9.5, 1.25);
-        \node[align=center] at (8.25,0.625) {Store};
-        \draw[->, >=stealth] (9.5,0.625) -- (10.5,0.625);
+          \draw (7,0) rectangle (9.5, 1.25);
+          \node[align=center] at (8.25,0.625) {Store};
+          \draw[->, >=stealth] (9.5,0.625) -- (10.5,0.625);
 
-        \draw (10.5,0) rectangle (13, 1.25);
-        \node[align=center] at (11.75,0.625) {View};
-      \end{tikzpicture}
-    \caption{Data flow in a Flux React application}\label{figure:flux-flow}
-  \end{figure}
+          \draw (10.5,0) rectangle (13, 1.25);
+          \node[align=center] at (11.75,0.625) {View};
+        \end{tikzpicture}
+      \caption{Data flow in a Flux React application}\label{figure:flux-flow}
+    \end{figure}
 
-  The Flux development pattern is also very effective at managing real-time data events. The Primus package used in Haar Engine also has a client-side library builder and this has been used in Haar Dashboard to manage the WebSocket connection. Haar Dashboard will subscribe to data streams managed by Haar API and when data is received, a Redux action will be dispatched and handled appropriately.
+    The Flux development pattern is also very effective at managing real-time data events. The Primus package used in Haar Engine also has a client-side library builder and this has been used in Haar Dashboard to manage the WebSocket connection. Haar Dashboard will subscribe to data streams managed by Haar API and when data is received, a Redux action will be dispatched and handled appropriately.
 
-  \section{Haar: Nodes}
-    The end devices built to demonstrate the IoT concept have been dubbed Haar Nodes. The first step in their implementation was to physically build the hardware circuits. The Arduino Pro Mini development boards are very minimal and do not have pin headers---if required, these must be soldered on manually. Since these boards were to be used in breadboards, the headers were soldered on. The same went for the sensor components; these arrived without pin headers so these were soldered too.
+    \subsection{Nodes}
+      The end devices built to demonstrate the IoT concept have been dubbed Haar Nodes. The first step in their implementation was to physically build the hardware circuits. The Arduino Pro Mini development boards are very minimal and do not have pin headers---if required, these must be soldered on manually. Since these boards were to be used in breadboards, the headers were soldered on. The same went for the sensor components; these arrived without pin headers so these were soldered too.
 
-    The XBee Explorer also had to be wired up to the Arduino. As it turns out, the FTDI (data communication interface) of the Arduino has the same footprint as the FTDI interface of the XBee Explorer board. This meant that these two components could be connected through the use of additional headers rather than wires. 
+      The XBee Explorer also had to be wired up to the Arduino. As it turns out, the FTDI (data communication interface) of the Arduino has the same footprint as the FTDI interface of the XBee Explorer board. This meant that these two components could be connected through the use of additional headers rather than wires. 
 
-    Once the hardware was in place it was then time to develop the device software using the Arduino IDE. There are three main components to this software: sleep mechanism, sensor interfacing and XBee communication. All of the sensor devices are battery powered so power conservation was an important consideration. Arduino's deepest sleep mode was employed to save as much power as possible, but this presented its own challenges. When in this deep sleep, nothing except an interrupt will wake the Arduino.
+      Once the hardware was in place it was then time to develop the device software using the Arduino IDE. There are three main components to this software: sleep mechanism, sensor interfacing and XBee communication. All of the sensor devices are battery powered so power conservation was an important consideration. Arduino's deepest sleep mode was employed to save as much power as possible, but this presented its own challenges. When in this deep sleep, nothing except an interrupt will wake the Arduino.
 
-    Two different interrupt methods were used to wake the device. The temperature and RGB colour sensors were developed as cyclic devices---that is, they will take a reading then sleep for a pre-determined length of time. The Watchdog Timer feature of the Arduino boads is used to raise the interrupt in order to wake these devices. In comparison, the gyroscope had to use a different approach. This is because it works best when reacting to movement rather than sampling data at a predetermined interval. The gyroscope component has the ability to raise its own hardware interrupt when movement is detected, so this mechanism was used to wake the host Arduino device.
+      Two different interrupt methods were used to wake the device. The temperature and RGB colour sensors were developed as cyclic devices---that is, they will take a reading then sleep for a pre-determined length of time. The Watchdog Timer feature of the Arduino boads is used to raise the interrupt in order to wake these devices. In comparison, the gyroscope had to use a different approach. This is because it works best when reacting to movement rather than sampling data at a predetermined interval. The gyroscope component has the ability to raise its own hardware interrupt when movement is detected, so this mechanism was used to wake the host Arduino device.
 
-    When the Arduino wakes up, it then has to take a sensor reading. This aspect was simplified thanks to the I2C protocol libraries which were available for each sensor component. When each sensor device is awoken, it will retrieve the datapoint value by using the appropriate library. The final stage in taking a sensor reading is to send it to the connected XBee device and this was achieved through the use of the xbee-arduino library.
+      When the Arduino wakes up, it then has to take a sensor reading. This aspect was simplified thanks to the I2C protocol libraries which were available for each sensor component. When each sensor device is awoken, it will retrieve the datapoint value by using the appropriate library. The final stage in taking a sensor reading is to send it to the connected XBee device and this was achieved through the use of the xbee-arduino library.
 
-    The Arduino board communicates with the XBee chip using a serial communication channel and there are a number of implementation details to discuss. First of all, the XBee can operate in two modes: transparent or API. With transparent mode, the XBee chip simply emulates a wired serial link whereas the API mode allows more advanced features to be used. API mode was chosen for this project due to the extra features it provides.
+      The Arduino board communicates with the XBee chip using a serial communication channel and there are a number of implementation details to discuss. First of all, the XBee can operate in two modes: transparent or API. With transparent mode, the XBee chip simply emulates a wired serial link whereas the API mode allows more advanced features to be used. API mode was chosen for this project due to the extra features it provides.
 
-    Since the XBee chip contains its own microcontroller, this project attempted to implement sleep mode for it too. The XBee can be configured to use pin hibernation; when the DTR pin is logic high the XBee will sleep and when the pin is logic low, it will be awoken. The operation of this was sporadically unsuccessful and the root cause of the problem could not be identified. As a result, this feature was left out with the acknowledgement that more battery power will be consumed.
+      Since the XBee chip contains its own microcontroller, this project attempted to implement sleep mode for it too. The XBee can be configured to use pin hibernation; when the DTR pin is logic high the XBee will sleep and when the pin is logic low, it will be awoken. The operation of this was sporadically unsuccessful and the root cause of the problem could not be identified. As a result, this feature was left out with the acknowledgement that more battery power will be consumed.
 
-    The ultimate purpose of the Haar Nodes is to interface with the Haar demonstration application. In order to do that, the sensed data must be transmitted to Haar API via the WebSocket connection. A common data-interchange format is required so that both the devices and the API are compatible. Arguably, the choice of format should belong in the design chapter, however it is dependent on the implementation of the Haar Engine APIs and models. Four different formats were considered: comma-separated value (CSV), JSON DB Schema, Compressed JSON DB Schema and Compressed JSON Map.
+      The ultimate purpose of the Haar Nodes is to interface with the Haar demonstration application. In order to do that, the sensed data must be transmitted to Haar API via the WebSocket connection. A common data-interchange format is required so that both the devices and the API are compatible. Arguably, the choice of format should belong in the design chapter, however it is dependent on the implementation of the Haar Engine APIs and models. Four different formats were considered: comma-separated value (CSV), JSON DB Schema, Compressed JSON DB Schema and Compressed JSON Map.
 
-    Each of the formats have been described and explained below and there were a number of aims to satisfy. Firstly, size of data transmitted has an effect on power usage. More data means that the XBee chip has to transmit for longer periods, consuming battery power. The maximum packet size of an XBee transmission is 72 bytes \citep{xbee-packet-size}. In order to limit transmission to one packet, data size should aim to be less that this limit. Additionally, the format chosen should be robust and make it simple to distinguish the datapoints collected.\\
+      Each of the formats have been described and explained below and there were a number of aims to satisfy. Firstly, size of data transmitted has an effect on power usage. More data means that the XBee chip has to transmit for longer periods, consuming battery power. The maximum packet size of an XBee transmission is 72 bytes \citep{xbee-packet-size}. In order to limit transmission to one packet, data size should aim to be less that this limit. Additionally, the format chosen should be robust and make it simple to distinguish the datapoints collected.\\
 
-    \noindent
-    \begin{minipage}[t]{0.45\textwidth}
-      \textbf{Comma-separated value}\\
-      The first data format explored was a simple comma-separated string. This created the smallest payload size (11 bytes for the given example).\\
+      \noindent
+      \begin{minipage}[t]{0.45\textwidth}
+        \textbf{Comma-separated value}\\
+        The first data format explored was a simple comma-separated string. This created the smallest payload size (11 bytes for the given example).\\
 
-      This format is not flexible, however. It requires the datapoints to maintain strict order, and requires all devices to know what this order is. The CSV string does not describe its contents at all - a developer would have no indication what the data refers to.\\
-    \end{minipage}
-    \hfill
-    \begin{minipage}[t]{0.45\textwidth}
-      \begin{lstlisting}[frame=single]
-123,123,123
-      \end{lstlisting}
-    \end{minipage}
+        This format is not flexible, however. It requires the datapoints to maintain strict order, and requires all devices to know what this order is. The CSV string does not describe its contents at all - a developer would have no indication what the data refers to.\\
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.45\textwidth}
+        \begin{lstlisting}[frame=single]
+  123,123,123
+        \end{lstlisting}
+      \end{minipage}
 
-    \noindent
-    \begin{minipage}[t]{0.45\textwidth}
-      \textbf{JSON DB Schema}\\
-      The second format explored replicates the format of the Data Mongoose model used in the Haar Engine. Haar Engine explicitly defines `name' and `value' properties for use in validation. The size of the given example is 76 bytes, more than the 72 byte limit.\\
+      \noindent
+      \begin{minipage}[t]{0.45\textwidth}
+        \textbf{JSON DB Schema}\\
+        The second format explored replicates the format of the Data Mongoose model used in the Haar Engine. Haar Engine explicitly defines `name' and `value' properties for use in validation. The size of the given example is 76 bytes, more than the 72 byte limit.\\
 
-      This is the most descriptive format and requires no extra transformation before being sent to the Haar API. However, it is unsuitable because of its payload size.
-    \end{minipage}
-    \hfill
-    \begin{minipage}[t]{0.45\textwidth}
-      \begin{lstlisting}[frame=single]
-[
+        This is the most descriptive format and requires no extra transformation before being sent to the Haar API. However, it is unsuitable because of its payload size.
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.45\textwidth}
+        \begin{lstlisting}[frame=single]
+  [
+    {
+      "name": "x",
+      "value": 123
+    },
+    {
+      "name": "y",
+      "value": 123
+    },
+    {
+      "name": "z",
+      "value": 123
+    }
+  ]
+        \end{lstlisting}
+      \end{minipage}
+
+      \noindent
+      \begin{minipage}[t]{0.45\textwidth}
+        \textbf{Compressed JSON DB Schema}\\
+        Whilst investigating the previous format, it became apparent that it was unnecessarily expanding on the syntax of a JSON object. By their very nature, they are a key-value store. This means that the format can be condensed into the shown example (36 bytes).\\
+
+        This format is both machine and human readable. Additionally, it does not require much additional trasformation in order to be submitted to the Haar API.\\
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.45\textwidth}
+        \begin{lstlisting}[frame=single]
+  [
+    {
+      "x": 123
+    },
+    {
+      "y": 123
+    },
+    {
+      "z": 123
+    }
+  ]
+        \end{lstlisting}
+      \end{minipage}
+
+      \noindent
+      \begin{minipage}[t]{0.45\textwidth}
+        \textbf{Compressed JSON Object}\\
+        Looking at the previous example, it is clear that there is a redundant structure in place. This format compresses the datapoints into a single JSON object, rather than an array with multiple nested objects. This yields an example payload size of 25 bytes.\\
+
+        No information is lost between this format and the full JSON DB Schema option, meaning that it can be expanded to be successfully submitted to the Haar API and pass validation rules. This is the most effective format and has been chosen for use in the Haar Nodes. 
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.45\textwidth}
+        \begin{lstlisting}[frame=single]
   {
-    "name": "x",
-    "value": 123
-  },
-  {
-    "name": "y",
-    "value": 123
-  },
-  {
-    "name": "z",
-    "value": 123
-  }
-]
-      \end{lstlisting}
-    \end{minipage}
-
-    \noindent
-    \begin{minipage}[t]{0.45\textwidth}
-      \textbf{Compressed JSON DB Schema}\\
-      Whilst investigating the previous format, it became apparent that it was unnecessarily expanding on the syntax of a JSON object. By their very nature, they are a key-value store. This means that the format can be condensed into the shown example (36 bytes).\\
-
-      This format is both machine and human readable. Additionally, it does not require much additional trasformation in order to be submitted to the Haar API.\\
-    \end{minipage}
-    \hfill
-    \begin{minipage}[t]{0.45\textwidth}
-      \begin{lstlisting}[frame=single]
-[
-  {
-    "x": 123
-  },
-  {
-    "y": 123
-  },
-  {
+    "x": 123,
+    "y": 123,
     "z": 123
   }
-]
-      \end{lstlisting}
-    \end{minipage}
+        \end{lstlisting}
+      \end{minipage}
 
-    \noindent
-    \begin{minipage}[t]{0.45\textwidth}
-      \textbf{Compressed JSON Object}\\
-      Looking at the previous example, it is clear that there is a redundant structure in place. This format compresses the datapoints into a single JSON object, rather than an array with multiple nested objects. This yields an example payload size of 25 bytes.\\
+      Figures \ref{figure:temp-device} and \ref{figure:led-device} show the finished prototype hardware for the temperature sensor and RGB LED actuator. The RGB colour and gyroscope sensors are similar to the temperature sensor. 
 
-      No information is lost between this format and the full JSON DB Schema option, meaning that it can be expanded to be successfully submitted to the Haar API and pass validation rules. This is the most effective format and has been chosen for use in the Haar Nodes. 
-    \end{minipage}
-    \hfill
-    \begin{minipage}[t]{0.45\textwidth}
-      \begin{lstlisting}[frame=single]
-{
-  "x": 123,
-  "y": 123,
-  "z": 123
-}
-      \end{lstlisting}
-    \end{minipage}
+      \begin{figure}
+        \centering
+          \begin{tikzpicture}
+            \node[inner sep=0pt] at (0,0)
+              {\includegraphics[width=0.6\textwidth]{assets/temp-prototype.png}};
+          \end{tikzpicture}
+        \caption{Prototype temperature device}\label{figure:temp-device}
+      \end{figure}
 
-    Figures \ref{figure:temp-device} and \ref{figure:led-device} show the finished prototype hardware for the temperature sensor and RGB LED actuator. The RGB colour and gyroscope sensors are similar to the temperature sensor. 
+      \begin{figure}
+        \centering
+          \begin{tikzpicture}
+            \node[inner sep=0pt] at (0,0)
+              {\includegraphics[width=0.8\textwidth]{assets/led-prototype.png}};
+          \end{tikzpicture}
+        \caption{Prototype RGB LED output device}\label{figure:led-device}
+      \end{figure}
 
-    \begin{figure}
-      \centering
-        \begin{tikzpicture}
-          \node[inner sep=0pt] at (0,0)
-            {\includegraphics[width=0.6\textwidth]{assets/temp-prototype.png}};
-        \end{tikzpicture}
-      \caption{Prototype temperature device}\label{figure:temp-device}
-    \end{figure}
+    \subsection{Bridge}
+      The final piece for the complete implementation is the bridge device. Like the end devices, the hardware for this had to first be built. When sourcing the Raspberry Pi devices for this component an additional component, the RPi HAT prototype board was found. Rather than connecting the RPi to the XBee chip with simple wires, this prototype board was used to build a more professional prototype. The RPi HAT required additional soldering, namely the headers to connect it to the RPi, all circuit wires and the XBee Explorer pins. It should also be noted that the Raspberry Pi model B+ (RPiB+)  was procured rather than the model 2 and this was down to its cheaper cost. The RPiB+ is less powerful with a single-core 700MHz processor and 512MB RAM, but is still expected to be sufficiently powerful. The completed hardware can be seen in Figure \ref{figure:bridge-device}.
 
-    \begin{figure}
-      \centering
-        \begin{tikzpicture}
-          \node[inner sep=0pt] at (0,0)
-            {\includegraphics[width=0.8\textwidth]{assets/led-prototype.png}};
-        \end{tikzpicture}
-      \caption{Prototype RGB LED output device}\label{figure:led-device}
-    \end{figure}
+      As planned, the RPi-maintained distribution of Linux was installed on the RPiB+. A small Node.js application was developed. It made use of the same JavaScript packages which have been implemented in the Haar Engine and Dashboard. One additional role which the application played was to expand on the Compressed JSON Object data format described in the previous section so it could be submitted to Haar API.
 
-  \section{Haar: Bridge}
-    The final piece for the complete implementation is the bridge device. Like the end devices, the hardware for this had to first be built. When sourcing the Raspberry Pi devices for this component an additional component, the RPi HAT prototype board was found. Rather than connecting the RPi to the XBee chip with simple wires, this prototype board was used to build a more professional prototype. The RPi HAT required additional soldering, namely the headers to connect it to the RPi, all circuit wires and the XBee Explorer pins. It should also be noted that the Raspberry Pi model B+ (RPiB+)  was procured rather than the model 2 and this was down to its cheaper cost. The RPiB+ is less powerful with a single-core 700MHz processor and 512MB RAM, but is still expected to be sufficiently powerful. The completed hardware can be seen in Figure \ref{figure:bridge-device}.
-
-    As planned, the RPi-maintained distribution of Linux was installed on the RPiB+. A small Node.js application was developed. It made use of the same JavaScript packages which have been implemented in the Haar Engine and Dashboard. One additional role which the application played was to expand on the Compressed JSON Object data format described in the previous section so it could be submitted to Haar API.
-
-    \begin{figure}
-      \centering
-        \begin{tikzpicture}
-          \node[inner sep=0pt] at (0,0)
-            {\includegraphics[width=0.6\textwidth]{assets/bridge-prototype.png}};
-        \end{tikzpicture}
-      \caption{Prototype bridge device}\label{figure:bridge-device}
-    \end{figure}
+      \begin{figure}
+        \centering
+          \begin{tikzpicture}
+            \node[inner sep=0pt] at (0,0)
+              {\includegraphics[width=0.6\textwidth]{assets/bridge-prototype.png}};
+          \end{tikzpicture}
+        \caption{Prototype bridge device}\label{figure:bridge-device}
+      \end{figure}

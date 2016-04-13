@@ -1,0 +1,65 @@
+\chapter{Development Practices}
+  A software implementation can be set up for success or failure before any code has been written, especially whilst working within a team. This is down to the development process and policies in place. Of course, one process may work for one team or project and not another.
+
+  A well implemented process can provide many benefits. First and foremost, everyone in a development team clearly understands their roles and responsibilities. The process can also enforce a hierarchy of decision making, or encourage peer collaboration. Beyond these people-based benefits, a development process can aid in the development of a robust, maintainable codebase. A developer who can understand a codebase and make confident updates is an efficient one.
+
+  Although the output of this project is the work of one person, arguments supporting a process-first implementation still apply. The following section will detail the main tools used in supporting this project. 
+
+  \section{Version Control System}
+    The use of a Version Control System (VCS) is highly recommended in any project. As the name suggests, a VCS manages iterative updates of project files. To generalise its functionality, a VCS maintains a timeline of file states. Different states of the same file can be compared to investigate which changes were made and by whom, and if needed a file can be reverted to a previous state. This means that the complete history of a codebase is recorded. Without using a VCS, code updates would simply overwrite the existing file and old states would be lost forever.
+
+    There are a number of Version Control Systems available to developers, such as Mercurial and Subversion. Git is another VCS and was created by Linus Torvalds, creator and maintainer of the Linux kernel. Git is arguably the most popular VCS amongst the open source community, thanks to its use in the development of the Linux kernel. Its command-line interface is highly portable and many community-oriented services support it extensively, such as Github and Bitbucket.
+
+    Git along with the web-based service GitHub have been chosen for use in this project thanks to their universal support. But simply selecting a tool is not enough when implementing a development process - guidelines on how to use it should also be decided. There are a number of well-defined development workflows using Git. This project has chosen to implement the `Git Flow' workflow. Git Flow utilises various features of Git and GitHub, including branching, merging and pull requests. 
+
+    Describing the Git and the Git Flow workflow could fill an article on its own, so this description will be very brief. In Git, a branch is an instance of the complete codebase. Multiple branches with different versions of the same codebase can be developed in parallel. The merge command copies the changes of one branch into another. A Pull Request is a request to merge one branch into another, which can be inspected and commented on before the merge is completed.
+
+    The Git Flow workflow adds structure to these features. The master branch is the production codebase. The develop branch is the in-progress codebase. Feature branches (such as feature/menu or feature/users-controller) are used to develop a specific feature of the project. Once the feature has been built, a pull request is raised to merge it into the develop branch. Once all features have been merged and tested, a pull request is raised to merge the develop branch into master which is then deployed. This workflow has been employed for this project.
+
+    \subsection{Pre-commit Hook}
+      The Git VCS also supports lifecycle hooks. These hooks allow developers to run bespoke scripts to enforce custom policies, such as limiting access to specific branches. One helpful trick has also been employed for this project through the use of the pre-commit hook.
+
+      No matter how descriptive or strict development policies are, developers are only human. Humans can make mistakes and they can be lazy, meaning that poor quality code can be committed to the codebase. The pre-commit hook can be used to enfoce a specific coding standard. It works by testing the committed code against a set of rules. If the tests pass, the code is committed to the codebase but if they fail, a warning message is displayed. By using this technique, the code for this project is guaranteed to be of a certain standard.
+
+  \section{Docker}
+    Developers face a number of challenges when developing and deploying modern web-based applications. Primarily, the environment in which code is executed can differ wildly. For any given project, one developer might use a Windows machine whilst their colleague could use an Apple Mac. The staging environment could use one version of Linux whereas the production enviroment could use another. All of these environments could potentially run differing versions of the same software meaning that bugs in the project might not be traceable or reproducable. Development teams have attempted to normalise these enviroments through the use of package managers, however these still leave room for misconfiguration.
+
+    A relatively new tool called Docker has been taking the development world by storm since its release in 2013. Docker builds on a technology called Linux Containers. Traditional virtual machines run a complete operating system (kernel, program binaries and any other files) on top of a host machine. In comparison, Docker (and Linux Containers) allow images to use the same kernel of the host operating system. This means that each container is very lightweight but can still benefit from the complete isolation of program processes.
+
+    Docker containers are instances of a Docker image. Docker images are compiled according to a Dockerfile which comprise of commands such as COPY (to copy source files to the image) and RUN (to run Unix commands within the Linux Container). This is where the advantages of Docker become clear - explicit, reproducable environments can be built as if working directly on a server. Since Docker is a portable tool, every developer working on a project can run exactly the same environment as each other. When the application is ready to be deployed, the same Docker image can be executed on a production server.
+
+    Docker also has powerful composition tools. Anything beyond a simple script or application is typically the sum of many smaller, more specific applications. A simple example of this would be a dynamic web application backed by a database. In Docker terms, this application would be composed of two images - one image for the dynamic web application, and another for the database. Docker can configure automatic links between instances of these images and this is aided with the helped command-line interface `docker compose'.
+
+    Docker Compose makes use of another configuration file, `docker-compose.yml'. In this file it is possible to specify which Docker images make up a complete application (which can be custom builds using a Dockerfile, or pre-built images from the global Docker repository). Using this file Docker Compose will intelligently start Docker images in order of their dependencies. Using the dynamic web application and database example, the database would be started first and then the application. Docker will also set up lots of other clever tools, such as a long list of environment variables referring to specific links. These environment variables can then be used within applications to configure things like database connections.
+
+    Once applications have been wrapped up into Docker images and compositions, it is then necessary to deploy them to servers. This can of course be achieved manually using the docker CLI, however the Docker ecosystem also includes Docker Cloud, a first-party container deployment service. Docker Cloud uses four more important terms to describe an application:
+
+    \begin{description}
+      \item[Node] a server which can host Docker containers
+      \item[Node Cluster] a grouping of multiple servers which can host Docker containers
+      \item[Service] one or more running container instances of a Docker image
+      \item[Stack] an application composed of multiple services
+    \end{description}
+
+    Docker Cloud is very simple but hugely powerful. Scaling is an important aspect of any web application and is handled with grace. Docker Cloud will intelligently distribute container instances across all available nodes based on their loads. It will then lay a private network between all services of a stack (irrespective of its host node) so all containers can transparently communicate. This makes load balancing truly simple.
+
+    Docker has been chosen as a critical piece of infrastructure for this project. Flexibility, robustness and maintainability are three important aspects when developing any application and Docker aids these areas very effectively.
+
+  \section{Continuous Integration}
+    The development process has so far defined how the codebase will be developed and how it will be hosted, but there is still an important step missing. How does newly developed code get deployed in a way which ensures no downtime and without bugs? This is where a technique called Continuous Integration (CI) is used.
+
+    Continuous Integration is the glue between the processes at each end of the development cycle. The main ethos behind it is to deploy little and often. This allows developers to catch issues early and to pin-point its cause quickly. \citet{continuous-integration} describe CI with a number of key points, including: automated, self-testing builds and automated deployments. As it turns out, the Git Flow workflow, Docker and Continuous Integration all work incredibly well together.
+
+    As has already been discussed, Docker images provide explicit, reproducable environments and this is great for testing purposes. Since all Docker environments will be built equal, it means tests run on a local machine will behave the same on a production server. And because Docker Compose can specify which images needs to be used, any service with access to this information can build the correct application dependencies.
+
+    Travis CI is one such continuous integration service which supports the Docker ecosystem. It has been employed in this project to enforce a CI workflow and it follows these steps:
+
+    \begin{enumerate}
+      \item Code is developed using the Git Flow workflow
+      \item All commits to branches and pull requests trigger tests on Travis CI
+      \item Each test builds the Docker environment to ensure consistency
+      \item If tests pass, the Docker image is published to the Docker repository
+      \item The Docker repository will deploy new images through Docker Cloud
+    \end{enumerate}
+
+    This workflow contributes to a solid development process which can be scaled to a large codebase and team of developers.
