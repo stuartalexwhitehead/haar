@@ -14,6 +14,8 @@
 \usepackage{nameref}          % Enable section reference by name
 \usepackage{float}            % Figure positioning
 \usepackage{listings}         % Syntax highlighting
+\usepackage{longtable}        % Multi-page tables
+\usepackage{tabu}             % Easier longtables
 
 \usetikzlibrary{arrows.meta}  % Arrow head styles for Tikz diagrams
 \usetikzlibrary{positioning}  % Positioning tools for Tikz diagrams
@@ -34,15 +36,18 @@
 
   \mainmatter
     \input{mainmatter/introduction}
+    \input{mainmatter/legal-social-ethical-professional}
     \input{mainmatter/background}
     \input{mainmatter/specification}
     \input{mainmatter/design}
+    \input{mainmatter/development-practices}
     \input{mainmatter/implementation}
     \input{mainmatter/results-and-evaluation}
     \input{mainmatter/conclusions}
-    \input{mainmatter/future-work}
 
   \appendix
+    \input{appendix/haar-engine-acceptance}
+    \input{appendix/haar-acceptance}
 
   \backmatter
     \input{backmatter/bibliography}
