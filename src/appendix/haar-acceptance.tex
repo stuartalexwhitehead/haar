@@ -1,0 +1,134 @@
+\chapter{Haar Acceptance Tests}
+  \begin{longtabu} to \textwidth {|X|c|X|}
+    \hline
+      \textbf{Requirement}
+      & \textbf{Status}
+      & \textbf{Notes}
+    \endhead \hline
+      The application shall comprise of two local area device networks
+      & Implemented
+      & 
+    \\ \hline
+      Devices of these networks shall be capable of establishing a connection between themselves and the web application
+      & Implemented
+      & This is facilitated through the bridge device
+    \\ \hline
+      The device networks shall comprise of two sensor devices
+      & Implemented
+      & Network A comprises temperature and RGB colour sensors; Network B comprises temperature and gyroscope sensors
+    \\ \hline
+      The device network shall contain a sensor device which measures a single data point, such as temperature
+      & Implemented
+      & Implemented in the form of a temperature sensor
+    \\ \hline
+      The device network shall contain a sensor device which measures more complex data, such as a vector of wind direction and speed
+      & Implemented
+      & Implemented in the form of RGB colour sensor (red, green and blue values) and gyroscope sensor (x, y and z values)
+    \\ \hline
+      The device networks shall comprise of a single actuator device
+      & Implemented
+      & Implemented as an RGB LED lamp
+    \\ \hline
+      The actuator device shall be flexible enough to represent a variety of data types
+      & Implemented
+      &
+    \\ \hline
+      The web-based dashboard will be the main interface between a user and their devices.
+      & Implemented
+      &
+    \\ \hline
+      The dashboard shall be accessible on the World Wide Web
+      & Implemented
+      & Hosted using DigitalOcean cloud server
+    \\ \hline
+      The dashboard shall authenticate users with a username and password
+      & Implemented
+      &
+    \\ \hline
+      The dashboard shall list profile details
+      & Implemented
+      &
+    \\ \hline
+      The user shall be able to manage their devices
+      & Implemented
+      &
+    \\ \hline
+      The dashboard shall list devices owned by the user
+      & Implemented
+      &
+    \\ \hline
+      The user shall be able to add a new device
+      & Implemented
+      &
+    \\ \hline
+      The dashboard shall show whether devices are connected or not
+      & Not Implemented
+      & Sensors have the ability to sleep and are therefore not `connected' all of the time, but are still active
+    \\ \hline
+      The user shall be able to transfer ownership of the device
+      & Not Implemented
+      & The required permission system to facilitate this is too involved given the time constraints
+    \\ \hline
+      The user shall be able to grant access permissions to other users
+      & Not Implemented
+      & The required permission system to facilitate this is too involved given the time constraints
+    \\ \hline
+      The dashboard shall enable users to manage application rules
+      & Implemented
+      &
+    \\ \hline
+      The dashboard shall list existing rules
+      & Implemented
+      &
+    \\ \hline
+      The user shall be able to create new rules
+      & Implemented
+      &
+    \\ \hline
+      An actuator device shall be able to react to sensed data
+      & Implemented
+      &
+    \\ \hline
+      User devices shall be able to integrate with third-party services
+      & Implemented
+      & Possible through the use of Data Access and Real-Time Event APIs
+    \\ \hline
+      The dashboard shall display data for a given device
+      & Implemented
+      &
+    \\ \hline
+      The dashboard shall be able to trigger actuators with virtual controls
+      & Not Implemented
+      & This `nice to have' was not implemented given time constraints
+    \\ \hline
+      A section of the dashboard shall be dedicated to data visualisation
+      & Implemented
+      &
+    \\ \hline
+      A generic visualisation tool shall plot temporal data as a graph
+      & Implemented
+      &
+    \\ \hline
+      The date range shall be configurable
+      & Implemented
+      &
+    \\ \hline
+      Multiple data sources shall be comparable on one graph interface
+      & Partial
+      & Multiple data points from a single device can be displayed (e.g. red, green and blue); the data from multiple devices cannot be compared
+    \\ \hline
+      The graph shall leverage the real-time event API to update when new data is received
+      & Implemented
+      &
+    \\ \hline
+      Specialised visualisation tools shall reflect specific device types. For example, a virtual thermometer would visualise a temperature
+      & Not Implemented
+      & This `nice to have' was not implemented given time constraints
+    \\ \hline
+      Specialised visualisation tools shall leverage the real-time event API to update when new data is received
+      & Not Implemented
+      & This `nice to have' was not implemented given time constraints
+    \\ \hline
+
+    \caption{User Acceptance Testing for Haar}\label{haar-acceptance}
+  \end{longtabu}
