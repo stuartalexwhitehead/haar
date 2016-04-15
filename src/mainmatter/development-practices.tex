@@ -17,6 +17,7 @@
     The Git Flow workflow adds structure to these features. The master branch is the production codebase. The develop branch is the in-progress codebase. Feature branches (such as feature/menu or feature/users-controller) are used to develop a specific feature of the project. Once the feature has been built, a pull request is raised to merge it into the develop branch. Once all features have been merged and tested, a pull request is raised to merge the develop branch into master which is then deployed. This workflow has been employed for this project.
 
     \subsection{Pre-commit Hook}
+    \label{section:pre-commit-hook}
       The Git VCS also supports lifecycle hooks. These hooks allow developers to run bespoke scripts to enforce custom policies, such as limiting access to specific branches. One helpful trick has also been employed for this project through the use of the pre-commit hook.
 
       No matter how descriptive or strict development policies are, developers are only human. Humans can make mistakes and they can be lazy, meaning that poor quality code can be committed to the codebase. The pre-commit hook can be used to enfoce a specific coding standard. It works by testing the committed code against a set of rules. If the tests pass, the code is committed to the codebase but if they fail, a warning message is displayed. By using this technique, the code for this project is guaranteed to be of a certain standard.
