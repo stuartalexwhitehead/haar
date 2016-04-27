@@ -1,10 +1,10 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 27199
-Words in headers: 285
-Words outside text (captions, etc.): 119
-Number of headers: 154
-Number of floats/tables/figures: 17
+Words in text: 28754
+Words in headers: 279
+Words outside text (captions, etc.): 131
+Number of headers: 148
+Number of floats/tables/figures: 19
 Number of math inlines: 0
 Number of math displayed: 0
 Subcounts:
@@ -16,11 +16,11 @@ Subcounts:
   0+2+0 (1/0/0/0) Section: Project Motivation
   0+3+0 (1/0/0/0) Section: Aims and Objectives
   0+2+0 (1/0/0/0) Section: Report Structure
-  102+6+0 (1/0/0/0) Chapter: Legal, Social, Ethical and Professional Considerations
-  288+2+0 (1/0/0/0) Section: Public Interest
-  74+4+0 (1/0/0/0) Section: Professional Competence and Integrity
-  70+4+0 (1/0/0/0) Section: Duty to Relevant Authority
-  81+4+0 (1/0/0/0) Section: Duty to the Profession
+  102+6+0 (1/0/0/0) Section: Legal, Social, Ethical and Professional Considerations
+  288+2+0 (1/0/0/0) Subsection: Public Interest
+  74+4+0 (1/0/0/0) Subsection: Professional Competence and Integrity
+  70+4+0 (1/0/0/0) Subsection: Duty to Relevant Authority
+  81+4+0 (1/0/0/0) Subsection: Duty to the Profession
   526+1+9 (1/1/0/0) Chapter: Background
   603+4+0 (1/0/0/0) Section: Opportunities, Motivators and Enablers
   887+3+0 (1/0/0/0) Section: Challenges and Inhibiters
@@ -66,7 +66,7 @@ Subcounts:
   677+1+0 (1/0/0/0) Section: Docker
   294+2+0 (1/0/0/0) Section: Continuous Integration
   19+1+0 (1/0/0/0) Chapter: Implementation
-  0+1+0 (1/0/0/0) Section: Hosting
+  373+1+4 (1/1/0/0) Section: Hosting
   0+2+0 (1/0/0/0) Section: Haar Engine
   322+3+0 (1/0/0/0) Subsection: Node.js and npm
   213+2+0 (1/0/0/0) Subsection: MongoDB Database
@@ -74,13 +74,19 @@ Subcounts:
   488+1+0 (1/0/0/0) Subsection: Real-Time
   449+1+0 (1/0/0/0) Subsection: Security
   359+1+0 (1/0/0/0) Subsection: Testing
-  58+1+0 (1/0/0/0) Section: Haar
-  59+1+0 (1/0/0/0) Subsection: API
-  640+14+7 (8/1/0/0) Subsection: Dashboard
-  1081+9+8 (6/2/0/0) Subsection: Nodes
-  211+9+3 (6/1/0/0) Subsection: Bridge
-  0+1+0 (1/0/0/0) Subsection: Security
-  0+1+0 (1/0/0/0) Subsection: Testing
+  117+2+0 (1/0/0/0) Section: Haar API
+  125+2+0 (1/0/0/0) Section: Haar Dashboard
+  558+3+0 (1/0/0/0) Subsection: JavaScript Application Framework
+  225+2+15 (1/2/0/0) Subsection: Data Management
+  185+1+0 (1/0/0/0) Subsection: Real-time
+  230+1+0 (1/0/0/0) Subsection: Security
+  265+1+0 (1/0/0/0) Subsection: Testing
+  57+2+0 (1/0/0/0) Section: Haar Nodes
+  340+1+8 (1/2/0/0) Subsection: Hardware
+  317+2+0 (1/0/0/0) Subsection: Energy Efficiency
+  589+2+0 (1/0/0/0) Subsection: Data Transmission
+  12+1+0 (1/0/0/0) Subsection: Testing
+  211+10+3 (6/1/0/0) Section: Haar Bridge
   0+3+0 (1/0/0/0) Chapter: Results and Evaluation
   0+1+0 (1/0/0/0) Chapter: Conclusions
   0+2+0 (1/0/0/0) Section: Future Work
@@ -97,7 +103,7 @@ Subcounts:
   197+2+0 (1/0/0/0) Section: Cookie Parser
   187+1+0 (1/0/0/0) Section: Cors
   203+1+0 (1/0/0/0) Section: Dotenv
-  187+1+0 (1/0/0/0) Section: Bcrypt
+  187+1+0 (1/0/0/0) Section: Engine.io
   202+1+0 (1/0/0/0) Section: Express
   187+1+0 (1/0/0/0) Section: Jsonwebtoken
   264+1+0 (1/0/0/0) Section: Lodash
