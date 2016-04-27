@@ -1,11 +1,37 @@
 \chapter{Implementation}
   This chapter will discuss the specific implementation details for both project components: the Haar Engine and Haar demonstration application.
 
-  \section{Hosting}
+  % Chapter structure
 
-    % Provider
-    % Configuration
-    % Maintenance
+  \section{Hosting}
+    The software components for this project were hosted on a public web server for demonstration and testing purposes. There are a large number of hosting solutions available; in this case, a Virtual Private Server (VPS) was chosen. A VPS was chosen over competing solutions (such as a Platform as a Service like Heroku) because its offers complete control over installed software and their configuration. The VPS chosen is also scalable, meaning that it can be configured with more or fewer system resources in response to demand.
+
+    The VPS was installed with the open source Debian 8 Linux operating system. Debian was created in 1993 making it one of the oldest Linux distributions available; the open source community has been actively patching bugs and implementing new features ever since. Debian comes with very little pre-installed but it does have access to access to the Aptitude package registry, from which many popular applications can be installed. These characteristics make Debian the ideal foundation for a web server.
+
+    Very little configuration was made to the VPS itself. Beyond some basic user and SSH configuration, the only additional packages required were Uncomplicated Firewall (UFW) and the Docker Cloud agent. UFW was used to create a strict firewall policy in order to protect the server for unauthorised access. Section \ref{section:docker} (Docker) explained that Docker images can be compared to virtual machines. Since Docker images contain all software which they require to run, nothing extra must be installed on the host. The Docker Cloud agent is simply used to connect the VPS to the Docker Cloud deployment service.
+
+    A reverse proxy was used to expose Docker containers to the Internet. The Nginx web server was chosen for this purpose because it is event-based (as opposed to process-based like the Apache web server) which makes it more efficient at handling concurrent connections. Nginx also has great first-party support for proxy and caching functionality. The reverse proxy had two main responsibilities: TLS and HTTP/2 termination. These enable the API and dashboard to be served over a secure HTTPS tunnel and for web browsers to leverage performance-enhancing features. Figure x.x illustrates this implementation. In keeping with the development practices used, the Nginx reverse proxy was also wrapped up into a Docker image.
+
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}
+        \draw (0,1.125) rectangle (2.5, 2.375) node[midway] {Web Browser};
+        \node[align=center] at (4,2) {HTTP/2, TLS};
+        \draw[<->, >=stealth] (2.5,1.75) -- (5.5,1.75);
+
+        \draw (5.5,1.125) rectangle (8, 2.375) node[midway] {Proxy};
+
+        \draw (11,2.25) rectangle (13.5, 3.5) node[midway] {API};
+        \node[align=center] at (9.25, 2.3125) {HTTP/1.1};
+        \draw[<->, >=stealth] (8,2.0625) -- (10.5,2.0625) -- (10.5,2.875) -- (11,2.875);
+
+        \draw (11,0) rectangle (13.5, 1.25) node[midway] {Dashboard};
+        \node[align=center] at (9.25, 1.1) {HTTP/1.1};
+        \draw[<->, >=stealth] (8,1.4375) -- (10.5,1.4375) -- (10.5,0.625) -- (11,0.625);
+      \end{tikzpicture}
+      \caption{Web server request flow}
+      \label{figure:reverse-proxy}
+    \end{figure}
 
   \section{Haar Engine}
     % purpose
@@ -163,30 +189,35 @@ const handlers = [
 
       The final category of testing performed on the Haar Engine is acceptance testing. The purpose of acceptance testing is to compare the finished product against requirements specifications defined. The results of this testing can be found in Appendix \ref{haar-engine-acceptance-tests} and will be discussed in further detail as part of the next chapter.
 
-  \section{Haar}
+  % --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  \section{Haar API}
     The second software component produced for this project is Haar, a demonstration implementation of Haar Engine. The main purpose of this demonstration application is to validate the design decisions and to show, by example, that the theory behind this IoT framework works. The implementation of Haar has been split further into four sub-components: API, Dashboard, Bridge and Nodes.
 
-    \subsection{API}
-      Haar API is the actual implementation of Haar Engine. Since the aim of Haar Engine is to provide a starting point for an IoT application, the sole purpose of Haar API is to bootstrap the framework and show that it can be included as a project dependency. Quite simply, Haar API includes Haar Engine as a dependency from Github.
+    Haar API is the actual implementation of Haar Engine. Since the aim of Haar Engine is to provide a starting point for an IoT application, the sole purpose of Haar API is to bootstrap the framework and show that it can be included as a project dependency. Quite simply, Haar API includes Haar Engine as a dependency from Github.
 
-    \subsection{Dashboard}
-      \subsubsection{React JS}
-        % Single-page apps
-      \subsubsection{Server-side Rendering}
-      \subsubsection{Universal Modules and Webpack}
-      \subsubsection{Data Management}
-      \subsubsection{Real-time}
-      \subsubsection{Security}
-      \subsubsection{Testing}
-      Haar Dashboard is a web-based user interface built on top of the suite of Haar Engine APIs. It utilises both the Data Access API to configure system settings and the Real-Time API to subscribe to live data events. Whilst not necessary for the operation of the underlying IoT framework, the Haar Dashboard UI makes configuring devices simple and illustrates how a viable consumer solution might work.
+  % --------------------------------------------------------------------------------------------------------------------------------------------------------
 
-      Section \ref{section:front-end-application} (Front-End Application) briefly discussed the challenges facing this user interface. In particular, certain components of the user interface must react to real-time events. To address this challenge, the UI has been developed as a so-called `single-page JavaScript web app'. JavaScript web apps come with their own challenges. Web pages using this technique are typically not built on the application server but are rather 100\% client-side code. Due to this, single-page web apps can experience a long initial delay as the client-side script is executed. Another issues is that search engine optimisation and accessibility are affected because no HTML body is returned by the server - there is nothing for search engine crawlers or accessibility tools to parse.
+  \section{Haar Dashboard}
+    Haar Dashboard is a web-based user interface built on top of the suite of Haar Engine APIs. It utilises both the Data Access API to configure system settings and the Real-Time API to subscribe to live data events. Whilst not necessary for the operation of the underlying IoT framework, the Haar Dashboard UI makes configuring devices simple and illustrates how a viable consumer solution might work.
 
-      A clever JavaScript framework called React solves these issues. React is a project developed by software engineers at Facebook. It is based on the concept of a tree composable components, where a single component encapsulates all of the logic which it requires to execute. What is most clever about React is its use of a virtual Document Object Model (DOM). React will first build up the tree of components using this virtual DOM before `diffing' it against the actual DOM. If anything has changed, React will only update the affected components. Using this technique, React can be used on a web application server. It can build up a webpage and send it as the body of an HTML response. Once the client-side code has loaded, React will then bootstrap the application based on the existing body. This concept is known as Isomorphic or Universal JavaScript.
+    Section \ref{section:front-end-application} (Front-End Application) briefly discussed the challenges facing this user interface. In particular, certain components of the user interface must react to real-time events. The solution selected to address the challenges was a single-page JavaScript web application (SPA). The following section will describe the implementation of this technique, how it satisfies design goals and how it addresses these challenges.
+
+    \subsection{JavaScript Application Framework}
+      There are a wide variety of JavaScript frameworks which aid in the development of single-page web applications. While these frameworks differ in what problems they solve and how they solve them, they share some common characteristics.
+
+      The general aim of a single-page web application is to create a more responsive and user friendly interface, much like would be experienced with a desktop application. This is achieved through the use of asynchronous AJAX requests; rather than navigate to new web pages, the correct data is requested and loaded into the existing web page. This also requires all of the application logic to be retrieved with the initial page request. Since the web page will not be reloaded, this makes it ideal for opening and maintaining the WebSocket connection required for this component.
+
+      Single-page web applications also introduce new challenges. One of the hurdles to overcome is the inital load time. Since all of the application logic must be loaded before the web app can be used, users can experience long initial delays. There are also accessibility and usability challenges due to how the content is loaded. The initial HTML response from the server will be empty or will contain very basic content because content is loaded dynamically by the application. This means that search engine crawlers or users without JavaScript enabled canot view the web page content.
+
+      The features offered by the React JavaScript framework implemented for this project go some distance in resolving these challenges. React is a project developed by software engineers at Facebook. It is based on the concept of a tree composable components, where a single component encapsulates all of the logic which it requires to execute, including CSS styles. What is most clever about React is its use of a virtual Document Object Model (DOM). React will first build up the tree of components using this virtual DOM before comparing it against the actual DOM. If anything has changed, React will only update the affected components.
+
+      React can use this virtual DOM to render web pages server-side. React will build up a webpage and send it as the body of an HTML response. Once the client-side code has loaded, React will then bootstrap the application based on the existing body. This concept is known as Isomorphic or Universal JavaScript. Since an HTML body is returned, most features of an application can be used straight away. Search engine crawlers and accessibility tools can also parse the body, solving the challenges traditional single-page JavaScript web applications.
 
       As was discussed for the implementation of Haar Engine, the latest features of JavaScript are defined in the ECMAScript 2015 standard. Some web browsers can be slow to implement new features whilst other, older browsers may not implement them at all. This is a headache for developers; new features and syntax might solve problems in a more effective way, but they may not be supported by every target browser. This is where so-called front-end tooling is used. A variety of tools exist to convert new, uncompatible syntax into older, widely supported syntax. In particular a package called Babel has been used in this project to compile ES2015 syntax into ECMAScript 5 compatible code, meaning it can be run in all modern browsers. Additionally, a tool called Webpack has been used to package server-side JavaScript modules for use within the browser.
 
-      The features which React provide solve half of the front-end engineering problem. React defines how data is manipulated and displayed, but it does not specify how the data itself is managed. For that reason, Facebook have also invented a development pattern called Flux. Flux provides a strict method by which data is added or updated then introduced to the React component tree. The fundamental rule of Flux is that the data flow is unidirectional; that is, data cannot be mutated directly but rather through a pre-defined process. Figure \ref{figure:flux-flow} illustrates this process. Redux has become the \textit{de facto} standard of this pattern and will be used in this project.
+    \subsection{Data Management}
+      The features which React provide solve half of the front-end engineering problem. React defines how data is manipulated and displayed, but it does not specify how the data itself is managed. For that reason, Facebook have also invented a development pattern called Flux. Flux provides a strict method by which data is added or updated then introduced to the React component tree. The fundamental rule of Flux is that the data flow is unidirectional; that is, data cannot be mutated directly but rather through a pre-defined process. Figure \ref{figure:flux-flow} illustrates this process. Redux has become the \textit{de facto} implementation of this pattern and will be used in this project.
 
       \begin{figure}
         \centering
@@ -212,31 +243,82 @@ const handlers = [
           \node[align=center] at (11.75,0.625) {View};
         \end{tikzpicture}
       \caption{Data flow in a Flux React application}\label{figure:flux-flow}
-    \end{figure}
+      \end{figure}
 
-    The Flux development pattern is also very effective at managing real-time data events. The Primus package used in Haar Engine also has a client-side library builder and this has been used in Haar Dashboard to manage the WebSocket connection. Haar Dashboard will subscribe to data streams managed by Haar API and when data is received, a Redux action will be dispatched and handled appropriately.
+      Redux makes managing complex data more simple and this has proven particularly effective when managing forms. There are many forms used by Haar Dashboard to collect data from the user. Some forms, such as when adding a new user, have simple fields which can be represented by standard HTML constructs. However there is a requirement to manage more complex form data, such as an array of data descriptors for the device types. It would be very easy for the JavaScript code managing this to become unweildy. However, the structure which Redux gives to data makes mirroring the database model structure straightforward. Figure x.x. illustrates that objects and arrays have been modelled in HTML forms using this technique.
 
-    \subsection{Nodes}
-      \subsubsection{Hardware}
-      \subsubsection{Energy Efficiency}
-      \subsubsection{Peripheral Communication}
-      \subsubsection{Data Transmission}
-      \subsubsection{Testing}
-      The end devices built to demonstrate the IoT concept have been dubbed Haar Nodes. The first step in their implementation was to physically build the hardware circuits. The Arduino Pro Mini development boards are very minimal and do not have pin headers---if required, these must be soldered on manually. Since these boards were to be used in breadboards, the headers were soldered on. The same went for the sensor components; these arrived without pin headers so these were soldered too.
+      \begin{figure}
+        \centering
+          \begin{tikzpicture}
+            \node[inner sep=0pt] at (0,0)
+              {\includegraphics[width=\textwidth]{assets/form-array.png}};
+          \end{tikzpicture}
+        \caption{Complex data structures are easily managed with Redux}
+        \label{figure:form-array}
+      \end{figure}
 
-      The XBee Explorer also had to be wired up to the Arduino. As it turns out, the FTDI (data communication interface) of the Arduino has the same footprint as the FTDI interface of the XBee Explorer board. This meant that these two components could be connected through the use of additional headers rather than wires. 
+    \subsection{Real-time}
+      One of the most interesting features which Haar Dashboard demonstrates is its real-time event handling. Most of the front-end implementation details have been chosen in order to make real-time interactivity feasible. In particular, the single-page application architecture makes it possible to maintain a bidirectional WebSocket connection; the virtual DOM feature of React makes updating the web page fast and efficient, and finally, the data managament offered by the Flux pattern ensures that data updates can be controlled. When combined, these three characteristics not only make real-time connectivity possible, but they make it efficient and maintainable.
 
-      Once the hardware was in place it was then time to develop the device software using the Arduino IDE. There are three main components to this software: sleep mechanism, sensor interfacing and XBee communication. All of the sensor devices are battery powered so power conservation was an important consideration. Arduino's deepest sleep mode was employed to save as much power as possible, but this presented its own challenges. When in this deep sleep, nothing except an interrupt will wake the Arduino.
+      The Primus package used to managed WebSocket connections in Haar Engine also generates a client-side library. This library is used in Haar Dashboard to negotiate and maintain the actual WebSocket tunnel. Once the connection has been opened, it is then the responsibility of the Redux actions to authenticate the user and to subscribe/unsubscribe to the appropriate sensor event streams. When a new sensor event is received, a Redux action will be dispatched and handled appropriately. This functionality can be demonsrated with the `live data' feature of sensor data pages.
 
-      Two different interrupt methods were used to wake the device. The temperature and RGB colour sensors were developed as cyclic devices---that is, they will take a reading then sleep for a pre-determined length of time. The Watchdog Timer feature of the Arduino boads is used to raise the interrupt in order to wake these devices. In comparison, the gyroscope had to use a different approach. This is because it works best when reacting to movement rather than sampling data at a predetermined interval. The gyroscope component has the ability to raise its own hardware interrupt when movement is detected, so this mechanism was used to wake the host Arduino device.
+    \subsection{Security}
+      Haar Dashboard has its own role to play in the security of the complete application. First of all, the user interface must only be accessible to users with correct and authenticated credentials as proven by a valid JWT token. Although Haar API will not return application data without the presence of a valid token, Haar Dashboard should take responsibility to ensure authentication is respected. More importantly, however, is the protection of a valid JWT token. If a malicious actor were to obtain the token, they could perform any action as that user through the set of APIs. This is made more difficult to solve due to the use of Universal JavaScript, where users with or without JavaScript enabled must be protected.
 
-      When the Arduino wakes up, it then has to take a sensor reading. This aspect was simplified thanks to the I2C protocol libraries which were available for each sensor component. When each sensor device is awoken, it will retrieve the datapoint value by using the appropriate library. The final stage in taking a sensor reading is to send it to the connected XBee device and this was achieved through the use of the xbee-arduino library.
+      The mechanism used address these security concerns are HTTP-only cookies. All users (whether JavaScript is enabled or not) must authenticate with a plain HTML form. This ensures that the authentication will be managed in the same way by the Haar Dashboard server component. The server component will make an API call to Haar API in order to authenticate the user. If the user is successfully authenticated, the server component will respond with an HTTP-only cookie. By setting the HTTP-only option, the cookie cannot be manipulated by client-side JavaScript, thus protecting the cookie from malicious tampering. Additionally, the cookie will be attached to every HTTP request made to Haar API.
 
+    \subsection{Testing}
+      As with all software components of an application, testing should be performed to ensure correct operation. Compared to testing server-side components, testing client-side user interfaces is more cumbersome. Server-side code will always be tested in the same environment with control over all possible variables, whereas there is an element of uncertainty with client-side code. First of all different web browser vendors implement their own JavaScript rendering engine, such as Google Chrome's V8 engine, Mozilla Firefox's SpiderMonkey engine or Microsoft's Chakra engine. In addition to that, users can introduce unexpected or unusual behaviour by engaging different buttons; pressing forwards or backwards in their web browser's history or by navigating directly to a new URL.
+
+      The tools used to implement Haar Dashboard puts it in the best position possible for automated testing. Automated testing is made possible mainly due to the use of React. As has already been described, React makes use of a virtual DOM and therefore is not dependent on an actual DOM API being available. It is possible to write unit tests which emulate user behaviour on the virtual DOM (such as button clicks) and then interrogate the result. The implementation of tests using this method is still verbose and time-consuming and was deemed unsuitable given the constraints for this project. Instead, testing has been conducted manually.
+
+      Manually testing Haar Dashboard was made simpler thanks to the Flux development pattern. The previous sub-section on data management explained that so-called actions are defined as part of that pattern. Since these actions define what the system can do, they formed the basis for manual unit tests.
+
+  % --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  \section{Haar Nodes}
+    The end devices built to demonstrate the IoT concept have been named Haar Nodes. Although they measure arbitrary properties (temperature, RGB colour and gyroscopic movement), the implementation of them still required appropriate hardware and software. This section will discuss the pertinent points about the implementation of the sensor hardware, software and the optimisation of their energy usage.
+
+    \subsection{Hardware}
+      The sensors and actuators were developed with prototype-friendly hardware. Although \ref{chapter:design} (Design) specified the main components and schematics, prototype-friendly breadboards were used in case the designs had to be changed along the way. Another benefit in using breadboards is that all components are reusable for future research. If the implementation of these devices was taken further, they could be built with semi-permanent solderable breadboards and then production-ready printed circuit boards (PCBs).
+
+      The devices were built starting with the Arduino boards. The Arduino Pro Minis used for this implementation were delivered without pin headers, so male pin headers were soldered on first. Once the Arduino boards were in place the breadboard power rails were wired up. All of the sensors are battery powered. The Arduino has a built-in power regulator which can step the 6v of the battery pack down to the 3.3v it requires. An external voltage regulator was used to step the voltage down for the RGB LED actuator since a 12v power supply is used.
+
+      All of the sensor boards which were implemented use the same digital interface. In comparison to Chapter \ref{chapter:design}, the sensor boards implemented are newer, more refined models but they all still use the I2C communication protocol. This protocol requires four lines to be wired between the Arduino and the sensor, namely: Vcc (+), Ground (-), SDA (data) and SCL (clock). In terms of the RGB LED actuator, the transistor circuits were true to the design. Rather than using a single RGB LED, an RGB LED strip was wrapped around the breadboard.
+
+      The addition of the XBee radio chips complete the implementation. As was illustrated in the design, the XBee radio chips have a 2mm pin pitch which is incompatible with the standard 2.54mm pitch of the breadboards and therefore require an additional breakout board. During the implementation it became clear that the XBee breakout board has the same pinout as the FTDI header of the Arduino and this allowed the boards to sit on top of each other. Figures \ref{figure:temp-device} and \ref{figure:led-device} illustrate the completed sensor and actuator prototypes.
+
+      \begin{figure}
+        \centering
+          \begin{tikzpicture}
+            \node[inner sep=0pt] at (0,0)
+              {\includegraphics[width=0.6\textwidth]{assets/temp-prototype.png}};
+          \end{tikzpicture}
+        \caption{Prototype temperature device}\label{figure:temp-device}
+      \end{figure}
+
+      \begin{figure}
+        \centering
+          \begin{tikzpicture}
+            \node[inner sep=0pt] at (0,0)
+              {\includegraphics[width=0.8\textwidth]{assets/led-prototype.png}};
+          \end{tikzpicture}
+        \caption{Prototype RGB LED output device}\label{figure:led-device}
+      \end{figure}
+
+    \subsection{Energy Efficiency}
+      One of the main concerns for the battery-powered devices was the battery life. In order for the application of devices to be practical, the batteries must not require constant charging or changing. Each device has two microcontroller units---the Arduino and the XBee radio chip. Both of these microcontrollers support various sleep modes, so these were employed to conserve energy.
+
+      The deepest sleep mode available to the Arduino was implemented. Once the Arduino enters this deep sleep, it can only be awoken with an interrupt signal. For cyclic sensor devices which send a reading at regular intervals (temperature and RGB colour), the watchdog timer interrupt was used. This allows the Arduino to wake up after a pre-set length of time which is stored in the Watchdog Control Register.
+
+      The watchdog timer technique was not appropriate for use with the gyroscope sensor. Data from the gyroscope sensor should be sent whenever motion is detected rather than at a set interval. The gyroscope sensor chip provides a hardware interrupt line extactly for this purpose. When motion is detected, the hardware interrupt is triggered and the Arduino is awoken from its deep sleep.
+
+      An attempt was made to implement a hardware-based sleep mode with the XBee radio chips too. One of the XBee sleep modes allows the DTR (data ready) pin to be used as a hibernation pin; when it is brought high (3.3v) the XBee will enter a deep sleep and when it is brought low (0v), it will wake up. This technique uses a pull-up resistor to bring the DTR pin high by default and then relies on the Arduino sinking the current when it wants the XBee chip to wake up. The operation of this was sporadically unsuccessful and the root cause of the problem could not be identified. As a result, this feature was left out with the acknowledgement that more battery power will be consumed.
+
+    \subsection{Data Transmission}
       The Arduino board communicates with the XBee chip using a serial communication channel and there are a number of implementation details to discuss. First of all, the XBee can operate in two modes: transparent or API. With transparent mode, the XBee chip simply emulates a wired serial link whereas the API mode allows more advanced features to be used. API mode was chosen for this project due to the extra features it provides.
 
-      Since the XBee chip contains its own microcontroller, this project attempted to implement sleep mode for it too. The XBee can be configured to use pin hibernation; when the DTR pin is logic high the XBee will sleep and when the pin is logic low, it will be awoken. The operation of this was sporadically unsuccessful and the root cause of the problem could not be identified. As a result, this feature was left out with the acknowledgement that more battery power will be consumed.
-
-      The ultimate purpose of the Haar Nodes is to interface with the Haar demonstration application. In order to do that, the sensed data must be transmitted to Haar API via the WebSocket connection. A common data-interchange format is required so that both the devices and the API are compatible. Arguably, the choice of format should belong in the design chapter, however it is dependent on the implementation of the Haar Engine APIs and models. Four different formats were considered: comma-separated value (CSV), JSON DB Schema, Compressed JSON DB Schema and Compressed JSON Map.
+      Secondly, the end goal of the Haar Nodes is to interface with the Haar API. In order to do that, the sensed data must be communicated to the API. A common data-interchange format is required so that both the devices and the API are compatible. Arguably, the choice of format should belong in the design chapter, however it is dependent on the implementation of the Haar Engine APIs and models. Four different formats were considered: comma-separated value (CSV), JSON DB Schema, Compressed JSON DB Schema and Compressed JSON Map.
 
       Each of the formats have been described and explained below and there were a number of aims to satisfy. Firstly, size of data transmitted has an effect on power usage. More data means that the XBee chip has to transmit for longer periods, consuming battery power. The maximum packet size of an XBee transmission is 72 bytes \citep{xbee-packet-size}. In order to limit transmission to one packet, data size should aim to be less that this limit. Additionally, the format chosen should be robust and make it simple to distinguish the datapoints collected.\\
 
@@ -325,33 +407,23 @@ const handlers = [
 
       Figures \ref{figure:temp-device} and \ref{figure:led-device} show the finished prototype hardware for the temperature sensor and RGB LED actuator. The RGB colour and gyroscope sensors are similar to the temperature sensor. 
 
-      \begin{figure}
-        \centering
-          \begin{tikzpicture}
-            \node[inner sep=0pt] at (0,0)
-              {\includegraphics[width=0.6\textwidth]{assets/temp-prototype.png}};
-          \end{tikzpicture}
-        \caption{Prototype temperature device}\label{figure:temp-device}
-      \end{figure}
+    \subsection{Testing}
+      The constrained nature of this component required a different approach to testing.
+      % Serial communication to check sensor data
+      % LED to check sleep mode
+      % XBee explorer board and XCTU
 
-      \begin{figure}
-        \centering
-          \begin{tikzpicture}
-            \node[inner sep=0pt] at (0,0)
-              {\includegraphics[width=0.8\textwidth]{assets/led-prototype.png}};
-          \end{tikzpicture}
-        \caption{Prototype RGB LED output device}\label{figure:led-device}
-      \end{figure}
+  % --------------------------------------------------------------------------------------------------------------------------------------------------------    
 
-    \subsection{Bridge}
-      \subsubsection{Hardware}
-      \subsubsection{Real-Time API Connection}
-      \subsubsection{Serial Connection}
-        % Have to manually enable serial on pins
-        % Hardware flow control
-        % Hardware flow control not compatible
-      \subsubsection{Security}
-      \subsubsection{Testing}
+  \section{Haar Bridge}     
+    \subsubsection{Hardware}
+    \subsubsection{Real-Time API Connection}
+    \subsubsection{Serial Connection}
+      % Have to manually enable serial on pins
+      % Hardware flow control
+      % Hardware flow control not compatible
+    \subsubsection{Security}
+    \subsubsection{Testing}
       The final piece for the complete implementation is the bridge device. Like the end devices, the hardware for this had to first be built. When sourcing the Raspberry Pi devices for this component an additional component, the RPi HAT prototype board was found. Rather than connecting the RPi to the XBee chip with simple wires, this prototype board was used to build a more professional prototype. The RPi HAT required additional soldering, namely the headers to connect it to the RPi, all circuit wires and the XBee Explorer pins. It should also be noted that the Raspberry Pi model B+ (RPiB+)  was procured rather than the model 2 and this was down to its cheaper cost. The RPiB+ is less powerful with a single-core 700MHz processor and 512MB RAM, but is still expected to be sufficiently powerful. The completed hardware can be seen in Figure \ref{figure:bridge-device}.
 
       As planned, the RPi-maintained distribution of Linux was installed on the RPiB+. A small Node.js application was developed. It made use of the same JavaScript packages which have been implemented in the Haar Engine and Dashboard. One additional role which the application played was to expand on the Compressed JSON Object data format described in the previous section so it could be submitted to Haar API.
@@ -363,7 +435,4 @@ const handlers = [
               {\includegraphics[width=0.6\textwidth]{assets/bridge-prototype.png}};
           \end{tikzpicture}
         \caption{Prototype bridge device}\label{figure:bridge-device}
-      \end{figure}
-
-    \subsection{Security}
-    \subsection{Testing}
+      \end{figure}     
