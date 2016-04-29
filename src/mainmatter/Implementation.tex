@@ -1,4 +1,5 @@
 \chapter{Implementation}
+\label{chapter:implementation}
   This chapter will discuss the specific implementation details for both project components: the Haar Engine and Haar demonstration application.
 
   % Chapter structure
@@ -42,7 +43,7 @@
 
       The development ethos of the Node.js and wider JavaScript community is to embrace the functional programming paradigm and to compose applications with increasingly specific modules. To support this ethos, Node Package Manager (npm) is used as a global open source registry of reusable modules. To be compatible with this registry, any given module must provide a `package.json' file in the project root. This file includes (amongst other options): a version number; author details; any npm dependencies and lifecycle commands like start or test.
 
-      Haar Engine employed the features of npm to aid development and to encourage extensibility. In particular, a number of open source npm packages were used for this project and were specified in the `package.json' file. In accordance with the professional considerations described in Chapter \ref{chapter:profession-considerations}, full credit has been given to the authors of these projects in Appendix x. Additionally, the Haar Engine itself can be included as a project dependency since it adheres to the requirements of npm. This is exactly the purpose of this software component---to be an extensible framework to build from.
+      Haar Engine employed the features of npm to aid development and to encourage extensibility. In particular, a number of open source npm packages were used for this project and were specified in the `package.json' file. In accordance with the professional considerations described in Chapter \ref{chapter:profession-considerations}, full credit has been given to the authors of these projects in Appendix \ref{chapter:credits}. Additionally, the Haar Engine itself can be included as a project dependency since it adheres to the requirements of npm. This is exactly the purpose of this software component---to be an extensible framework to build from.
 
       One final detail regarding Node.js is the version of JavaScript used. JavaScript itself is an implementation of a standard: ECMAScript. The latest version of ECMAScript (ES2015) was ratified in June 2015 \citep{es2015} and as a result, new language features and syntax are slowly being implemented by JavaScript engines. Embracing cutting-edge features for client-side JavaScript has historically been troublesome due to the number of available browsers, however this problem does not exist in Node.js. Developers of server-side applications can support whichever language features that are installed on the server. Given this opportunity, Haar Engine has been implemented using native ES2015 syntax. This requirement has been specified in `package.json'.
 
@@ -189,14 +190,10 @@ const handlers = [
 
       The final category of testing performed on the Haar Engine is acceptance testing. The purpose of acceptance testing is to compare the finished product against requirements specifications defined. The results of this testing can be found in Appendix \ref{haar-engine-acceptance-tests} and will be discussed in further detail as part of the next chapter.
 
-  % --------------------------------------------------------------------------------------------------------------------------------------------------------
-
   \section{Haar API}
     The second software component produced for this project is Haar, a demonstration implementation of Haar Engine. The main purpose of this demonstration application is to validate the design decisions and to show, by example, that the theory behind this IoT framework works. The implementation of Haar has been split further into four sub-components: API, Dashboard, Bridge and Nodes.
 
     Haar API is the actual implementation of Haar Engine. Since the aim of Haar Engine is to provide a starting point for an IoT application, the sole purpose of Haar API is to bootstrap the framework and show that it can be included as a project dependency. Quite simply, Haar API includes Haar Engine as a dependency from Github.
-
-  % --------------------------------------------------------------------------------------------------------------------------------------------------------
 
   \section{Haar Dashboard}
     Haar Dashboard is a web-based user interface built on top of the suite of Haar Engine APIs. It utilises both the Data Access API to configure system settings and the Real-Time API to subscribe to live data events. Whilst not necessary for the operation of the underlying IoT framework, the Haar Dashboard UI makes configuring devices simple and illustrates how a viable consumer solution might work.
@@ -274,8 +271,6 @@ const handlers = [
 
       Manually testing Haar Dashboard was made simpler thanks to the Flux development pattern. The previous sub-section on data management explained that so-called actions are defined as part of that pattern. Since these actions define what the system can do, they formed the basis for manual unit tests.
 
-  % --------------------------------------------------------------------------------------------------------------------------------------------------------
-
   \section{Haar Nodes}
     The end devices built to demonstrate the IoT concept have been named Haar Nodes. Although they measure arbitrary properties (temperature, RGB colour and gyroscopic movement), the implementation of them still required appropriate hardware and software. This section will discuss the pertinent points about the implementation of the sensor hardware, software and the optimisation of their energy usage.
 
@@ -316,6 +311,7 @@ const handlers = [
       An attempt was made to implement a hardware-based sleep mode with the XBee radio chips too. One of the XBee sleep modes allows the DTR (data ready) pin to be used as a hibernation pin; when it is brought high (3.3v) the XBee will enter a deep sleep and when it is brought low (0v), it will wake up. This technique uses a pull-up resistor to bring the DTR pin high by default and then relies on the Arduino sinking the current when it wants the XBee chip to wake up. The operation of this was sporadically unsuccessful and the root cause of the problem could not be identified. As a result, this feature was left out with the acknowledgement that more battery power will be consumed.
 
     \subsection{Data Transmission}
+    \label{section:data-transmission}
       The Arduino board communicates with the XBee chip using a serial communication channel and there are a number of implementation details to discuss. First of all, the XBee can operate in two modes: transparent or API. With transparent mode, the XBee chip simply emulates a wired serial link whereas the API mode allows more advanced features to be used. API mode was chosen for this project due to the extra features it provides.
 
       Secondly, the end goal of the Haar Nodes is to interface with the Haar API. In order to do that, the sensed data must be communicated to the API. A common data-interchange format is required so that both the devices and the API are compatible. Arguably, the choice of format should belong in the design chapter, however it is dependent on the implementation of the Haar Engine APIs and models. Four different formats were considered: comma-separated value (CSV), JSON DB Schema, Compressed JSON DB Schema and Compressed JSON Map.
@@ -408,25 +404,19 @@ const handlers = [
       Figures \ref{figure:temp-device} and \ref{figure:led-device} show the finished prototype hardware for the temperature sensor and RGB LED actuator. The RGB colour and gyroscope sensors are similar to the temperature sensor. 
 
     \subsection{Testing}
-      The constrained nature of this component required a different approach to testing.
-      % Serial communication to check sensor data
-      % LED to check sleep mode
-      % XBee explorer board and XCTU
+      The constrained nature of this component required a different approach to testing. There were two main debugging methods used to assert correct operation for the Arduino boards: feedback messages via serial communication and simple signalling using the onboard LED. The programs for these devices were also simple, so they could be tested in a linear, start-to-finish fashion.
 
-  % --------------------------------------------------------------------------------------------------------------------------------------------------------    
+      The Arduino boards were connected with USB to a host computer for program compilation. Using this same USB connection it is possible to monitor serial transmissions from the Arduino board. Print statements were used at breakpoints in the program to inspect variable values and this was helpful when asserting the correct operation of sensor chips. The onboard LED was used as a simple flag and was especially useful when debugging Arduino sleep cycles. For example, when the board was awake the LED would be on and when the Arduino was put to sleep, the LED would be turned off.
 
-  \section{Haar Bridge}     
-    \subsubsection{Hardware}
-    \subsubsection{Real-Time API Connection}
-    \subsubsection{Serial Connection}
-      % Have to manually enable serial on pins
-      % Hardware flow control
-      % Hardware flow control not compatible
-    \subsubsection{Security}
-    \subsubsection{Testing}
-      The final piece for the complete implementation is the bridge device. Like the end devices, the hardware for this had to first be built. When sourcing the Raspberry Pi devices for this component an additional component, the RPi HAT prototype board was found. Rather than connecting the RPi to the XBee chip with simple wires, this prototype board was used to build a more professional prototype. The RPi HAT required additional soldering, namely the headers to connect it to the RPi, all circuit wires and the XBee Explorer pins. It should also be noted that the Raspberry Pi model B+ (RPiB+)  was procured rather than the model 2 and this was down to its cheaper cost. The RPiB+ is less powerful with a single-core 700MHz processor and 512MB RAM, but is still expected to be sufficiently powerful. The completed hardware can be seen in Figure \ref{figure:bridge-device}.
+      The final component which required testing was the XBee radio chip. The wiring used to connect the XBee to the Arduino used the FTDI (data communication) interface which is normally used by the USB connection when programming. This meant that serial communication of the Arduino could not be monitored. Instead, an additional XBee radio chip was connected to a computer using a breakout board which exposes USB. Software provided by the manufacturer called Digi XCTU was then used to monitor and interrogate transmission packets.   
 
-      As planned, the RPi-maintained distribution of Linux was installed on the RPiB+. A small Node.js application was developed. It made use of the same JavaScript packages which have been implemented in the Haar Engine and Dashboard. One additional role which the application played was to expand on the Compressed JSON Object data format described in the previous section so it could be submitted to Haar API.
+  \section{Haar Bridge}
+    The final and crucial component of the demonstration application is Haar Bridge. This component acts like a router; it translates the ZigBee-based packets of the Wireless Sensor Network into TCP/IP packets compatible with the wider Internet. In fact, Haar Bridge performs a bit more than simple translation---it also expands the data packet from the format discussed in Section \ref{section:data-transmission} into an API-compatible format. This brief section will discuss the hardware implementation as well as details of the software implementation.
+
+    \subsection{Hardware}
+      The hardware implementation made use of an Raspberry Pi model B+ (RPiB+) instead of the RPi2 as discussed in the design. The main reason for this was price; the RPiB+ was cheaper than the RPi2. The RPiB+ has a single-core 700MHz processor and 512MB RAM compared to a quad-core 900MHz processor and 1GB RAM, but it is still suffiently powerful for this project. When sourcing the RPi devices an additional component, the RPi Hardware on Top (HAT) prototype board, was found. Rather than connecting the RPi to the XBee chip with simple wires, this prototype board was used to build a more professional prototype.
+
+      The RPi HAT is a semi-permanent board so unlike the breadboards used for the Arduino devices, some soldering was required to build the device. To ensure that the components were reusable for future projects, female pin headers were soldered onto the HAT so the XBee breakout board could be added or removed if necessary. The resulting form factor is quite pleasing and is shown in Figure \ref{figure:bridge-device}.
 
       \begin{figure}
         \centering
@@ -435,4 +425,18 @@ const handlers = [
               {\includegraphics[width=0.6\textwidth]{assets/bridge-prototype.png}};
           \end{tikzpicture}
         \caption{Prototype bridge device}\label{figure:bridge-device}
-      \end{figure}     
+      \end{figure}
+
+    \subsection{Software}
+      As planned, the RPi-maintained distribution of Linux was installed on the RPiB+. This gave a foundation for Haar Bridge software which, like the other Haar components, was developed as a Node.js application. This application used some of the same JavaScript packages which were implemented in the Haar Engine and Dashboard. There are two main functions which Haar Bridge must perform in order to operate correctly, namely: maintain a WebSocket connection with Haar API and maintain a serial connection with the XBee radio chip. These two functions are intertwined.
+
+      Haar Bridge uses the Primus JavaScript package to open and maintain a single WebSocket connection. There are two stages in negotiating this WebSocket connection: user authentication and then topic subscription. When the application is started, an HTTP request is made to the Data Access API in order to retrieve a JWT token. The WebSocket connection is then initiated using this token. Once the WebSocket has been opened, the application can then subscribe to any appropriate event streams based on which devices it is connected to.
+
+      Haar Bridge also uses the serialport and xbee-api JavaScript packages to maintain and parse serial communication between itself and the XBee radio chip. In order to support serial connections, the Raspberry Pi must first be configured to use its GPIO pins for a serial interface. The XBee radio chip and the Raspberry Pi support hardware flow control using clear-to-send (CTS) and request-to-send (RTS) pins. They are however not compatible and so hardware flow control was no implemented as designed.
+
+      Once the WebSocket and serial communication channels were established, Haar Bridge could then perform its routing duties. If a WebSocket message is received, its contents will be forwarded to the appropriate ZigBee device. Conversely, if a serial message is received, it will be parsed by the xbee-api package. The data format will be expanded (as described in Figure \ref{figure:bridge-device}) and then a WebSocket message will be sent.
+
+    \subsection{Testing}
+      % Manual
+        % XCTU
+        % JS console.log statements     
