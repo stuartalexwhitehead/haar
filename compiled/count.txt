@@ -1,9 +1,9 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 28754
-Words in headers: 279
+Words in text: 30882
+Words in headers: 288
 Words outside text (captions, etc.): 131
-Number of headers: 148
+Number of headers: 155
 Number of floats/tables/figures: 19
 Number of math inlines: 0
 Number of math displayed: 0
@@ -12,10 +12,10 @@ Subcounts:
   0+7+0 (1/0/0/0) _top_
   0+1+0 (1/0/0/0) Chapter: Abstract
   0+1+0 (1/0/0/0) Chapter: Acknowledgements
-  0+1+0 (1/0/0/0) Chapter: Introduction
-  0+2+0 (1/0/0/0) Section: Project Motivation
-  0+3+0 (1/0/0/0) Section: Aims and Objectives
-  0+2+0 (1/0/0/0) Section: Report Structure
+  119+1+0 (1/0/0/0) Chapter: Introduction
+  224+2+0 (1/0/0/0) Section: Project Motivation
+  142+5+0 (3/0/0/0) Section: Aims and Objectives
+  129+2+0 (1/0/0/0) Section: Report Structure
   102+6+0 (1/0/0/0) Section: Legal, Social, Ethical and Professional Considerations
   288+2+0 (1/0/0/0) Subsection: Public Interest
   74+4+0 (1/0/0/0) Subsection: Professional Competence and Integrity
@@ -68,7 +68,7 @@ Subcounts:
   19+1+0 (1/0/0/0) Chapter: Implementation
   373+1+4 (1/1/0/0) Section: Hosting
   0+2+0 (1/0/0/0) Section: Haar Engine
-  322+3+0 (1/0/0/0) Subsection: Node.js and npm
+  321+3+0 (1/0/0/0) Subsection: Node.js and npm
   213+2+0 (1/0/0/0) Subsection: MongoDB Database
   267+2+0 (1/0/0/0) Subsection: MVC Architecture
   488+1+0 (1/0/0/0) Subsection: Real-Time
@@ -85,11 +85,21 @@ Subcounts:
   340+1+8 (1/2/0/0) Subsection: Hardware
   317+2+0 (1/0/0/0) Subsection: Energy Efficiency
   589+2+0 (1/0/0/0) Subsection: Data Transmission
-  12+1+0 (1/0/0/0) Subsection: Testing
-  211+10+3 (6/1/0/0) Section: Haar Bridge
-  0+3+0 (1/0/0/0) Chapter: Results and Evaluation
+  240+1+0 (1/0/0/0) Subsection: Testing
+  80+2+0 (1/0/0/0) Section: Haar Bridge
+  170+1+3 (1/1/0/0) Subsection: Hardware
+  318+1+0 (1/0/0/0) Subsection: Software
+  0+1+0 (1/0/0/0) Subsection: Testing
+  205+1+0 (1/0/0/0) Chapter: Evaluation
+  79+2+0 (1/0/0/0) Section: Acceptance Testing
+  213+2+0 (1/0/0/0) Subsection: Haar Engine
+  164+1+0 (1/0/0/0) Subsection: Haar
+  269+2+0 (1/0/0/0) Section: Inter-Packet Rate
+  0+1+0 (1/0/0/0) Section: Improvements
   0+1+0 (1/0/0/0) Chapter: Conclusions
+  0+4+0 (1/0/0/0) Section: The Internet of Things
   0+2+0 (1/0/0/0) Section: Future Work
+  0+2+0 (1/0/0/0) Section: Critical Appraisal
   544+4+6 (1/0/0/0) Chapter: Haar Engine Acceptance Tests
   568+3+5 (1/0/0/0) Chapter: Haar Acceptance Tests
   0+1+0 (1/0/0/0) Chapter: Credits
