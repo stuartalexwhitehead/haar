@@ -1,16 +1,17 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 32384
-Words in headers: 281
+Words in text: 32682
+Words in headers: 282
 Words outside text (captions, etc.): 136
-Number of headers: 154
+Number of headers: 155
 Number of floats/tables/figures: 20
 Number of math inlines: 0
 Number of math displayed: 0
 Subcounts:
   text+headers+captions (#headers/#floats/#inlines/#displayed)
-  0+1+0 (1/0/0/0) Chapter: Abstract
-  0+1+0 (1/0/0/0) Chapter: Acknowledgements
+  51+1+0 (1/0/0/0) Chapter: Declaration
+  150+1+0 (1/0/0/0) Chapter: Abstract
+  97+1+0 (1/0/0/0) Chapter: Acknowledgements
   119+1+0 (1/0/0/0) Chapter: Introduction
   224+2+0 (1/0/0/0) Section: Project Motivation
   142+5+0 (3/0/0/0) Section: Aims and Objectives
