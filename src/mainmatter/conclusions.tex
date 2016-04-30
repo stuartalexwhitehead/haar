@@ -1,30 +1,29 @@
-\chapter{Conclusions}
-  \section{The Internet of Things}
-    % Changable
-    % Lots of people trying to solve the same problems
-    % Fragmented technologies
+\chapter{Conclusion}
+  To recap, this project specified four main objectives in order to satisfy three high-level aims. The objectives were to research IoT practices and concepts; to research supporting technologies; to develop an IoT application framework and to develop a demonstration application using the framework. These objectives have been successfully achieved.
 
-    % Emerging best practices and technologies
-      % ZigBee
-      % MQTT
-      % Seen in Samsung Artik family of boards
+  This chapter will discuss the main lessons learnt during the course of the project. This discussion will cover the current state of the Internet of Things and the challenges it still faces. Additionally, topics of future work will be discussed based on the challenges uncovered. Finally, this chapter will critically appraise my conduct for the project and I will give a brief personal reflection of the honours experience.
+
+  \section{The Internet of Things}
+    The easiest conclusion to draw about IoT is that it is an unsettled area of research. The diversity of research shows that academic institutions and manufacturers are investing a lot of time and money into the concept. They are motivated to do so by the potential opportunities lying in wait, like smart cities and the connected home. Undoubtably there are many use cases which have not yet been imagined.
+
+    One downside to the volume of research being conducted is the increasingly fragmented array of technologies available. In some cases there are numerous competing technologies which address the same challenge, such as the various implementations of the IEEE 802.15.4 Low-Rate Wireless Personal Area Networks standard. ZigBee and 6LowPAN are only two of many 802.15.4 implementations. It would appear that the IoT concept is now at a consolidation stage where best practices and go-to technologies will identified.
+
+    Some technologies are already emerging as a standard tool for IoT applications. The frameworks and platforms investigated in Chapter \ref{Chapter:Background} (Background) support a variety of connectivity protocols and techniques, including HTTP, UDP single-shot, CoAP and MQTT. HTTP is already established as the \textit{de facto} Internet communication protocol, making it the ideal choice for the distribution of meta and configuration data for IoT applications. HTTP however lacks the mechanisms to facilitate real-time, bidirectional event streams. MQTT is emerging as the technology of choice for this purpose as indicated by Amazon's support for it.
+
+    A final conclusion to draw on IoT is that it is a truly multidisciplinary concept. Successful IoT applications will rely on an effective collaboration between computer scientists, designers, user researchers and engineers. Organisations like Google, Amazon and Samsung will strive in the respect because they have access to the necessary expertise and already implement mature product development processes. The user experience is a crucial aspect to get right; the best IoT applications will be those which are invisible or second-nature to its users.
 
   \section{Future Work}
-    % Adding a new device to a WSN
-    % Connecting bridge to TCP/IP network (UX)
-    % The need for a bridge device
-    % A flexible framework using MQTT
-    % ServerSource events
-    % Google OnHub
+    There remains a lot of work to complete in the realm of IoT. One of the challenges not addressed in this project was the association of IoT devices to other devices and networks. There were eight XBee radio chips used across two ZigBee networks for the Haar demonstration application. These devices and networks were all configured through a manual and laborious process; an process which is not possible for the average consumer. So how, then, can constrained devices with little or no human-computer interaction be set up? Maybe Near Field Communication (NFC) could be used to configure network settings of nearby devices. This is as a much a challenge for product designers as it is for computer scientists.
+
+    The unfortunate necessity for a bridge device is another aspect to be addressed. The bridge device is in essence a router to translate data between the Internet and wireless smart devices. As was described in Section \ref{bidirectioncomms}, the configuration of the Local Area Network and its firewall can also impact the available technologies. There is potentially a market for a smart network hub which integrates traditional networking components like a router, firewall and a WiFi access point with IoT-specific technologies like an IEEE 802.15.4 radio transceiver. A `Smart Home Hub' such as this could facilitate the association of IoT devices and their network requirements.
+
+    Haar Bridge is a response to what is the most pronounced challenge in facilitating end-to-end global connectivity for IoT devices. The Internet infrastructure relies on the TCP/IP protocol but this is, in large, not compatible with the optimised wireless communication protocols implemented in constrained devices. Some protocols like ZigBee IP and 6LoWPAN attempt to extend TCP/IP compatibility but there is still work to be done. In particular, these protocols rely on IPv6 and the uptake of this has been slow.
 
   \section{Critical Appraisal}
-    % Worked to the best of my ability
-    % Most time was spent on research and design - good sign
-    % 10 weeks implementing, 20 weeks research, design and report
-    % Got other people interested
-    % More user research/testing
-    % Never lost interest, potentially more interested
+    Overall I am satisfied with my conduct and the I effort put into this project. I feel that I have worked to the best of my ability and made the best use of the time available. The time spent working on the implementation is small when compared to the time spent researching and designing; as an estimate, one-third of the time was spent on implementation whereas two-thirds of the time was spent reading, designing, writing and evaluating.
 
-    % Most proud aspect
+    One improvement which could be improved is the approach to user research and evaluation. This project was very much driven by the momentum in the IoT area; the implementation was based on a consolidation of the emerging IoT practices and technologies. Future projects could perform user research to determine which features of a framework would be the most useful, for example. External users could then be used in order to evaluate the effectiveness and flexibility of the software.
 
-    % most difficult aspect
+    For me, the most difficult aspect of the whole project was at the design stage. It took many design iterations to arrive at a solution which both satisfied the information uncovered in Chapter \ref{Chapter:Background} and was feasible to implement. I think that the difficulty came from the fact that IoT is still an immature area and that there are few established practices already in place.
+
+    Going into this project, I had a curiosity in the Internet of Things but not an active interest. Now that the project has been completed, I would say that I am now more interested in the field and would be keen to continue learning about this subject. I think the implementation and the potential it demonstrates has also captured the interest of other students, lecturers and work colleagues. That is what I am most proud of.
