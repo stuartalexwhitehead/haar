@@ -1,6 +1,6 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 32682
+Words in text: 32684
 Words in headers: 282
 Words outside text (captions, etc.): 136
 Number of headers: 155
@@ -100,8 +100,8 @@ Subcounts:
   319+4+0 (1/0/0/0) Section: The Internet of Things
   303+2+0 (1/0/0/0) Section: Future Work
   295+2+0 (1/0/0/0) Section: Critical Appraisal
-  544+4+6 (1/0/0/0) Chapter: Haar Engine Acceptance Tests
-  568+3+5 (1/0/0/0) Chapter: Haar Acceptance Tests
+  545+4+6 (1/0/0/0) Chapter: Haar Engine Acceptance Tests
+  569+3+5 (1/0/0/0) Chapter: Haar Acceptance Tests
   0+1+0 (1/0/0/0) Chapter: Credits
   182+1+0 (1/0/0/0) Section: Async
   178+1+0 (1/0/0/0) Section: Axios
