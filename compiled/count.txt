@@ -1,6 +1,6 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 32383
+Words in text: 32384
 Words in headers: 288
 Words outside text (captions, etc.): 136
 Number of headers: 155
@@ -23,7 +23,7 @@ Subcounts:
   81+4+0 (1/0/0/0) Subsection: Duty to the Profession
   526+1+9 (1/1/0/0) Chapter: Background
   603+4+0 (1/0/0/0) Section: Opportunities, Motivators and Enablers
-  887+3+0 (1/0/0/0) Section: Challenges and Inhibiters
+  887+3+0 (1/0/0/0) Section: Challenges and Inhibitors
   487+2+11 (1/1/0/0) Section: Use Cases
   74+2+0 (1/0/0/0) Section: Existing Platforms
   497+6+0 (3/0/0/0) Subsection: Hosting
@@ -96,7 +96,7 @@ Subcounts:
   171+1+0 (1/0/0/0) Subsection: Haar
   291+2+5 (1/1/0/0) Section: Inter-Packet Rate
   437+1+0 (1/0/0/0) Section: Improvements
-  117+1+0 (1/0/0/0) Chapter: Conclusion
+  117+1+0 (1/0/0/0) Chapter: Conclusions
   319+4+0 (1/0/0/0) Section: The Internet of Things
   303+2+0 (1/0/0/0) Section: Future Work
   295+2+0 (1/0/0/0) Section: Critical Appraisal
@@ -109,9 +109,9 @@ Subcounts:
   178+1+0 (1/0/0/0) Section: Bcrypt
   202+2+0 (1/0/0/0) Section: Body Parser
   182+1+0 (1/0/0/0) Section: Chart.js
-  183+1+0 (1/0/0/0) Section: Classnames
+  184+1+0 (1/0/0/0) Section: Classnames
   197+2+0 (1/0/0/0) Section: Cookie Parser
-  187+1+0 (1/0/0/0) Section: Cors
+  187+1+0 (1/0/0/0) Section: CORS
   203+1+0 (1/0/0/0) Section: Dotenv
   187+1+0 (1/0/0/0) Section: Engine.io
   202+1+0 (1/0/0/0) Section: Express
