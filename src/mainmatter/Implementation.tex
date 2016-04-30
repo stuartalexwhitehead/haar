@@ -302,6 +302,7 @@ const handlers = [
       \end{figure}
 
     \subsection{Energy Efficiency}
+    \label{section:energy-efficiency}
       One of the main concerns for the battery-powered devices was the battery life. In order for the application of devices to be practical, the batteries must not require constant charging or changing. Each device has two microcontroller units---the Arduino and the XBee radio chip. Both of these microcontrollers support various sleep modes, so these were employed to conserve energy.
 
       The deepest sleep mode available to the Arduino was implemented. Once the Arduino enters this deep sleep, it can only be awoken with an interrupt signal. For cyclic sensor devices which send a reading at regular intervals (temperature and RGB colour), the watchdog timer interrupt was used. This allows the Arduino to wake up after a pre-set length of time which is stored in the Watchdog Control Register.
