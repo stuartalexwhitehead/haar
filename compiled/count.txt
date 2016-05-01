@@ -1,95 +1,95 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 33253
+Words in text: 33171
 Words in headers: 284
-Words outside text (captions, etc.): 138
+Words outside text (captions, etc.): 143
 Number of headers: 156
-Number of floats/tables/figures: 20
+Number of floats/tables/figures: 21
 Number of math inlines: 0
 Number of math displayed: 0
 Subcounts:
   text+headers+captions (#headers/#floats/#inlines/#displayed)
   51+1+0 (1/0/0/0) Chapter: Declaration
-  150+1+0 (1/0/0/0) Chapter: Abstract
+  149+1+0 (1/0/0/0) Chapter: Abstract
   96+1+0 (1/0/0/0) Chapter: Acknowledgements
   119+1+0 (1/0/0/0) Chapter: Introduction
-  224+2+0 (1/0/0/0) Section: Project Motivation
+  222+2+0 (1/0/0/0) Section: Project Motivation
   142+5+0 (3/0/0/0) Section: Aims and Objectives
-  126+2+0 (1/0/0/0) Section: Report Structure
+  122+2+0 (1/0/0/0) Section: Report Structure
   102+6+0 (1/0/0/0) Section: Legal, Social, Ethical and Professional Considerations
-  288+2+0 (1/0/0/0) Subsection: Public Interest
+  289+2+0 (1/0/0/0) Subsection: Public Interest
   74+4+0 (1/0/0/0) Subsection: Professional Competence and Integrity
-  70+4+0 (1/0/0/0) Subsection: Duty to Relevant Authority
+  71+4+0 (1/0/0/0) Subsection: Duty to Relevant Authority
   81+4+0 (1/0/0/0) Subsection: Duty to the Profession
-  526+1+9 (1/1/0/0) Chapter: Background
-  603+4+0 (1/0/0/0) Section: Opportunities, Motivators and Enablers
-  887+3+0 (1/0/0/0) Section: Challenges and Inhibitors
-  487+2+11 (1/1/0/0) Section: Use Cases
+  524+1+9 (1/1/0/0) Chapter: Background
+  546+4+0 (1/0/0/0) Section: Opportunities, Motivators and Enablers
+  840+3+0 (1/0/0/0) Section: Challenges and Inhibitors
+  488+2+11 (1/1/0/0) Section: Use Cases
   74+2+0 (1/0/0/0) Section: Existing Platforms
-  497+6+0 (3/0/0/0) Subsection: Hosting
-  216+3+0 (1/0/0/0) Subsection: Source Availability Model
-  943+6+0 (6/0/0/0) Subsection: Connectivity
-  714+2+0 (1/0/0/0) Subsection: Bidirectional Communication
-  83+2+5 (1/1/0/0) Subsection: Application Triggers
+  478+6+0 (3/0/0/0) Subsection: Hosting
+  210+3+0 (1/0/0/0) Subsection: Source Availability Model
+  902+6+0 (6/0/0/0) Subsection: Connectivity
+  676+2+0 (1/0/0/0) Subsection: Bidirectional Communication
+  84+2+5 (1/1/0/0) Subsection: Application Triggers
   181+2+0 (1/0/0/0) Section: Sensor Hardware
-  434+2+0 (1/0/0/0) Subsection: Processor Architecture
-  224+1+0 (1/0/0/0) Subsection: Memory
-  402+2+0 (1/0/0/0) Subsection: Input/Output
-  476+1+4 (1/0/0/0) Subsection: Connectivity
+  426+2+0 (1/0/0/0) Subsection: Processor Architecture
+  175+1+0 (1/0/0/0) Subsection: Memory
+  400+2+0 (1/0/0/0) Subsection: Input/Output
+  473+1+4 (1/0/0/0) Subsection: Connectivity
   0+5+0 (1/0/0/0) Section: Case Study: UK Smart Meters
-  458+1+0 (1/0/0/0) Subsection: Overview
-  405+1+0 (1/0/0/0) Subsection: Governance
-  603+1+0 (1/0/0/0) Subsection: Implementation
-  760+1+0 (1/0/0/0) Section: Conclusions
-  178+1+0 (1/0/0/0) Chapter: Specification
+  445+1+0 (1/0/0/0) Subsection: Overview
+  399+1+0 (1/0/0/0) Subsection: Governance
+  580+1+0 (1/0/0/0) Subsection: Implementation
+  762+1+0 (1/0/0/0) Section: Conclusions
+  177+1+0 (1/0/0/0) Chapter: Specification
   0+2+0 (1/0/0/0) Section: Functional Requirements
-  605+15+0 (6/0/0/0) Subsection: Framework
-  490+6+0 (4/0/0/0) Subsection: Demonstration Application
-  41+2+0 (1/0/0/0) Section: Non-functional Requirements
+  588+15+0 (6/0/0/0) Subsection: Framework
+  489+6+0 (4/0/0/0) Subsection: Demonstration Application
+  40+2+0 (1/0/0/0) Section: Non-functional Requirements
   251+10+0 (5/0/0/0) Subsection: Constraints
   34+2+0 (1/0/0/0) Subsection: Performance Requirements
-  74+2+0 (1/0/0/0) Subsection: Security Requirements
+  73+2+0 (1/0/0/0) Subsection: Security Requirements
   213+9+0 (7/0/0/0) Subsection: Software Quality Attributes
   200+1+7 (1/1/0/0) Chapter: Design
-  332+2+10 (1/1/0/0) Section: Haar Engine
-  678+8+7 (5/1/0/0) Subsection: Data Modelling
-  184+2+0 (1/0/0/0) Subsection: Database Connector
+  327+2+10 (1/1/0/0) Section: Haar Engine
+  672+8+7 (5/1/0/0) Subsection: Data Modelling
+  183+2+0 (1/0/0/0) Subsection: Database Connector
   210+3+0 (1/0/0/0) Subsection: Data Access API
-  361+7+0 (3/0/0/0) Subsection: Real-Time Event API
-  63+1+0 (1/0/0/0) Section: Haar
+  360+7+0 (3/0/0/0) Subsection: Real-Time Event API
+  61+1+0 (1/0/0/0) Section: Haar
   56+2+0 (1/0/0/0) Subsection: Back-End Application
   271+2+6 (1/1/0/0) Subsection: Front-End Application
-  1419+6+31 (3/6/0/0) Subsection: Wireless Sensor Networks
+  1417+6+31 (3/6/0/0) Subsection: Wireless Sensor Networks
   148+2+0 (1/0/0/0) Chapter: Development Practices
   424+3+0 (1/0/0/0) Section: Version Control System
   137+2+0 (1/0/0/0) Subsection: Pre-commit Hook
   677+1+0 (1/0/0/0) Section: Docker
   294+2+0 (1/0/0/0) Section: Continuous Integration
-  19+1+0 (1/0/0/0) Chapter: Implementation
-  373+1+4 (1/1/0/0) Section: Hosting
-  0+2+0 (1/0/0/0) Section: Haar Engine
+  68+1+0 (1/0/0/0) Chapter: Implementation
+  372+1+4 (1/1/0/0) Section: Hosting
+  57+2+0 (1/0/0/0) Section: Haar Engine
   321+3+0 (1/0/0/0) Subsection: Node.js and npm
-  213+2+0 (1/0/0/0) Subsection: MongoDB Database
-  267+2+0 (1/0/0/0) Subsection: MVC Architecture
-  488+1+0 (1/0/0/0) Subsection: Real-Time
-  449+1+0 (1/0/0/0) Subsection: Security
-  359+1+0 (1/0/0/0) Subsection: Testing
+  212+2+0 (1/0/0/0) Subsection: MongoDB Database
+  266+2+0 (1/0/0/0) Subsection: MVC Architecture
+  487+1+0 (1/0/0/0) Subsection: Real-Time
+  550+1+0 (1/0/0/0) Subsection: Security
+  357+1+0 (1/0/0/0) Subsection: Testing
   117+2+0 (1/0/0/0) Section: Haar API
-  125+2+0 (1/0/0/0) Section: Haar Dashboard
-  558+3+0 (1/0/0/0) Subsection: JavaScript Application Framework
-  225+2+15 (1/2/0/0) Subsection: Data Management
+  135+2+5 (1/1/0/0) Section: Haar Dashboard
+  559+3+0 (1/0/0/0) Subsection: JavaScript Application Framework
+  224+2+15 (1/2/0/0) Subsection: Data Management
   185+1+0 (1/0/0/0) Subsection: Real-time
-  230+1+0 (1/0/0/0) Subsection: Security
+  231+1+0 (1/0/0/0) Subsection: Security
   265+1+0 (1/0/0/0) Subsection: Testing
   57+2+0 (1/0/0/0) Section: Haar Nodes
-  340+1+8 (1/2/0/0) Subsection: Hardware
+  344+1+8 (1/2/0/0) Subsection: Hardware
   317+2+0 (1/0/0/0) Subsection: Energy Efficiency
   589+2+0 (1/0/0/0) Subsection: Data Transmission
   240+1+0 (1/0/0/0) Subsection: Testing
   80+2+0 (1/0/0/0) Section: Haar Bridge
   170+1+3 (1/1/0/0) Subsection: Hardware
   318+1+0 (1/0/0/0) Subsection: Software
-  0+1+0 (1/0/0/0) Subsection: Testing
+  55+1+0 (1/0/0/0) Subsection: Testing
   204+1+0 (1/0/0/0) Chapter: Evaluation
   81+2+0 (1/0/0/0) Section: Acceptance Testing
   213+2+0 (1/0/0/0) Subsection: Haar Engine
