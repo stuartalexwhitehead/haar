@@ -1,8 +1,6 @@
 \chapter{Implementation}
 \label{chapter:implementation}
-  This chapter will discuss the specific implementation details for both project components: the Haar Engine and Haar demonstration application.
-
-  % Chapter structure
+  This chapter will discuss the specific implementation details for both the IoT framework and demonstration application. It will start by discussing the hosting solution used for testing and demonstration purposes before moving onto important aspects of the Haar Engine implementation. The Haar demonstration has been split into four sub-components: Haar API, Haar Dashboard, Haar Nodes and Haar Bridge. The implementation of each of these will also be discussed.
 
   \section{Hosting}
     The software components for this project were hosted on a public web server for demonstration and testing purposes. There are a large number of hosting solutions available; in this case, a Virtual Private Server (VPS) was chosen. A VPS was chosen over competing solutions (such as a Platform as a Service like Heroku) because its offers complete control over installed software and their configuration. The VPS chosen is also scalable, meaning that it can be configured with more or fewer system resources in response to demand.
@@ -11,7 +9,7 @@
 
     Very little configuration was made to the VPS itself. Beyond some basic user and SSH configuration, the only additional packages required were Uncomplicated Firewall (UFW) and the Docker Cloud agent. UFW was used to create a strict firewall policy in order to protect the server for unauthorised access. Section \ref{section:docker} (Docker) explained that Docker images can be compared to virtual machines. Since Docker images contain all software which they require to run, nothing extra must be installed on the host. The Docker Cloud agent is simply used to connect the VPS to the Docker Cloud deployment service.
 
-    A reverse proxy was used to expose Docker containers to the Internet. The Nginx web server was chosen for this purpose because it is event-based (as opposed to process-based like the Apache web server) which makes it more efficient at handling concurrent connections. Nginx also has great first-party support for proxy and caching functionality. The reverse proxy had two main responsibilities: TLS and HTTP/2 termination. These enable the API and dashboard to be served over a secure HTTPS tunnel and for web browsers to leverage performance-enhancing features. Figure x.x illustrates this implementation. In keeping with the development practices used, the Nginx reverse proxy was also wrapped up into a Docker image.
+    A reverse proxy was used to expose Docker containers to the Internet. The Nginx web server was chosen for this purpose because it is event-based (as opposed to process-based like the Apache web server) which makes it more efficient at handling concurrent connections. Nginx also has great first-party support for proxy and caching functionality. The reverse proxy had two main responsibilities: TLS and HTTP/2 termination. These enable the API and dashboard to be served over a secure HTTPS tunnel and for web browsers to leverage performance-enhancing features. Figure \ref{figure:reverse-proxy} illustrates this implementation. In keeping with the development practices used, the Nginx reverse proxy was also wrapped up into a Docker image.
 
     \begin{figure}
       \centering
@@ -35,8 +33,7 @@
     \end{figure}
 
   \section{Haar Engine}
-    % purpose
-    % how to use it
+    The purpose of Haar Engine is to provide a starting point of IoT applications. It has been implemented as an npm module which could potentially be added to the global npm registry. This section will discuss the features of Node.js and npm; the choice of backing database; framework architecture; real-time implementation as well as security and testing.
 
     \subsection{Node.js and npm}
       Chapter \ref{chapter:design} (Design) identified Node.js as the most suitable programming environment for the Haar Engine. There are a number of characteristics  about Node.js which have been employed in this implementation, including: functional composition, package management and incremental standard support.
@@ -48,14 +45,14 @@
       One final detail regarding Node.js is the version of JavaScript used. JavaScript itself is an implementation of a standard: ECMAScript. The latest version of ECMAScript (ES2015) was ratified in June 2015 \citep{es2015} and as a result, new language features and syntax are slowly being implemented by JavaScript engines. Embracing cutting-edge features for client-side JavaScript has historically been troublesome due to the number of available browsers, however this problem does not exist in Node.js. Developers of server-side applications can support whichever language features that are installed on the server. Given this opportunity, Haar Engine has been implemented using native ES2015 syntax. This requirement has been specified in `package.json'.
 
     \subsection{MongoDB Database}
-      The main goal of the Haar Engine is to provide an extensible framework for IoT applications. One of the key features in support of this was a database connector layer which would enable developers to support a variety of database types. As the implementation progressed, it became clear that this feature would introduce too much complexity, given the constraints of this project. Rather than implementing a layer which supported a variety of strict database schemas, only one, highly flexible database solution is supported. This method resolved the extensibility requirement from a different angle.
+      The main goal of Haar Engine is to provide an extensible framework for IoT applications. One of the key features in support of this was a database connector layer which would enable developers to support a variety of database types. As the implementation progressed, it became clear that this feature would introduce too much complexity, given the constraints of this project. Rather than implementing a layer which supported a variety of strict database schemas, only one, highly flexible database solution is supported. This method resolved the extensibility requirement from a different angle.
 
-      The NoSQL database `MongoDB' was chosen for a number of reasons. First of all, the flexibility of a NoSQL versus a relational SQL database allows the schema to be very dynamic and to change with the data. This makes it simpler for a developer to add new data structures. In comparison, to modify an SQL database the developer would have to first update the database schema using a Data Definition Language (DDL). MongoDB was selected from the available NoSQL database solutions because its data structure is based on JavaScript Object Notation (JSON). This makes it easy to interface with the Node.js application code. There are also a number of helper packages available for Node.js (including Mongoose which is described below).
+      The NoSQL database `MongoDB' was chosen for a number of reasons. First of all, the flexibility of a NoSQL versus a relational SQL database allows the schema to be very dynamic and to change with the data. This makes it simpler for a developer to add new data structures. In comparison, to modify an SQL database the developer would have to first update the database schema using a Data Definition Language (DDL). MongoDB was selected from the available NoSQL database solutions because its data structure is based on JavaScript Object Notation (JSON). This makes it easy to interface with the Node.js application code. There are also a number of helper packages available for Node.js, including Mongoose which is described below.
 
     \subsection{MVC Architecture}
       A Model-View-Controller (MVC) architecture formed the basis of the Haar Engine implementation. This architecture is widely employed in web application development. \citet{google-mvc} state that ``MVC offers architectural benefits over standard JavaScript'' and go on to explain that an MVC architecture helps to develop organised, more maintainable code.
 
-      Models were implemented using the Mongoose Object Data Mapping (ODM) package. As has been explained, the underlying NoSQL database was chosen because of its superior flexibility. However, this flexibility can introduce its own challanges in maintaining a standardised schema. The Mongoose package helps to control the flexbility through schema definitions and field validation. Mongoose also adds additional app-layer tools on top of MongoDB, such as document population (expanding child documents based on an ID) and virtual getters (computed fields). Document population in particular was used for the Haar Engine.
+      Models were implemented using the Mongoose Object Data Mapping (ODM) package. As has been explained, the underlying NoSQL database was chosen because of its superior flexibility. However, this flexibility can introduce its own challanges in maintaining a standardised schema. The Mongoose package helps to control the flexbility through schema definitions and field validation. Mongoose also adds additional app-layer tools on top of MongoDB, such as document population (expanding child documents based on an ID) and virtual getters (computed fields). Document population in particular was used for Haar Engine.
 
       The Express web application framework was used to implement controllers. These controllers represent the RESTful Data Access API endpoints. Listing \ref{express-route} illustrates an example Express controller, comprising of a URL structure and a handler. The URL structure can contain static segments like `/users' or dynamic tokens like `/:user' (which would then be made available to the handler). Each controller handler is passed `req' and `res' objects. As would be expected, the `req' object provides information about the current request (such as form data) and the `res' object is used to handle the response.
 
@@ -64,7 +61,8 @@
         captionpos=b,
         numbers=none,
         frame=single,
-        float]
+        float,
+        upquote=true]
 const express = require(`express');
 const router = express.Router();
 
@@ -84,31 +82,32 @@ router.get(`/users/:user', (req, res) => {
         captionpos=b,
         numbers=none,
         frame=single,
-        float]
+        float,
+        upquote=true]
 {
-  ``status":"success",
-  ``meta": {
-    ``message": ``A response message",
-    ``validation": {
-      ``errors": {
-        ``field": ``Validation error"
+  "status":"success",
+  "meta": {
+    "message": "A response message",
+    "validation": {
+      "errors": {
+        "field": "Validation error"
       },
-      ``values" {
-        ``field": ``Existing value"
+      "values" {
+        "field": "Existing value"
       }
     },
-    ``paginate": {
-      ``total": 22,
-      ``pages": 2,
-      ``currentPage": 1,
-      ``previousPage": null,
-      ``nextPage": 2
+    "paginate": {
+      "total": 22,
+      "pages": 2,
+      "currentPage": 1,
+      "previousPage": null,
+      "nextPage": 2
     }
   },
-  ``data": [
+  "data": [
     {
-      ``field1": ``Field1 Data",
-      ``field2": ``Field2 Data"
+      "field1": "Field1 Data",
+      "field2": "Field2 Data"
     },
 
     ...
@@ -121,7 +120,7 @@ router.get(`/users/:user', (req, res) => {
 
       An alternative package called Primus was found to be more suitable. Primus supports a number of lower-level communication libraries (including Engine.io, the library which Socket.io is built on) and is ultimately more flexible. Primus also exposes a plugin architecture which allows third-party developers to implement new features. Two such plugins were included to provide the desired features: Primus Rooms and Primus Responder. Primus Rooms supports a room hierarchy (like `subscribe:sensor:\textit{device}') which mimics the hierarchical structure of MQTT topics. Also, Primus does not send acknowledgement messages by default; Primus Responder provides this feature.
 
-      The Primus Responder plugin demonstrates both the fragility and strengths of Open Source Software. When initially building Primus into the Haar Engine, Primus Responder failed to execute. Due to updates in one of its dependencies, Primus Responder had developed a software bug. Whilst waiting for the package author to implement a fix, a `fork' of the project was made for use in the Haar Engine. The fork fixed the bug and allowed implementation to continue.
+      The Primus Responder plugin demonstrates both the fragility and strengths of Open Source Software. When initially building Primus into Haar Engine, Primus Responder failed to execute. Due to updates in one of its dependencies, Primus Responder had developed a software bug. Whilst waiting for the package author to implement a fix, a `fork' of the project was made for use in the Haar Engine. The fork fixed the bug and allowed implementation to continue.
 
       The operation of the real-time connection manager successfully supports publish/subscribe behaviour. Listing \ref{realtime-index} illustrates an important excerpt from the file `/lib/realtime/index.js'. The excerpt shows the declaration of an array of handler functions. When a new message is received by the connection manager, the received room option is tested against the regular expressions defined in each array item. If the room matches, its sibling key `handler' is executed. For example, a message sent to the room `input:stream:a1b2c3d4e5f6g7h8i9j0k1l2' will be subscribed to data events for the device with ID `a1b2c3d4e5f6g7h8i9j0k1l2' (pending authentication).
 
@@ -131,7 +130,8 @@ router.get(`/users/:user', (req, res) => {
         numbers=left,
         frame=single,
         firstnumber=10,
-        float]
+        float,
+        upquote=true]
 const handlers = [
   {
     room: /^(input):(add)$/,
@@ -168,9 +168,11 @@ const handlers = [
     \subsection{Security}
       Sound application security is the sum of many parts. It is the responsibility of this software component to enforce user authentication and authorisation, as well as protecting access to supporting software like backing databases. The security of Haar Engine has been hardened through the careful consideration and implementation of: configuration variables, strong password hashing, token-based authentication, application middleware and Cross-Origin Resource Sharing (CORS).
 
-      Haar Engine must be provided configuration settings in order to execute. These configuration settings contain, amongst other things, the database server URL and access credentials. The Haar Engine delegates the responsibility of managing these credentials to the developer, but they are encouraged to use environment variables. Environment variables have local scope meaning that they are available only to the process in which they were set \citet{env-vars}. This is ideal behaviour for confidential credentials and ensures that they are available to software which requires them.
+      Haar Engine must be provided configuration settings in order to execute. These configuration settings contain, amongst other things, the database server URL and access credentials. Haar Engine delegates the responsibility of managing these credentials to the developer, but they are encouraged to use environment variables. Environment variables have local scope meaning that they are available only to the process in which they were set \citep{env-vars}. This is ideal behaviour for confidential credentials and ensures that they are available to software which requires them.
 
-      Strong password hashing is used to store user passwords. Best practices can be used to secure the servers running database applications, however if the database is accessed by a malicious actor additional safeguards must be in place to protect sensitive data. Hashing is a process which irreversibly obscures data. A number of algorithms exist for this purpose such as MD5 and the SHA family of algorithms, however bcrypt is currently considered the \textit{de facto} standard for password hashing \citet{hashing-algorithms}. Bcrypt is particularly strong due to its memory requirements and due to this, it would take too long for a malicious actor to crack. The bcrypt hashing algorithm has been implemented to securely store passwords.
+      One of the configuration variables specifies a Cross-Origin Resource Sharing (CORS) whitelist. HTML forms and AJAX requests are vulnerable to Cross-Site Request Forgery (CSRF) attacks, where a malicious external site tricks a user into making a potentially destructive---but valid---API request. CORS is a security mechanism implemented by modern browsers. These browsers will first make a `preflight' request with the \code{OPTIONS} HTTP method to check that the request origin is valid. It is the duty of the web application to authorise this `preflight' request; Haar Engine does so by comparing the request origin to the whitelist passed as a configuration option.
+
+      Strong password hashing is used to store user passwords. Best practices can be used to secure the servers running database applications, however if the database is accessed by a malicious actor additional safeguards must be in place to protect sensitive data. Hashing is a process which irreversibly obscures data. A number of algorithms exist for this purpose such as MD5 and the SHA family of algorithms, however bcrypt is currently considered the \textit{de facto} standard for password hashing \citep{hashing-algorithms}. Bcrypt is particularly strong due to its memory requirements and due to this, it would take too long for a malicious actor to crack. The bcrypt hashing algorithm has been implemented to securely store passwords.
 
       JSON Web Tokens (JWT) are used to authenticate API requests. The Data Access API has been implemented using the RESTful architecture and is therefore stateless---every request sent to the API must contain all required information. The process begins when a user authenticates using their username and password combination. If successful, the API will return a signed JSON Web Token, containing information about the user and an expiration date. For every subsequent request to the API the token must also be sent in order to be granted access. When compared to stateful server-side sessions, the use of stateless tokens is more secure because it protects against Cross-Site Request Forgery (CSRF) attacks.
 
@@ -180,15 +182,15 @@ const handlers = [
         % CORS
 
     \subsection{Testing}
-      Extensive testing was carried out during the implementation of the Haar Engine. The purpose of the tests was to ensure that code was of a certain quality and that the application functioned as expected. Testing existed in three forms: code quality assertion, unit testing and acceptance testing.
+      Extensive testing was carried out during the implementation of Haar Engine. The purpose of the tests was to ensure that code was of a certain quality and that the application functioned as expected. Testing existed in three forms: code quality assertion, unit testing and acceptance testing.
 
       The pre-commit hook as describe in Section \ref{section:pre-commit-hook} was used to ensure good code quality. JavaScript is a very flexible language and the same problem can be solved with many different methods. Over time, the community has learnt from mistakes to develop widely-accepted best practices. A tool called ESLint tests JavaScript files against a pre-defined list of rules, flagging syntax or conventions which are considered poor practice. For this project, ESLint is triggered by the pre-commit hook in Git VCS and prevents poor code from being committed to the database.
 
-      A suite of 96 unit tests was developed to ensure that system components functioned correctly. Testing dynamic web applications such as the Haar Engine is made difficult due to the additional dependencies which they require, such as databases. One solution to test database-dependent code is to mock queries with dummy data structures rather than a live database connection. This is however not a true representation of the system. Since Docker was being used to enforce a consistent development environment, it could also be used to run the unit tests against a live database. For the purposes of testing, a test database was seeded with example data.
+      A suite of 96 unit tests was developed to ensure that system components functioned correctly. Testing dynamic web applications such as Haar Engine is made difficult due to the additional dependencies which they require, such as databases. One solution to test database-dependent code is to mock queries with dummy data structures rather than a live database connection. This is however not a true representation of the system. Since Docker was being used to enforce a consistent development environment, it could also be used to run the unit tests against a live database. For the purposes of testing, a test database was seeded with example data.
 
       The Data Access API is a main system component and was also challenging to test effectively. In order to test the execution of the API, an HTTP request must be made to the controller and the response body interrogated. An npm package called Supertest was used for this purpose. It allows HTTP endpoints to be tested programatically, interrogating the response for specific headers and body properties.
 
-      The final category of testing performed on the Haar Engine is acceptance testing. The purpose of acceptance testing is to compare the finished product against requirements specifications defined. The results of this testing can be found in Appendix \ref{haar-engine-acceptance-tests} and will be discussed in further detail as part of the next chapter.
+      The final category of testing performed on the Haar Engine is acceptance testing. The purpose of acceptance testing is to compare the finished product against requirements specifications defined. The results of this testing can be found in Appendix \ref{chapter:haar-engine-acceptance-tests} and will be discussed in further detail as part of the next chapter.
 
   \section{Haar API}
     The second software component produced for this project is Haar, a demonstration implementation of Haar Engine. The main purpose of this demonstration application is to validate the design decisions and to show, by example, that the theory behind this IoT framework works. The implementation of Haar has been split further into four sub-components: API, Dashboard, Bridge and Nodes.
@@ -198,18 +200,28 @@ const handlers = [
   \section{Haar Dashboard}
     Haar Dashboard is a web-based user interface built on top of the suite of Haar Engine APIs. It utilises both the Data Access API to configure system settings and the Real-Time API to subscribe to live data events. Whilst not necessary for the operation of the underlying IoT framework, the Haar Dashboard UI makes configuring devices simple and illustrates how a viable consumer solution might work.
 
-    Section \ref{section:front-end-application} (Front-End Application) briefly discussed the challenges facing this user interface. In particular, certain components of the user interface must react to real-time events. The solution selected to address the challenges was a single-page JavaScript web application (SPA). The following section will describe the implementation of this technique, how it satisfies design goals and how it addresses these challenges.
+    Section \ref{section:front-end-application} (Front-End Application) briefly discussed the challenges facing this user interface. In particular, certain components of the user interface must react to real-time events. The solution selected to address the challenges was a single-page JavaScript web application (SPA). The following section will describe the implementation of this technique, how it satisfies design goals and how it addresses these challenges. Figure \ref{figure:haar-dashboard} shows an example of the resulting dashboard user interface.
+
+    \begin{figure}
+      \centering
+        \begin{tikzpicture}
+          \node[inner sep=0pt] at (0,0)
+            {\includegraphics[width=\textwidth]{assets/haar-dashboard.png}};
+        \end{tikzpicture}
+      \caption{Haar Dashboard web browser implementation}
+      \label{figure:haar-dashboard}
+    \end{figure}
 
     \subsection{JavaScript Application Framework}
       There are a wide variety of JavaScript frameworks which aid in the development of single-page web applications. While these frameworks differ in what problems they solve and how they solve them, they share some common characteristics.
 
       The general aim of a single-page web application is to create a more responsive and user friendly interface, much like would be experienced with a desktop application. This is achieved through the use of asynchronous AJAX requests; rather than navigate to new web pages, the correct data is requested and loaded into the existing web page. This also requires all of the application logic to be retrieved with the initial page request. Since the web page will not be reloaded, this makes it ideal for opening and maintaining the WebSocket connection required for this component.
 
-      Single-page web applications also introduce new challenges. One of the hurdles to overcome is the inital load time. Since all of the application logic must be loaded before the web app can be used, users can experience long initial delays. There are also accessibility and usability challenges due to how the content is loaded. The initial HTML response from the server will be empty or will contain very basic content because content is loaded dynamically by the application. This means that search engine crawlers or users without JavaScript enabled canot view the web page content.
+      Single-page web applications also introduce new challenges. One of the hurdles to overcome is the inital load time. Since all of the application logic must be loaded before the web app can be used, users can experience long initial delays. There are also accessibility and usability challenges due to how the content is loaded. The initial HTML response from the server will be empty or will contain very basic content because content is loaded dynamically by the application. This means that search engine crawlers or users without JavaScript enabled cannot view the web page content.
 
       The features offered by the React JavaScript framework implemented for this project go some distance in resolving these challenges. React is a project developed by software engineers at Facebook. It is based on the concept of a tree composable components, where a single component encapsulates all of the logic which it requires to execute, including CSS styles. What is most clever about React is its use of a virtual Document Object Model (DOM). React will first build up the tree of components using this virtual DOM before comparing it against the actual DOM. If anything has changed, React will only update the affected components.
 
-      React can use this virtual DOM to render web pages server-side. React will build up a webpage and send it as the body of an HTML response. Once the client-side code has loaded, React will then bootstrap the application based on the existing body. This concept is known as Isomorphic or Universal JavaScript. Since an HTML body is returned, most features of an application can be used straight away. Search engine crawlers and accessibility tools can also parse the body, solving the challenges traditional single-page JavaScript web applications.
+      React can use this virtual DOM to render web pages server-side. React will build up a webpage and send it as the body of an HTML response. Once the client-side code has loaded, React will then bootstrap the application based on the existing body. This concept is known as Isomorphic or Universal JavaScript. Since an HTML body is returned, most features of an application can be used straight away. Search engine crawlers and accessibility tools can also parse the body, solving the challenges of traditional single-page JavaScript web applications.
 
       As was discussed for the implementation of Haar Engine, the latest features of JavaScript are defined in the ECMAScript 2015 standard. Some web browsers can be slow to implement new features whilst other, older browsers may not implement them at all. This is a headache for developers; new features and syntax might solve problems in a more effective way, but they may not be supported by every target browser. This is where so-called front-end tooling is used. A variety of tools exist to convert new, uncompatible syntax into older, widely supported syntax. In particular a package called Babel has been used in this project to compile ES2015 syntax into ECMAScript 5 compatible code, meaning it can be run in all modern browsers. Additionally, a tool called Webpack has been used to package server-side JavaScript modules for use within the browser.
 
@@ -242,7 +254,7 @@ const handlers = [
       \caption{Data flow in a Flux React application}\label{figure:flux-flow}
       \end{figure}
 
-      Redux makes managing complex data more simple and this has proven particularly effective when managing forms. There are many forms used by Haar Dashboard to collect data from the user. Some forms, such as when adding a new user, have simple fields which can be represented by standard HTML constructs. However there is a requirement to manage more complex form data, such as an array of data descriptors for the device types. It would be very easy for the JavaScript code managing this to become unweildy. However, the structure which Redux gives to data makes mirroring the database model structure straightforward. Figure x.x. illustrates that objects and arrays have been modelled in HTML forms using this technique.
+      Redux makes managing complex data more simple and this has proven particularly effective when managing forms. There are many forms used by Haar Dashboard to collect data from the user. Some forms, such as when adding a new user, have simple fields which can be represented by standard HTML constructs. However there is a requirement to manage more complex form data, such as an array of data descriptors for the device types. It would be very easy for the JavaScript code managing this to become unweildy. However, the structure which Redux gives to data makes mirroring the database model structure straightforward. Figure \ref{figure:form-array} illustrates that objects and arrays have been modelled in HTML forms using this technique.
 
       \begin{figure}
         \centering
@@ -262,7 +274,7 @@ const handlers = [
     \subsection{Security}
       Haar Dashboard has its own role to play in the security of the complete application. First of all, the user interface must only be accessible to users with correct and authenticated credentials as proven by a valid JWT token. Although Haar API will not return application data without the presence of a valid token, Haar Dashboard should take responsibility to ensure authentication is respected. More importantly, however, is the protection of a valid JWT token. If a malicious actor were to obtain the token, they could perform any action as that user through the set of APIs. This is made more difficult to solve due to the use of Universal JavaScript, where users with or without JavaScript enabled must be protected.
 
-      The mechanism used address these security concerns are HTTP-only cookies. All users (whether JavaScript is enabled or not) must authenticate with a plain HTML form. This ensures that the authentication will be managed in the same way by the Haar Dashboard server component. The server component will make an API call to Haar API in order to authenticate the user. If the user is successfully authenticated, the server component will respond with an HTTP-only cookie. By setting the HTTP-only option, the cookie cannot be manipulated by client-side JavaScript, thus protecting the cookie from malicious tampering. Additionally, the cookie will be attached to every HTTP request made to Haar API.
+      The mechanism used to address these security concerns are HTTP-only cookies. All users (whether JavaScript is enabled or not) must authenticate with a plain HTML form. This ensures that the authentication will be managed in the same way by the Haar Dashboard server component. The server component will make an API call to Haar API in order to authenticate the user. If the user is successfully authenticated, the server component will respond with an HTTP-only cookie. By setting the HTTP-only option, the cookie cannot be manipulated by client-side JavaScript, thus protecting the cookie from malicious tampering. Additionally, the cookie will be attached to every HTTP request made to Haar API.
 
     \subsection{Testing}
       As with all software components of an application, testing should be performed to ensure correct operation. Compared to testing server-side components, testing client-side user interfaces is more cumbersome. Server-side code will always be tested in the same environment with control over all possible variables, whereas there is an element of uncertainty with client-side code. First of all different web browser vendors implement their own JavaScript rendering engine, such as Google Chrome's V8 engine, Mozilla Firefox's SpiderMonkey engine or Microsoft's Chakra engine. In addition to that, users can introduce unexpected or unusual behaviour by engaging different buttons; pressing forwards or backwards in their web browser's history or by navigating directly to a new URL.
@@ -275,11 +287,11 @@ const handlers = [
     The end devices built to demonstrate the IoT concept have been named Haar Nodes. Although they measure arbitrary properties (temperature, RGB colour and gyroscopic movement), the implementation of them still required appropriate hardware and software. This section will discuss the pertinent points about the implementation of the sensor hardware, software and the optimisation of their energy usage.
 
     \subsection{Hardware}
-      The sensors and actuators were developed with prototype-friendly hardware. Although \ref{chapter:design} (Design) specified the main components and schematics, prototype-friendly breadboards were used in case the designs had to be changed along the way. Another benefit in using breadboards is that all components are reusable for future research. If the implementation of these devices was taken further, they could be built with semi-permanent solderable breadboards and then production-ready printed circuit boards (PCBs).
+      The sensors and actuators were developed with prototype-friendly hardware. Although Chapter \ref{chapter:design} (Design) specified the main components and schematics, prototype-friendly breadboards were used in case the designs had to be changed along the way. Another benefit in using breadboards is that all components are reusable for future research. If the implementation of these devices was taken further, they could be built with semi-permanent solderable breadboards and then production-ready printed circuit boards (PCBs).
 
       The devices were built starting with the Arduino boards. The Arduino Pro Minis used for this implementation were delivered without pin headers, so male pin headers were soldered on first. Once the Arduino boards were in place the breadboard power rails were wired up. All of the sensors are battery powered. The Arduino has a built-in power regulator which can step the 6v of the battery pack down to the 3.3v it requires. An external voltage regulator was used to step the voltage down for the RGB LED actuator since a 12v power supply is used.
 
-      All of the sensor boards which were implemented use the same digital interface. In comparison to Chapter \ref{chapter:design}, the sensor boards implemented are newer, more refined models but they all still use the I2C communication protocol. This protocol requires four lines to be wired between the Arduino and the sensor, namely: Vcc (+), Ground (-), SDA (data) and SCL (clock). In terms of the RGB LED actuator, the transistor circuits were true to the design. Rather than using a single RGB LED, an RGB LED strip was wrapped around the breadboard.
+      All of the sensor boards which were implemented use the same digital interface. In comparison to the schematics in Chapter \ref{chapter:design}, the sensor boards implemented are newer, more refined models but they all still use the I2C communication protocol. This protocol requires four lines to be wired between the Arduino and the sensor, namely: Vcc (+), Ground (-), SDA (data) and SCL (clock). In terms of the RGB LED actuator, the transistor circuits were true to the design. Rather than using a single RGB LED, an RGB LED strip was wrapped around the breadboard.
 
       The addition of the XBee radio chips complete the implementation. As was illustrated in the design, the XBee radio chips have a 2mm pin pitch which is incompatible with the standard 2.54mm pitch of the breadboards and therefore require an additional breakout board. During the implementation it became clear that the XBee breakout board has the same pinout as the FTDI header of the Arduino and this allowed the boards to sit on top of each other. Figures \ref{figure:temp-device} and \ref{figure:led-device} illustrate the completed sensor and actuator prototypes.
 
@@ -317,18 +329,18 @@ const handlers = [
 
       Secondly, the end goal of the Haar Nodes is to interface with the Haar API. In order to do that, the sensed data must be communicated to the API. A common data-interchange format is required so that both the devices and the API are compatible. Arguably, the choice of format should belong in the design chapter, however it is dependent on the implementation of the Haar Engine APIs and models. Four different formats were considered: comma-separated value (CSV), JSON DB Schema, Compressed JSON DB Schema and Compressed JSON Map.
 
-      Each of the formats have been described and explained below and there were a number of aims to satisfy. Firstly, size of data transmitted has an effect on power usage. More data means that the XBee chip has to transmit for longer periods, consuming battery power. The maximum packet size of an XBee transmission is 72 bytes \citep{xbee-packet-size}. In order to limit transmission to one packet, data size should aim to be less that this limit. Additionally, the format chosen should be robust and make it simple to distinguish the datapoints collected.\\
+      Each of the formats have been described and explained below and there were a number of aims to satisfy. Firstly, the size of data transmitted has an effect on power usage. More data means that the XBee chip has to transmit for longer periods, consuming battery power. The maximum payload size of an XBee transmission is 72 bytes \citep{xbee-packet-size}. In order to limit transmission to one packet, data size should aim to be less that this limit. Additionally, the format chosen should be robust and make it simple to distinguish the datapoints collected.\\
 
       \noindent
       \begin{minipage}[t]{0.45\textwidth}
         \textbf{Comma-separated value}\\
         The first data format explored was a simple comma-separated string. This created the smallest payload size (11 bytes for the given example).\\
 
-        This format is not flexible, however. It requires the datapoints to maintain strict order, and requires all devices to know what this order is. The CSV string does not describe its contents at all - a developer would have no indication what the data refers to.\\
+        This format is not flexible, however. It requires the datapoints to maintain strict order, and requires all devices to know what this order is. The CSV string does not describe its contents at all---a developer would have no indication what the data refers to.\\
       \end{minipage}
       \hfill
       \begin{minipage}[t]{0.45\textwidth}
-        \begin{lstlisting}[frame=single]
+        \begin{lstlisting}[frame=single, upquote=true]
   123,123,123
         \end{lstlisting}
       \end{minipage}
@@ -336,13 +348,13 @@ const handlers = [
       \noindent
       \begin{minipage}[t]{0.45\textwidth}
         \textbf{JSON DB Schema}\\
-        The second format explored replicates the format of the Data Mongoose model used in the Haar Engine. Haar Engine explicitly defines `name' and `value' properties for use in validation. The size of the given example is 76 bytes, more than the 72 byte limit.\\
+        The second format explored replicates the format of the Data Mongoose model used in Haar Engine. Haar Engine explicitly defines `name' and `value' properties for use in validation. The size of the given example is 76 bytes, more than the 72 byte limit.\\
 
         This is the most descriptive format and requires no extra transformation before being sent to the Haar API. However, it is unsuitable because of its payload size.
       \end{minipage}
       \hfill
       \begin{minipage}[t]{0.45\textwidth}
-        \begin{lstlisting}[frame=single]
+        \begin{lstlisting}[frame=single, upquote=true]
   [
     {
       "name": "x",
@@ -369,7 +381,7 @@ const handlers = [
       \end{minipage}
       \hfill
       \begin{minipage}[t]{0.45\textwidth}
-        \begin{lstlisting}[frame=single]
+        \begin{lstlisting}[frame=single, upquote=true]
   [
     {
       "x": 123
@@ -393,7 +405,7 @@ const handlers = [
       \end{minipage}
       \hfill
       \begin{minipage}[t]{0.45\textwidth}
-        \begin{lstlisting}[frame=single]
+        \begin{lstlisting}[frame=single, upquote=true]
   {
     "x": 123,
     "y": 123,
@@ -401,6 +413,8 @@ const handlers = [
   }
         \end{lstlisting}
       \end{minipage}
+
+      \vspace{7.5mm}
 
       Figures \ref{figure:temp-device} and \ref{figure:led-device} show the finished prototype hardware for the temperature sensor and RGB LED actuator. The RGB colour and gyroscope sensors are similar to the temperature sensor. 
 
@@ -429,7 +443,7 @@ const handlers = [
       \end{figure}
 
     \subsection{Software}
-      As planned, the RPi-maintained distribution of Linux was installed on the RPiB+. This gave a foundation for Haar Bridge software which, like the other Haar components, was developed as a Node.js application. This application used some of the same JavaScript packages which were implemented in the Haar Engine and Dashboard. There are two main functions which Haar Bridge must perform in order to operate correctly, namely: maintain a WebSocket connection with Haar API and maintain a serial connection with the XBee radio chip. These two functions are intertwined.
+      As planned, the community-maintained distribution of Linux was installed on the RPiB+. This gave a foundation for Haar Bridge software which, like the other Haar components, was developed as a Node.js application. This application used some of the same JavaScript packages which were implemented in the Haar Engine and Dashboard. There are two main functions which Haar Bridge must perform in order to operate correctly, namely: maintain a WebSocket connection with Haar API and maintain a serial connection with the XBee radio chip. These two functions are intertwined.
 
       Haar Bridge uses the Primus JavaScript package to open and maintain a single WebSocket connection. There are two stages in negotiating this WebSocket connection: user authentication and then topic subscription. When the application is started, an HTTP request is made to the Data Access API in order to retrieve a JWT token. The WebSocket connection is then initiated using this token. Once the WebSocket has been opened, the application can then subscribe to any appropriate event streams based on which devices it is connected to.
 
@@ -438,6 +452,4 @@ const handlers = [
       Once the WebSocket and serial communication channels were established, Haar Bridge could then perform its routing duties. If a WebSocket message is received, its contents will be forwarded to the appropriate ZigBee device. Conversely, if a serial message is received, it will be parsed by the xbee-api package. The data format will be expanded (as described in Figure \ref{figure:bridge-device}) and then a WebSocket message will be sent.
 
     \subsection{Testing}
-      % Manual
-        % XCTU
-        % JS console.log statements     
+      Haar Bridge was tested in a similar fashion to Haar Nodes. Its Node.js application is quite small so each software feature could be tested in turn. Since this applications was being executed in a full Linux environment on the RPiB+, debug messages could be generated by Node.js and redirected to a log file for investigation.   
