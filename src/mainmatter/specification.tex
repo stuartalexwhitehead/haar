@@ -2,11 +2,11 @@
 \label{Chapter:Specification}
   To obtain a complete and practical understanding of the IoT paradigm, the software implementation accompanying this paper will comprise of two distinct components: a generic IoT application framework and a demonstration application. \citet{interoperability:2015} state that developers of IoT applications would benefit from a generic, standardised architecture, and that is the aim of the framework component. The second component has two main purposes. First of all, it will implemented the framework component with the aim of validating design decisions. The second purpose is to demonstrate the opportunities present in IoT. This chapter will define the requirements for both of these components.
 
-  To help reference these two software components throughout the remainder of this paper, they have been given product names. Haar is a cold sea fog which forms on the east coast of Scotland and is a fitting metaphor for IoT being all around us. It is also a nod towards the Fog Computing paradigm, and towards Robert Gordon University's location in Aberdeen. The generic framework will be called the Haar Engine and the demonstration application will be named Haar.
+  To help reference these two software components throughout the remainder of this paper, they have been given product names. Haar is a cold sea fog which forms on the east coast of Scotland and is a fitting metaphor for IoT being all around us. It is also a nod towards the Fog Computing paradigm, and towards Robert Gordon University's location in Aberdeen. The generic framework will be called Haar Engine and the demonstration application will be named Haar.
 
   \section{Functional Requirements}
     \subsection{Framework}
-      The target users of the Haar Engine are designers and developers of IoT services and applications. The general aim of a framework is to encapsulate design decisions into a logical and elegant toolkit. The Haar Engine aims to perform the same task by encapsulating the knowledge which has been collated in Chapter \ref{Chapter:Background}. The following subsection specifies its main requirements.
+      The target users of Haar Engine are designers and developers of IoT services and applications. The general aim of a framework is to encapsulate design decisions into a logical and elegant toolkit. Haar Engine aims to perform the same task by encapsulating the knowledge which has been collated in Chapter \ref{Chapter:Background}. The following subsection specifies its main requirements.
 
       \subsubsection{User and Device Management}
         The following requirements have been derived from the analysis of existing platforms and the requirements of use cases.
@@ -37,7 +37,7 @@
         \end{enumerate}
 
       \subsubsection{Device Connectivity}
-        A main aspect of the IoT concept is the interconnection of devices. The Haar Engine is responsible for managing the connectivity between devices and itself. The issues surrounding bidirectional communication was described in Section \ref{bidirectioncomms}, and these should be addressed by this framework.
+        Haar Engine is responsible for managing the connectivity between devices and itself. The issues surrounding bidirectional communication was described in Section \ref{bidirectioncomms}, and these should be addressed by this framework.
 
         \begin{enumerate}
           \item The framework shall establish a connection with end devices
@@ -55,7 +55,7 @@
         \end{enumerate}
 
       \subsubsection{Data Storage}
-        IoT applications will collect a large volume of data. The data collected by these applications will vary in structure and type, so the Haar Engine must be tolerant of this. The developers potentially using this framework will have specific domain knowledge and so should be empowered to tailor the system for their needs.
+        IoT applications will collect a large volume of data. The data collected by these applications will vary in structure and type, so Haar Engine must be tolerant of this. The developers potentially using this framework will have specific domain knowledge and so should be empowered to tailor the system for their needs.
 
         \begin{enumerate}
           \item The framework shall store data received by devices
@@ -67,7 +67,7 @@
         \end{enumerate}
 
       \subsubsection{Data Access API}
-        The Haar Engine must be able to provide access to stored data. Primarily this access will be for use in its own application, however third-party access would enable interoperability between external services and applications.
+        Haar Engine must be able to provide access to stored data. Primarily this access will be for use in its own application, however third-party access would enable interoperability between external services and applications.
 
         \begin{enumerate}
           \item The framework shall provide structured access to stored data
@@ -96,7 +96,7 @@
 
     \subsection{Demonstration Application}
     \label{section:demonstration-application-spec}
-      Haar is the second software component for this project. The aim of Haar is to validate the Haar Engine in practice, as well as to demonstrate the opportunities present in the IoT concept. This will be achieved through the implementation of an arbitrary web-based application which sufficiently covers key features.
+      Haar is the second software component for this project. The aim of Haar is to validate Haar Engine in practice, as well as to demonstrate the opportunities present in the IoT concept. This will be achieved through the implementation of an arbitrary web-based application which sufficiently covers key features.
 
       \subsubsection{Devices}
         The IoT concept enables the interconnection of devices so this is a logical requirement to begin with. Haar should comprise of at least two separate local device networks to demonstrate global interactivity. These local networks should themselves comprise of a number of devices with enough variety to validate Haar Engine use cases.
@@ -159,7 +159,7 @@
         \end{enumerate}
 
   \section{Non-functional Requirements}
-    In addition to the features required for Haar and the Haar Engine, there are a number of additional considerations. Since both of these software components are destined for use in the same system, this section will detail their non-function requirements collectively.
+    In addition to the features required for Haar Engine and Haar, there are a number of additional considerations. Since both of these software components are destined for use in the same system, this section will detail their non-function requirements collectively.
 
     \subsection{Constraints}
       \subsubsection{Network Environment}
@@ -169,7 +169,7 @@
         IPv6 is the successor to IPv4 and will allow every connected device to have a unique, globally addressable IP address. While this is the direction the industry is heading in, many businesses and Internet Service Providers are not prepared for its adoption. Network Address Translation (NAT) is still commonly deployed and prevents devices on these networks from being publicly addressable. It should therefore be assumed that end devices will not have a public IP address.
 
       \subsubsection{Initial Setup}
-        In a domestic situation, consumers would be expected to connect products to their internet connection by themselves. This is an important user experience to get right. While this project acknowledges the importance of this, it will not be considered a requirement for Haar so more effort can be afforded to developing a robust application.
+        In a domestic situation, consumers would be expected to connect products to their Internet connection by themselves. This is an important user experience to get right. While this project acknowledges the importance of this, it will not be considered a requirement for Haar so more effort can be afforded to developing a robust application.
 
       \subsubsection{Sensor Nodes}
         To demonstrate the various framework use cases, the application should connect a variety of sensor types. To ensure this project remains achievable, sensor nodes will be limited to those whose data can be represented by a single data interchange format like XML or JSON. Binary data such as images or audio will not be considered for this project.
@@ -178,7 +178,7 @@
       Since this project is a research endeavour, it neither requires nor promises any performance benchmarks. In saying that, the implemented product should meet general performance expectations, especially in regards to any web-based user interfaces.
 
     \subsection{Security Requirements}
-      This particular software product will not store sensitive personal details, nor will it need to satisfy criteria for professional accreditation. However security is an important topic in IoT and so real-world security measures should be implemented. In particular, any device or application connectivity should be implemented over encrypted connections to prevent potential network sniffing. Also any live demonstration versions of this software should be hosted on up-to-date hosting services to prevent any bug exploitations.
+      This software product will not store sensitive personal details, nor will it need to satisfy criteria for professional accreditation. However security is an important topic in IoT and so real-world security measures should be implemented. In particular, any device or application connectivity should be implemented over encrypted connections to prevent potential network sniffing. Also any live demonstration versions of this software should be hosted on up-to-date hosting services to prevent any bug exploitations.
 
     \subsection{Software Quality Attributes}
       \subsubsection{Extensibility}
