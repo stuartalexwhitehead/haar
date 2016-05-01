@@ -1,9 +1,9 @@
 File: haar.tex
 Encoding: utf8
-Words in text: 32684
-Words in headers: 282
-Words outside text (captions, etc.): 136
-Number of headers: 155
+Words in text: 33253
+Words in headers: 284
+Words outside text (captions, etc.): 138
+Number of headers: 156
 Number of floats/tables/figures: 20
 Number of math inlines: 0
 Number of math displayed: 0
@@ -11,11 +11,11 @@ Subcounts:
   text+headers+captions (#headers/#floats/#inlines/#displayed)
   51+1+0 (1/0/0/0) Chapter: Declaration
   150+1+0 (1/0/0/0) Chapter: Abstract
-  97+1+0 (1/0/0/0) Chapter: Acknowledgements
+  96+1+0 (1/0/0/0) Chapter: Acknowledgements
   119+1+0 (1/0/0/0) Chapter: Introduction
   224+2+0 (1/0/0/0) Section: Project Motivation
   142+5+0 (3/0/0/0) Section: Aims and Objectives
-  129+2+0 (1/0/0/0) Section: Report Structure
+  126+2+0 (1/0/0/0) Section: Report Structure
   102+6+0 (1/0/0/0) Section: Legal, Social, Ethical and Professional Considerations
   288+2+0 (1/0/0/0) Subsection: Public Interest
   74+4+0 (1/0/0/0) Subsection: Professional Competence and Integrity
@@ -102,6 +102,7 @@ Subcounts:
   295+2+0 (1/0/0/0) Section: Critical Appraisal
   545+4+6 (1/0/0/0) Chapter: Haar Engine Acceptance Tests
   569+3+5 (1/0/0/0) Chapter: Haar Acceptance Tests
+  573+2+2 (1/0/0/0) Chapter: Project Log
   0+1+0 (1/0/0/0) Chapter: Credits
   182+1+0 (1/0/0/0) Section: Async
   178+1+0 (1/0/0/0) Section: Axios
